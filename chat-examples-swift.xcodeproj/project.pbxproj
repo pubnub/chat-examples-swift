@@ -43,6 +43,7 @@
 
 /* Begin PBXFileReference section */
 		1C26F82E4CB0F8AF845EF192 /* Pods_CodeSamplesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CodeSamplesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		35461A7A223A9A1900B59EB6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3552571B223852930095AAFD /* ChatDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3552571D223852930095AAFD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3552571F223852930095AAFD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -119,6 +120,7 @@
 		355256F62237FDA40095AAFD = {
 			isa = PBXGroup;
 			children = (
+				35461A7A223A9A1900B59EB6 /* README.md */,
 				35525716223852450095AAFD /* examples */,
 				3552573B223852DD0095AAFD /* unit-tests */,
 				35461A79223A982000B59EB6 /* helpers */,
@@ -1150,7 +1152,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = PlaygroundSupport/Info.plist;
+				INFOPLIST_FILE = helpers/PlaygroundSupport/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1224,7 +1226,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = PlaygroundSupport/Info.plist;
+				INFOPLIST_FILE = helpers/PlaygroundSupport/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
