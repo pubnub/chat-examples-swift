@@ -108,13 +108,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		35461A79223A982000B59EB6 /* helpers */ = {
+			isa = PBXGroup;
+			children = (
+				3552578322394A910095AAFD /* PlaygroundSupport */,
+			);
+			path = helpers;
+			sourceTree = "<group>";
+		};
 		355256F62237FDA40095AAFD = {
 			isa = PBXGroup;
 			children = (
 				35525716223852450095AAFD /* examples */,
 				3552573B223852DD0095AAFD /* unit-tests */,
+				35461A79223A982000B59EB6 /* helpers */,
 				355257042237FF420095AAFD /* Products */,
-				3552578322394A910095AAFD /* PlaygroundSupport */,
 				C696971A976BA20BB837FD14 /* Pods */,
 				8F7EBEDD3AB77638DDE6E5C9 /* Frameworks */,
 			);
