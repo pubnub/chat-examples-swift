@@ -1,0 +1,22 @@
+PODS:
+  - PubNub (4.8.3):
+    - PubNub/Core (= 4.8.3)
+  - PubNub/Core (4.8.3)
+  - SwiftLint (0.31.0)
+
+DEPENDENCIES:
+  - PubNub (~> 4.0)
+  - SwiftLint (~> 0.30)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - PubNub
+    - SwiftLint
+
+SPEC CHECKSUMS:
+  PubNub: 871d2a12d790d646e84c0b035acbf9ee6610ea70
+  SwiftLint: 7a0227733d786395817373b2d0ca799fd0093ff3
+
+PODFILE CHECKSUM: a6cb6da1b436ff353934e21146e89f8c5ba6d927
+
+COCOAPODS: 1.6.1
