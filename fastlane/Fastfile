@@ -13,6 +13,8 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
+
+
 before_all do |lane, options|
   # Setup for the Travis CI environment
   setup_travis
@@ -30,7 +32,7 @@ lane :lint_and_test_snippets do
   # Lint Swift files: https://docs.fastlane.tools/actions/swiftlint/
   swiftlint(
     executable: "Pods/SwiftLint/swiftlint",
-    output_file: "fastlane/test_output/swiftlint.result.json"
+    output_file: "#{File.expand_path(File.dirname(__FILE__))}/test_output/swiftlint.result.json"
   )
 
   # Perform Test Runs: https://docs.fastlane.tools/actions/scan/

@@ -15,25 +15,34 @@ Install _fastlane_ using
 or alternatively using `brew cask install fastlane`
 
 # Available Actions
-## iOS
-### ios lint_and_test
+### test
 ```
-fastlane ios lint_and_test
+fastlane test
 ```
 This lane is used to lint and test all schemes in the workspace
-### ios pull_request
+### lint_and_test_snippets
 ```
-fastlane ios pull_request
+fastlane lint_and_test_snippets
+```
+This lane is used to lint and test all schemes in the workspace
+### lint_and_test_examples
+```
+fastlane lint_and_test_examples
+```
+This lane is used to lint and test all schemes in the workspace
+### pull_request
+```
+fastlane pull_request
 ```
 
-### ios nightly
+### nightly
 ```
-fastlane ios nightly
+fastlane nightly
 ```
 This lane is ran as part of a nightly CI cron process
-### ios weekly
+### weekly
 ```
-fastlane ios weekly
+fastlane weekly
 ```
 This lane is ran as part of a weekly CI cron process
 
