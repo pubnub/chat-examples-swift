@@ -4,15 +4,16 @@ osx_image: xcode10.1
 os: osx
 sudo: true
 cache:
-  - cocoapods
+  - bundler
 rvm:
   - 2.5.3
 before_install:
-  - sudo gem install xcpretty-travis-formatter
-  - sudo gem install cocoapods
+  - gem install bundler
+install:
+  - bundle install
+matrix:
+  include:
+    - env: LANE='lint_and_test_snippets'
+    - env: LANE='lint_and_test_examples'
 script:
-  - ./Pods/SwiftLint/swiftlint --reporter junit
-  - xcodebuild -workspace chat-examples-swift.xcworkspace -scheme ChatDemo -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6s,OS=12.1' build test | xcpretty -f `xcpretty-travis-formatter`
-  - xcodebuild -workspace chat-examples-swift.xcworkspace -scheme CodeSamplesTests -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6s,OS=12.1' test | xcpretty -f `xcpretty-travis-formatter`
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  bundle exec fastlane "${LANE}"

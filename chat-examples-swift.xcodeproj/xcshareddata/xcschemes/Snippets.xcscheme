@@ -14,15 +14,31 @@
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
-                     BlueprintIdentifier = "35525764223878A30095AAFD"
-                     BuildableName = "CodeSamplesTests.xctest"
-                     BlueprintName = "CodeSamplesTests"
+                     BlueprintIdentifier = "35765C79223AE694000B4B8D"
+                     BuildableName = "Snippets.xctest"
+                     BlueprintName = "Snippets"
                      ReferencedContainer = "container:chat-examples-swift.xcodeproj">
                   </BuildableReference>
                </EnvironmentBuildable>
             </ActionContent>
          </ExecutionAction>
       </PreActions>
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "35765C79223AE694000B4B8D"
+               BuildableName = "Snippets.xctest"
+               BlueprintName = "Snippets"
+               ReferencedContainer = "container:chat-examples-swift.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
    </BuildAction>
    <TestAction
       buildConfiguration = "Debug"
@@ -39,9 +55,9 @@
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
-                     BlueprintIdentifier = "35525764223878A30095AAFD"
-                     BuildableName = "CodeSamplesTests.xctest"
-                     BlueprintName = "CodeSamplesTests"
+                     BlueprintIdentifier = "35765C79223AE694000B4B8D"
+                     BuildableName = "Snippets.xctest"
+                     BlueprintName = "Snippets"
                      ReferencedContainer = "container:chat-examples-swift.xcodeproj">
                   </BuildableReference>
                </EnvironmentBuildable>
@@ -53,9 +69,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "35525764223878A30095AAFD"
-               BuildableName = "CodeSamplesTests.xctest"
-               BlueprintName = "CodeSamplesTests"
+               BlueprintIdentifier = "35765C79223AE694000B4B8D"
+               BuildableName = "Snippets.xctest"
+               BlueprintName = "Snippets"
                ReferencedContainer = "container:chat-examples-swift.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -73,6 +89,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "35765C79223AE694000B4B8D"
+            BuildableName = "Snippets.xctest"
+            BlueprintName = "Snippets"
+            ReferencedContainer = "container:chat-examples-swift.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -82,6 +107,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "35765C79223AE694000B4B8D"
+            BuildableName = "Snippets.xctest"
+            BlueprintName = "Snippets"
+            ReferencedContainer = "container:chat-examples-swift.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

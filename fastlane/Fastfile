@@ -1,0 +1,75 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+before_all do |lane, options|
+  # Setup for the Travis CI environment
+  setup_travis
+  # Download dependencies using Cocoapods
+  cocoapods(clean: true, repo_update: true)
+end
+
+desc "This lane is used to lint and test all schemes in the workspace"
+lane :test do
+
+end
+
+desc "This lane is used to lint and test all schemes in the workspace"
+lane :lint_and_test_snippets do
+  # Lint Swift files: https://docs.fastlane.tools/actions/swiftlint/
+  swiftlint(
+    executable: "Pods/SwiftLint/swiftlint",
+    output_file: "fastlane/test_output/swiftlint.result.json"
+  )
+
+  # Perform Test Runs: https://docs.fastlane.tools/actions/scan/
+  scan(
+    workspace: "chat-examples-swift.xcworkspace",
+    scheme: "Snippets",
+    devices: ["iPhone 6s"],
+    skip_build: true,
+    output_files: "report_snippets_crc.html,report_snippets_crc.junit"
+  )
+end
+
+desc "This lane is used to lint and test all schemes in the workspace"
+lane :lint_and_test_examples do
+  # Lint Swift files: https://docs.fastlane.tools/actions/swiftlint/
+  swiftlint(
+    executable: "Pods/SwiftLint/swiftlint",
+    output_file: "fastlane/test_output/swiftlint.result.json"
+  )
+
+  # Perform Test Runs: https://docs.fastlane.tools/actions/scan/
+  scan(
+    workspace: "chat-examples-swift.xcworkspace",
+    scheme: "ResourceCenterDemo",
+    devices: ["iPhone 6s"],
+    output_files: "report_example_rcdemo.html,report_example_rcdemo.junit"
+  )
+end
+
+lane :pull_request do
+  # Determine if we need to refresh site docs
+end
+
+desc "This lane is ran as part of a nightly CI cron process"
+lane :nightly do
+  # add actions here: https://docs.fastlane.tools/actions
+end
+
+desc "This lane is ran as part of a weekly CI cron process"
+lane :weekly do
+  # add actions here: https://docs.fastlane.tools/actions
+end

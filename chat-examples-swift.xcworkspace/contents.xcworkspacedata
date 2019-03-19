@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workspace
    version = "1.0">
-   <Group
-      location = "group:code-samples"
-      name = "code-samples">
-      <FileRef
-         location = "group:/Users/craig.lane/Documents/Projects/chat-examples-swift/code-samples/ChatSamples.playground">
-      </FileRef>
-   </Group>
    <FileRef
       location = "group:chat-examples-swift.xcodeproj">
    </FileRef>

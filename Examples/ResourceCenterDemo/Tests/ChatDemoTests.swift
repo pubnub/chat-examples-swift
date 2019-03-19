@@ -1,14 +1,14 @@
 //
-//  chat_exampleTests.swift
-//  chat-exampleTests
+//  ChatDemoTests.swift
+//  ChatDemoTests
 //
 //  Created by Craig Lane on 3/12/19.
 //
 
 import XCTest
-@testable import ChatDemo
+@testable import RCDemo
 
-class ChatExampleTests: XCTestCase {
+class ChatDemoTests: XCTestCase {
 
   override func setUp() {
     // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -22,12 +22,4 @@ class ChatExampleTests: XCTestCase {
     // This is an example of a functional test case.
     // Use XCTAssert and related functions to verify your tests produce the correct results.
   }
-
-  func testPerformanceExample() {
-    // This is an example of a performance test case.
-    self.measure {
-      // Put the code you want to measure the time of here.
-    }
-  }
-
 }
