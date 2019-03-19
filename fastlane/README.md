@@ -30,14 +30,14 @@ This lane is used to lint and test all schemes in the workspace
 fastlane lint_and_test_examples
 ```
 This lane is used to lint and test all schemes in the workspace
-### pull_request
+### snippets
 ```
-fastlane pull_request
+fastlane snippets
 ```
 
-### nightly
+### examples
 ```
-fastlane nightly
+fastlane examples
 ```
 This lane is ran as part of a nightly CI cron process
 ### weekly

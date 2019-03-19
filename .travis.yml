@@ -16,7 +16,7 @@ install:
   - bundle install
 matrix:
   include:
-    - env: LANE='lint_and_test_snippets'
-    - env: LANE='lint_and_test_examples'
+    - env: LANE='lint_and_test_snippets' SOURCE_DIR='Snippets'
+    - env: LANE='lint_and_test_examples' SOURCE_DIR='Examples'
 script:
-  bundle exec fastlane "${LANE}"
+  bundle exec fastlane "${LANE}" source_dir:"${SOURCE_DIR}"

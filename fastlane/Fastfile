@@ -13,18 +13,13 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
-
-
 before_all do |lane, options|
   # Setup for the Travis CI environment
   setup_travis
   # Download dependencies using Cocoapods
   cocoapods(clean: true, repo_update: true)
-end
-
-desc "This lane is used to lint and test all schemes in the workspace"
-lane :test do
-
+  # Ensure that the test output dir exists
+  FileUtils.mkdir_p 'test_output'
 end
 
 desc "This lane is used to lint and test all schemes in the workspace"
@@ -32,7 +27,7 @@ lane :lint_and_test_snippets do
   # Lint Swift files: https://docs.fastlane.tools/actions/swiftlint/
   swiftlint(
     executable: "Pods/SwiftLint/swiftlint",
-    output_file: "#{File.expand_path(File.dirname(__FILE__))}/test_output/swiftlint.result.json"
+    output_file: "fastlane/test_output/swiftlint.result.json"
   )
 
   # Perform Test Runs: https://docs.fastlane.tools/actions/scan/
@@ -43,6 +38,33 @@ lane :lint_and_test_snippets do
     skip_build: true,
     output_files: "report_snippets_crc.html,report_snippets_crc.junit"
   )
+
+  branch_name = git_branch
+
+  UI.message("Current Git Branch #{branch_name}")
+  is_master = branch_name.match?("^master")
+  has_changes = false
+  should_skip_docs = last_git_commit.include?("[skip docs]")
+  snippets_dir = options[:source_dir] ||= "Snippets"
+  token = options[:token]
+
+  Dir.chdir ".." do
+    has_changes = !sh("git status --porcelain #{snippets_dir}").empty?
+  end
+
+  if !token.nil? && is_master && has_changes && !should_skip_docs
+    UI.success("---------------------------------------------")
+    UI.success("Step: Triggering CRC Travis BuildS")
+    UI.success("---------------------------------------------")
+  else
+    UI.success("---------------------------------------------")
+    UI.success("Step: Docs will not be updated")
+    UI.success("---------------------------------------------")
+    UI.message("Is Master? #{is_master}")
+    UI.message("Has Changes? #{has_changes}")
+    UI.message("Skip Docs? #{should_skip_docs}")
+    UI.message("Missing Token? #{token.nil?}")
+  end
 end
 
 desc "This lane is used to lint and test all schemes in the workspace"
@@ -62,12 +84,12 @@ lane :lint_and_test_examples do
   )
 end
 
-lane :pull_request do
+lane :snippets do
   # Determine if we need to refresh site docs
 end
 
 desc "This lane is ran as part of a nightly CI cron process"
-lane :nightly do
+lane :examples do
   # add actions here: https://docs.fastlane.tools/actions
 end
 
