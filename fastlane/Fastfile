@@ -23,7 +23,7 @@ before_all do |lane, options|
 end
 
 desc "This lane is used to lint and test all schemes in the workspace"
-lane :lint_and_test_snippets do
+lane :lint_and_test_snippets do |options|
   # Lint Swift files: https://docs.fastlane.tools/actions/swiftlint/
   swiftlint(
     executable: "Pods/SwiftLint/swiftlint",
@@ -39,27 +39,34 @@ lane :lint_and_test_snippets do
     output_files: "report_snippets_crc.html,report_snippets_crc.junit"
   )
 
+  # Read Current Git Branch
   branch_name = git_branch
-
   UI.message("Current Git Branch #{branch_name}")
-  is_master = branch_name.match?("^master")
-  has_changes = false
-  should_skip_docs = last_git_commit.include?("[skip docs]")
-  snippets_dir = options[:source_dir] ||= "Snippets"
-  token = options[:token]
 
+  # Check if it's the 'master' branch
+  is_master = branch_name.match?("^master")
+
+  # Check if the latest commit has the key phrase to skip doc generation
+  should_skip_docs = last_git_commit.include?("[skip docs]")
+
+  # Check if there have been any changes inside the source dir
+  snippets_dir = options[:source_dir] ||= "Snippets"
+  has_changes = false
   Dir.chdir ".." do
     has_changes = !sh("git status --porcelain #{snippets_dir}").empty?
   end
 
+  # Ensure that we can read the private token for TravisCI
+  token = options[:token]
+
   if !token.nil? && is_master && has_changes && !should_skip_docs
-    UI.success("---------------------------------------------")
-    UI.success("Step: Triggering CRC Travis BuildS")
-    UI.success("---------------------------------------------")
+    UI.success("------------------------------------------")
+    UI.success("--- Step: Triggering CRC Travis Builds ---")
+    UI.success("------------------------------------------")
   else
-    UI.success("---------------------------------------------")
-    UI.success("Step: Docs will not be updated")
-    UI.success("---------------------------------------------")
+    UI.success("--------------------------------------")
+    UI.success("--- Step: Docs will not be updated ---")
+    UI.success("--------------------------------------")
     UI.message("Is Master? #{is_master}")
     UI.message("Has Changes? #{has_changes}")
     UI.message("Skip Docs? #{should_skip_docs}")
@@ -68,7 +75,7 @@ lane :lint_and_test_snippets do
 end
 
 desc "This lane is used to lint and test all schemes in the workspace"
-lane :lint_and_test_examples do
+lane :lint_and_test_examples do |options|
   # Lint Swift files: https://docs.fastlane.tools/actions/swiftlint/
   swiftlint(
     executable: "Pods/SwiftLint/swiftlint",
@@ -82,18 +89,4 @@ lane :lint_and_test_examples do
     devices: ["iPhone 6s"],
     output_files: "report_example_rcdemo.html,report_example_rcdemo.junit"
   )
-end
-
-lane :snippets do
-  # Determine if we need to refresh site docs
-end
-
-desc "This lane is ran as part of a nightly CI cron process"
-lane :examples do
-  # add actions here: https://docs.fastlane.tools/actions
-end
-
-desc "This lane is ran as part of a weekly CI cron process"
-lane :weekly do
-  # add actions here: https://docs.fastlane.tools/actions
 end

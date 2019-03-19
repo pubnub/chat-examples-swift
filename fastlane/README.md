@@ -15,11 +15,6 @@ Install _fastlane_ using
 or alternatively using `brew cask install fastlane`
 
 # Available Actions
-### test
-```
-fastlane test
-```
-This lane is used to lint and test all schemes in the workspace
 ### lint_and_test_snippets
 ```
 fastlane lint_and_test_snippets
