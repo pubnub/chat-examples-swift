@@ -25,21 +25,6 @@ This lane is used to lint and test all schemes in the workspace
 fastlane lint_and_test_examples
 ```
 This lane is used to lint and test all schemes in the workspace
-### snippets
-```
-fastlane snippets
-```
-
-### examples
-```
-fastlane examples
-```
-This lane is ran as part of a nightly CI cron process
-### weekly
-```
-fastlane weekly
-```
-This lane is ran as part of a weekly CI cron process
 
 ----
 

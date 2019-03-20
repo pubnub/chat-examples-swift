@@ -19,4 +19,4 @@ matrix:
     - env: LANE='lint_and_test_snippets' SOURCE_DIR='Snippets'
     - env: LANE='lint_and_test_examples' SOURCE_DIR='Examples'
 script:
-  bundle exec fastlane "${LANE}" source_dir:"${SOURCE_DIR}"
+  bundle exec fastlane "${LANE}" source_dir:"${SOURCE_DIR}" travis_token:"${TRAVIS_API_TOKEN}"

@@ -14,9 +14,15 @@
 # update_fastlane
 
 before_all do |lane, options|
-  # Setup for the Travis CI environment
-  setup_travis
-  # Download dependencies using Cocoapods
+  # Run Type
+  @kickoff_reason = options[:kickoff_reason] ||= "local"
+  # Determines if fastlane is ran on a CI env: https://docs.fastlane.tools/actions/is_ci/
+  if is_ci?
+    # Setup for the Travis CI environment: https://docs.fastlane.tools/actions/setup_travis/
+    setup_travis
+    @kickoff_reason = ENV["TRAVIS_EVENT_TYPE"] ||= kickoff_reason
+  end
+  # Download dependencies using Cocoapods: https://docs.fastlane.tools/actions/cocoapods/
   cocoapods(clean: true, repo_update: true)
   # Ensure that the test output dir exists
   FileUtils.mkdir_p 'test_output'
@@ -39,14 +45,15 @@ lane :lint_and_test_snippets do |options|
     output_files: "report_snippets_crc.html,report_snippets_crc.junit"
   )
 
-  # Read Current Git Branch
+  # Read Current Git Branch: https://docs.fastlane.tools/actions/git_branch/
   branch_name = git_branch
   UI.message("Current Git Branch #{branch_name}")
 
   # Check if it's the 'master' branch
-  is_master = branch_name.match?("^master")
+  is_master = branch_name.match?("^feature/swift-project-creation") # TODO: Change back to master
 
   # Check if the latest commit has the key phrase to skip doc generation
+  # https://docs.fastlane.tools/actions/last_git_commit/
   should_skip_docs = last_git_commit.include?("[skip docs]")
 
   # Check if there have been any changes inside the source dir
@@ -56,13 +63,54 @@ lane :lint_and_test_snippets do |options|
     has_changes = !sh("git status --porcelain #{snippets_dir}").empty?
   end
 
-  # Ensure that we can read the private token for TravisCI
-  token = options[:token]
+  # Ensure that we can read the private token for TravisCI (stored on server)
+  token = ENV["TRAVIS_API_TOKEN"]
 
-  if !token.nil? && is_master && has_changes && !should_skip_docs
+  # We only refresh docs if we're merging to master off of a git push,
+  # and we're not skipping the commit for some reason
+  if !token.nil? && is_master && has_changes && @kickoff_reason == "push" && !should_skip_docs
     UI.success("------------------------------------------")
     UI.success("--- Step: Triggering CRC Travis Builds ---")
     UI.success("------------------------------------------")
+
+    # Create request to use requests Travis API:
+    # https://developer.travis-ci.com/resource/requests#Requests
+    target_branch = "master"
+    target_repo = "chat-resource-center"
+    travis_host = "api.travis-ci.com" # .com for private; .org for public
+    travis_requests_path = "/repo/pubnub%2F#{target_repo}/requests"
+
+    uri = URI.parse("https://#{travis_host}")
+    data = {
+      request: {
+        message: "Build triggered by chat-example-swift repo.",
+        branch: target_branch
+      }
+    }
+    headers = {
+      'Content-Type': 'application/json',
+      'Travis-API-Version': '3',
+      'Authorization': "token #{token}"
+    }
+
+    https = Net::HTTP.new(uri.host, uri.port)
+    https.use_ssl = true
+    https.verify_mode = OpenSSL::SSL::VERIFY_PEER
+    response = https.post(travis_requests_path, JSON.dump(data), headers)
+
+    if response.code.to_i.between?(200, 299)
+      UI.success("--------------------------")
+      UI.success("--- 🎉🎉 Success!! 🎉🎉 ---")
+      UI.success("--------------------------")
+    else
+      UI.error("-------------------------------------------")
+      UI.error("--- 💥💥 Error Starting Docs Build 💥💥 ---")
+      UI.error("-------------------------------------------")
+      UI.error("Failed with #{response.code} code")
+      if !response.message.empty?
+        UI.error("and message: #{response.message}.")
+      end
+    end
   else
     UI.success("--------------------------------------")
     UI.success("--- Step: Docs will not be updated ---")
@@ -70,6 +118,7 @@ lane :lint_and_test_snippets do |options|
     UI.message("Is Master? #{is_master}")
     UI.message("Has Changes? #{has_changes}")
     UI.message("Skip Docs? #{should_skip_docs}")
+    UI.message("Correct Kickoff Reason? #{@kickoff_reason} (shoudl be 'push')")
     UI.message("Missing Token? #{token.nil?}")
   end
 end
