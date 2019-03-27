@@ -22,7 +22,7 @@ Source files for Swift based chat example apps and document code samples live he
 3. Using the Scheme Selector inside of Xcode you can select and run the following:
 
 | Name | App Name | Source Code Group | Description |
-| --|--- |
+| -- | -- |-- | -- |
 | ChatResourceDemo | RC Demo | Examples -> ResourceChatDemo | Example describing best practices for creating a chat app using the PubNub SDK. |
 | Snippets | N/A | Snippets -> ChatResourceCenter | Code samples that are found inside the [Chat Resource Center](https://pubnub.github.io/chat-resource-center/). <br><br>```NOTE: You must execute this Scheme as a Test (CMD+U)``` |
 
