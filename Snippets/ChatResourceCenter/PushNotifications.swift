@@ -7,6 +7,8 @@
 
 import XCTest
 
+import PubNub
+
 class PushNotifications: XCTestCase {
 
   override func setUp() {

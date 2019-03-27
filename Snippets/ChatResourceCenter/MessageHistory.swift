@@ -7,6 +7,8 @@
 
 import XCTest
 
+import PubNub
+
 class MessageHistory: XCTestCase {
 
   override func setUp() {

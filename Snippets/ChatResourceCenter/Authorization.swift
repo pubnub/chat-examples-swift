@@ -7,6 +7,8 @@
 
 import XCTest
 
+import PubNub
+
 class Authorization: XCTestCase {
 
   override func setUp() {

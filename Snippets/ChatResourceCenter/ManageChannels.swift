@@ -7,6 +7,8 @@
 
 import XCTest
 
+import PubNub
+
 class ManageChannels: XCTestCase {
 
   override func setUp() {

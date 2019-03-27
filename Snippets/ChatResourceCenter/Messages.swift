@@ -7,6 +7,8 @@
 
 import XCTest
 
+import PubNub
+
 class Messages: XCTestCase {
 
   override func setUp() {

@@ -7,6 +7,8 @@
 
 import XCTest
 
+import PubNub
+
 class ConnectToPubnub: XCTestCase {
 
   override func setUp() {
@@ -22,8 +24,15 @@ class ConnectToPubnub: XCTestCase {
    */
   func testSettingUniqueID() {
     // tag::CON-1[]
-    print("Setting a unique ID for each user")
+    let user1 = UUID().uuidString
+
+    let configuration = PNConfiguration(publishKey: "demo", subscribeKey: "demo")
+    configuration.uuid = user1
+
+    let client = PubNub.clientWithConfiguration(configuration)
     // end::CON-1[]
+
+    XCTAssert(client.uuid() == user1)
   }
 
   /**

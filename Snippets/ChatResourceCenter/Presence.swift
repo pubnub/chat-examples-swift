@@ -7,6 +7,8 @@
 
 import XCTest
 
+import PubNub
+
 class Presence: XCTestCase {
 
   override func setUp() {
