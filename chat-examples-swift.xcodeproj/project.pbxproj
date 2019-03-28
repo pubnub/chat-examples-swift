@@ -14,7 +14,6 @@
 		35525725223852970095AAFD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35525724223852970095AAFD /* Assets.xcassets */; };
 		35525728223852970095AAFD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35525726223852970095AAFD /* LaunchScreen.storyboard */; };
 		35525733223852970095AAFD /* ChatDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35525732223852970095AAFD /* ChatDemoTests.swift */; };
-		35765C86223AFDC2000B4B8D /* GettingStarted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35765C7C223AE694000B4B8D /* GettingStarted.swift */; };
 		35765C87223AFDC7000B4B8D /* PubNubClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35765C72223AE60C000B4B8D /* PubNubClient.swift */; };
 		35765C8A223FF5EE000B4B8D /* PubNub+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35765C71223AE60C000B4B8D /* PubNub+Extensions.swift */; };
 		35765C8C224132EE000B4B8D /* ConnectToPubnub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35765C8B224132EE000B4B8D /* ConnectToPubnub.swift */; };
@@ -58,7 +57,6 @@
 		35765C71223AE60C000B4B8D /* PubNub+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PubNub+Extensions.swift"; sourceTree = "<group>"; };
 		35765C72223AE60C000B4B8D /* PubNubClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PubNubClient.swift; sourceTree = "<group>"; };
 		35765C7A223AE694000B4B8D /* Snippets.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Snippets.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		35765C7C223AE694000B4B8D /* GettingStarted.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GettingStarted.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		35765C7E223AE694000B4B8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		35765C8B224132EE000B4B8D /* ConnectToPubnub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectToPubnub.swift; sourceTree = "<group>"; };
 		35765C8E2241330D000B4B8D /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
@@ -172,7 +170,6 @@
 		35765C89223FF5B4000B4B8D /* ChatResourceCenter */ = {
 			isa = PBXGroup;
 			children = (
-				35765C7C223AE694000B4B8D /* GettingStarted.swift */,
 				35765C8B224132EE000B4B8D /* ConnectToPubnub.swift */,
 				35765C9C224134A5000B4B8D /* ManageChannels.swift */,
 				35765C8E2241330D000B4B8D /* Messages.swift */,
@@ -492,7 +489,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				35765C86223AFDC2000B4B8D /* GettingStarted.swift in Sources */,
 				35765C8F2241330D000B4B8D /* Messages.swift in Sources */,
 				35765C9D224134A5000B4B8D /* ManageChannels.swift in Sources */,
 				35765C87223AFDC7000B4B8D /* PubNubClient.swift in Sources */,
