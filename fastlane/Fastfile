@@ -64,8 +64,7 @@ lane :lint_and_test_snippets do |options|
   has_changes = false
   # We need to execute this command inside the project root dir, not in fastlane/
   Dir.chdir ".." do
-    git_changes = sh("git diff --name-only HEAD~1 HEAD | grep '^#{snippets_dir}/' -c").to_i
-    has_changes = git_changes > 0
+    has_changes = `git diff --name-only HEAD~1 HEAD | grep '^#{snippets_dir}/' -c`.to_i > 0
   end
 
   # Ensure that we can read the private token for TravisCI (stored on server)
