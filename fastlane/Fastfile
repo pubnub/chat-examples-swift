@@ -23,7 +23,7 @@ before_all do |lane, options|
     setup_travis
   end
   # Download dependencies using Cocoapods: https://docs.fastlane.tools/actions/cocoapods/
-  #cocoapods(clean: true, repo_update: true)
+  cocoapods(clean: true, repo_update: true)
   # Ensure that the test output dir exists
   FileUtils.mkdir_p 'test_output'
 end
@@ -31,15 +31,12 @@ end
 desc "This lane is used to lint and test all schemes in the workspace"
 lane :lint_and_test_snippets do |options|
   # Lint Swift files: https://docs.fastlane.tools/actions/swiftlint/
-  '''
   swiftlint(
     executable: "Pods/SwiftLint/swiftlint",
     output_file: "fastlane/test_output/swiftlint.result.json"
   )
-  '''
 
   # Perform Test Runs: https://docs.fastlane.tools/actions/scan/
-  '''
   scan(
     workspace: "chat-examples-swift.xcworkspace",
     scheme: "Snippets",
@@ -47,7 +44,6 @@ lane :lint_and_test_snippets do |options|
     skip_build: true,
     output_files: "report_snippets_crc.html,report_snippets_crc.junit"
   )
-  '''
 
   # Read Current Git Branch: https://docs.fastlane.tools/actions/git_branch/
   UI.success("-----------------------------------------------")
@@ -63,12 +59,13 @@ lane :lint_and_test_snippets do |options|
   last_commit_message = last_git_commit[:message].split("\n").first
   should_skip_docs = last_commit_message.include?("[skip docs]")
 
-  # Check if there have been any changes inside the source dir
+  # Check if there have been any changes inside the source dir on previous commit
   snippets_dir = options[:source_dir] ||= "Snippets"
   has_changes = false
+  # We need to execute this command inside the project root dir, not in fastlane/
   Dir.chdir ".." do
-    git_changes = sh("git status --porcelain #{snippets_dir}")
-    has_changes = !git_changes.empty?
+    git_changes = sh("git diff --name-only HEAD~1 HEAD | grep '^#{snippets_dir}/' -c").to_i
+    has_changes = git_changes > 0
   end
 
   # Ensure that we can read the private token for TravisCI (stored on server)

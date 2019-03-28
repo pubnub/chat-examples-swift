@@ -14,7 +14,6 @@
 		35525725223852970095AAFD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35525724223852970095AAFD /* Assets.xcassets */; };
 		35525728223852970095AAFD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35525726223852970095AAFD /* LaunchScreen.storyboard */; };
 		35525733223852970095AAFD /* ChatDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35525732223852970095AAFD /* ChatDemoTests.swift */; };
-		35765C87223AFDC7000B4B8D /* PubNubClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35765C72223AE60C000B4B8D /* PubNubClient.swift */; };
 		35765C8A223FF5EE000B4B8D /* PubNub+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35765C71223AE60C000B4B8D /* PubNub+Extensions.swift */; };
 		35765C8C224132EE000B4B8D /* ConnectToPubnub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35765C8B224132EE000B4B8D /* ConnectToPubnub.swift */; };
 		35765C8F2241330D000B4B8D /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35765C8E2241330D000B4B8D /* Messages.swift */; };
@@ -25,6 +24,7 @@
 		35765C9922413367000B4B8D /* Encryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35765C9822413367000B4B8D /* Encryption.swift */; };
 		35765C9B22413378000B4B8D /* Admin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35765C9A22413378000B4B8D /* Admin.swift */; };
 		35765C9D224134A5000B4B8D /* ManageChannels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35765C9C224134A5000B4B8D /* ManageChannels.swift */; };
+		35E5474A224C07CA0086FB8F /* PubNubClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35765C72223AE60C000B4B8D /* PubNubClient.swift */; };
 		3B2AAA6B2AD1545E0E9B888D /* Pods_RCDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F58B94B594A2D23708B1EDE7 /* Pods_RCDemo.framework */; };
 		3BA1276995BAEDA889C34CD2 /* Pods_RCDemoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CE1A27742468F86C9BB8B45 /* Pods_RCDemoTests.framework */; };
 /* End PBXBuildFile section */
@@ -137,6 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				3552571D223852930095AAFD /* AppDelegate.swift */,
+				35765C72223AE60C000B4B8D /* PubNubClient.swift */,
 				3552571F223852930095AAFD /* ViewController.swift */,
 				35765C71223AE60C000B4B8D /* PubNub+Extensions.swift */,
 				35525721223852930095AAFD /* Main.storyboard */,
@@ -151,7 +152,6 @@
 		35765C69223AE323000B4B8D /* Snippets */ = {
 			isa = PBXGroup;
 			children = (
-				35765C72223AE60C000B4B8D /* PubNubClient.swift */,
 				35765C89223FF5B4000B4B8D /* ChatResourceCenter */,
 				35765C7E223AE694000B4B8D /* Info.plist */,
 			);
@@ -471,6 +471,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35E5474A224C07CA0086FB8F /* PubNubClient.swift in Sources */,
 				35525720223852930095AAFD /* ViewController.swift in Sources */,
 				3552571E223852930095AAFD /* AppDelegate.swift in Sources */,
 				35765C8A223FF5EE000B4B8D /* PubNub+Extensions.swift in Sources */,
@@ -491,7 +492,6 @@
 			files = (
 				35765C8F2241330D000B4B8D /* Messages.swift in Sources */,
 				35765C9D224134A5000B4B8D /* ManageChannels.swift in Sources */,
-				35765C87223AFDC7000B4B8D /* PubNubClient.swift in Sources */,
 				35765C9B22413378000B4B8D /* Admin.swift in Sources */,
 				35765C9922413367000B4B8D /* Encryption.swift in Sources */,
 				35765C9122413320000B4B8D /* MessageHistory.swift in Sources */,
