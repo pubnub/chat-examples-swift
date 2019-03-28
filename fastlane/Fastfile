@@ -132,6 +132,12 @@ end
 
 desc "This lane is used to lint and test all schemes in the workspace"
 lane :lint_and_test_examples do |options|
+  # We need to execute this command inside the project root dir, not in fastlane/
+  Dir.chdir ".." do
+    # Execute XCConfig script just to ensure that it's ran
+    `ruby generate_xcconfigs.rb`
+  end
+
   # Lint Swift files: https://docs.fastlane.tools/actions/swiftlint/
   swiftlint(
     executable: "Pods/SwiftLint/swiftlint",
