@@ -1,0 +1,22 @@
+language:
+  - swift
+osx_image: xcode10.2
+os: osx
+sudo: false
+env:
+  global:
+    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+cache:
+  - bundler
+rvm:
+  - 2.5.3
+before_install:
+  - gem install bundler
+install:
+  - bundle install
+matrix:
+  include:
+    - env: LANE='lint_and_test_snippets' SOURCE_DIR='Snippets'
+    - env: LANE='lint_and_test_examples' SOURCE_DIR='Examples'
+script:
+  bundle exec fastlane "${LANE}" source_dir:"${SOURCE_DIR}" travis_token:"${TRAVIS_API_TOKEN}"
