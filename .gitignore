@@ -5,6 +5,10 @@
 build/
 DerivedData/
 
+## Config files containing secret keys
+RCDemo.debug.xcconfig
+RCDemo.release.xcconfig
+
 ## Various settings
 *.pbxuser
 !default.pbxuser
