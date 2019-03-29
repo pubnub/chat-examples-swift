@@ -1,4 +1,6 @@
-# This file contains the fastlane.tools configuration
+@fastlane_dir = File.expand_path File.dirname(__FILE__)
+require "#{@fastlane_dir}/../generate_xcconfigs"
+
 # You can find the documentation at https://docs.fastlane.tools
 #
 # For a list of all available actions, check out
@@ -118,7 +120,7 @@ lane :lint_and_test_snippets do |options|
       UI.error("-------------------------------------------")
       UI.error("--- 💥💥 Error Starting Docs Build 💥💥 ---")
       UI.error("-------------------------------------------")
-      UI.error("Failed with #{response.code} code")
+      UI.user_error!("Failed with #{response.code} code")
       if !response.message.empty?
         UI.error("and message: #{response.message}.")
       end
@@ -133,9 +135,11 @@ end
 desc "This lane is used to lint and test all schemes in the workspace"
 lane :lint_and_test_examples do |options|
   # We need to execute this command inside the project root dir, not in fastlane/
-  Dir.chdir ".." do
-    # Execute XCConfig script just to ensure that it's ran
-    `ruby generate_xcconfigs.rb`
+  if !generate_xcconfigs()
+    UI.error("----------------------------------------------")
+    UI.error("--- 💥💥 Error Creating XCConfig Files 💥💥 ---")
+    UI.error("----------------------------------------------")
+    UI.user_error!("Error Creating XCConfig Files")
   end
 
   # Lint Swift files: https://docs.fastlane.tools/actions/swiftlint/
