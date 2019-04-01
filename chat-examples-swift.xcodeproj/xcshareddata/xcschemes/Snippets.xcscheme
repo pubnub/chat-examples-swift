@@ -5,24 +5,6 @@
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
-      <PreActions>
-         <ExecutionAction
-            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
-            <ActionContent
-               title = "Run Script"
-               scriptText = "# Uncomment if you want to log shell output to file&#10;#exec &gt; /tmp/my_log_file.txt 2&gt;&amp;1&#10;# Type a script or drag a script file from your workspace to insert its path.&#10;sed -i &apos;&apos; -e &apos;/executeCodeSamples()$/ s//\/\/executeCodeSamples()/&apos; ${SRCROOT}/code-samples/ChatSamples.playground/Contents.swift&#10;">
-               <EnvironmentBuildable>
-                  <BuildableReference
-                     BuildableIdentifier = "primary"
-                     BlueprintIdentifier = "35765C79223AE694000B4B8D"
-                     BuildableName = "Snippets.xctest"
-                     BlueprintName = "Snippets"
-                     ReferencedContainer = "container:chat-examples-swift.xcodeproj">
-                  </BuildableReference>
-               </EnvironmentBuildable>
-            </ActionContent>
-         </ExecutionAction>
-      </PreActions>
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"

@@ -14,7 +14,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication,
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-    // Override point for customization after application launch.
+    // Ensure that the pub/sub keys were set inside the RCDemo.<CONFIG>.xcconfig files
+    guard let pubnubInfoDictionary = Bundle.main.object(forInfoDictionaryKey: "PubNub") as? [String: String],
+      let pubKey = pubnubInfoDictionary["PubKey"],
+      let subKey = pubnubInfoDictionary["SubKey"],
+      !pubKey.isEmpty, !subKey.isEmpty else {
+
+        NSLog("Please verify that your pub/sub keys are set inside the RCDemo.<CONFIG>.xcconfig files")
+
+        // This will only crash on debug configurations
+        assertionFailure("Please ensure that your Pub/Sub keys are set inside the RCDemo.xcconfig files")
+
+        return false
+    }
+
+    NSLog("PubNub Dict: \(pubnubInfoDictionary)")
+    NSLog("Sub Key: \(subKey)")
+    NSLog("Pub Key: \(pubKey)")
     return true
   }
 
