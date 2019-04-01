@@ -2,7 +2,7 @@ language:
   - swift
 osx_image: xcode10.2
 os: osx
-sudo: false
+sudo: true
 env:
   global:
     - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
@@ -12,9 +12,7 @@ rvm:
   - 2.5.3
 before_install:
   - gem install bundler
-  - curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
-  - sudo apt-get install nodejs
-  - sudo apt-get install build-essential
+  - brew install node
 install:
   - bundle install
   - npm config set strict-ssl false

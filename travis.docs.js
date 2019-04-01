@@ -21,7 +21,7 @@ let changeEnd = null;
 let changeLog = null;
 
 // Samples location.
-const samplesPath = [currentRepositoryPath, 'snippets'].join('/');
+const samplesPath = [currentRepositoryPath, 'Snippets'].join('/');
 
 
 // Update retry configuration.
