@@ -12,11 +12,22 @@ rvm:
   - 2.5.3
 before_install:
   - gem install bundler
+  - curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
+  - sudo apt-get install nodejs
+  - sudo apt-get install build-essential
 install:
   - bundle install
+  - npm config set strict-ssl false
+  - npm install chalk fancy-log simple-git
 matrix:
   include:
     - env: LANE='lint_and_test_snippets' SOURCE_DIR='Snippets'
     - env: LANE='lint_and_test_examples' SOURCE_DIR='Examples'
+before_script:
+  - git config --global user.name "${GH_NAME}"
+  - git config --global user.email "${GH_EMAIL}"
+  - echo "machine github.com login ${GH_NAME} password ${GH_TOKEN}"  > ~/.netrc
 script:
   bundle exec fastlane "${LANE}" source_dir:"${SOURCE_DIR}" kickoff_reason:"${TRAVIS_EVENT_TYPE}" travis_token:"${TRAVIS_API_TOKEN}"
+after_success:
+  - node .travis.docs.js
