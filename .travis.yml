@@ -34,9 +34,9 @@ jobs:
 
     - stage: submodule
       name: "Update reference"
-      before_install: gem install bundler && gem install node
+      before_install: brew update
       install: 
-        - bundle install
+        - brew install node
         - npm config set strict-ssl false
         - npm install chalk fancy-log simple-git
       before_script:
