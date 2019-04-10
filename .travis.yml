@@ -36,7 +36,7 @@ jobs:
       name: "Update reference"
       before_install: brew update
       install: 
-        - brew install node
+        - brew ls --versions node && brew upgrade node || brew install node
         - npm config set strict-ssl false
         - npm install chalk fancy-log simple-git
       before_script:
