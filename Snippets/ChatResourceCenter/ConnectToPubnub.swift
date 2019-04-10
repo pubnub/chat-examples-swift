@@ -4,70 +4,197 @@
 //
 //  Created by Craig Lane on 3/19/19.
 //
-
 import XCTest
-
 import PubNub
 
-class ConnectToPubnub: XCTestCase {
+class ConnectToPubnub: PNTestCase {
 
-  override func setUp() {
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-  }
-
-  override func tearDown() {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
+  /**
+   * PubNub integration.
+   */
+  func testSetup() {
+    /**
+    // tag::CON-1[]
+    /**
+     * Create Podfile in project root directory with following
+     * content:
+     */
+    platform :ios, '9.0'
+    use_frameworks!
+    
+    pod 'PubNub', '~> 4.0'
+    
+    target 'TargetName' do
+    end
+     
+     
+    /**
+     * Make sure to replace 'TargetName' with your project target name
+     * before running following command with Terminal from project
+     * root directory:
+     */
+    pod install
+    
+     
+    /**
+     * CocoaPods will create .xcworkspace file in project root
+     * directory which you should use from now on.
+     */
+    // end::CON-1[]
+    */
   }
 
   /**
-   Setting a unique ID for each user
+   * Initializing PubNub.
+   */
+  func testInitializePubNub() {
+    // tag::CON-2[]
+    let configuration = PNConfiguration(publishKey: publishKey,
+                                        subscribeKey: subscribeKey)
+    configuration.stripMobilePayload = false
+    let pubnub = PubNub.clientWithConfiguration(configuration)
+    // end::CON-2[]
+
+    XCTAssertNotNil(pubnub)
+    XCTAssertNotNil(pubnub.uuid)
+  }
+
+  /**
+   * Setting a unique ID for each user
    */
   func testSettingUniqueID() {
-    // tag::CON-1[]
-    let user1 = UUID().uuidString
+    let uuid = UUID().uuidString
 
-    let configuration = PNConfiguration(publishKey: "demo", subscribeKey: "demo")
-    configuration.uuid = user1
-
-    let client = PubNub.clientWithConfiguration(configuration)
-    // end::CON-1[]
-
-    XCTAssert(client.uuid() == user1)
-  }
-
-  /**
-   Connecting with a user
-   */
-  func testConnectingWithUser() {
-    // tag::CON-2[]
-    print("Connecting with a user")
-    // end::CON-2[]
-  }
-
-  /**
-   Set metadata for a user
-   */
-  func testSetMetadataForUser() {
     // tag::CON-3[]
-    print("Set metadata for a user")
+    let configuration = PNConfiguration(publishKey: publishKey,
+                                        subscribeKey: subscribeKey)
+    configuration.stripMobilePayload = false
+    configuration.uuid = uuid
+
+    let pubnub = PubNub.clientWithConfiguration(configuration)
     // end::CON-3[]
+
+    XCTAssertNotNil(pubnub)
+    XCTAssertNotNil(pubnub.uuid)
+    XCTAssert(pubnub.uuid() == uuid)
   }
 
   /**
-   Disconnecting from PubNub
+   * Setting state for a user
    */
-  func testDisconnectFromPubnub() {
+  func testSetStateForUser() {
+    let stateExpectation = expectation(description: "Waiting for state get completion.")
+    let expectedState = [ "mood": "grumpy" ]
+    let pubnub: PubNub! = pubNubClient
+
     // tag::CON-4[]
-    print("Disconnecting from PubNub")
+    pubnub.state().set()
+      .state([ "mood": "grumpy" ])
+      .channels(["room-1"])
+      .performWithCompletion({ status in
+        // handle state setting response
+        // tag::ignore[]
+
+        XCTAssertNotNil(status)
+        XCTAssertFalse(status.isError)
+
+        if let status = status.data.state as? [String: String] {
+          XCTAssertTrue(status == expectedState)
+        } else {
+          XCTAssert(false, "Unable to check 'state' value")
+        }
+        // end::ignore[]
+      })
     // end::CON-4[]
+
+    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+      // tag::CON-5[]
+      pubnub.state().audit()
+        .channels(["room-1"])
+        .performWithCompletion({ (result, status) in
+          // handle state getting response
+          // tag::ignore[]
+
+          XCTAssertNil(status)
+          XCTAssertNotNil(result)
+
+          if let status = result?.data.channels["room-1"] as? [String: Any] {
+            XCTAssertTrue(status["mood"] as? String == expectedState["mood"])
+          } else {
+            XCTAssert(false, "Unable to check 'state' value")
+          }
+
+          stateExpectation.fulfill()
+          // end::ignore[]
+      })
+      // end::CON-5[]
+    }
+
+    wait(for: [stateExpectation], timeout: 20)
   }
 
   /**
-   Reconnecting to PubNub
+   * Disconnecting from PubNub.
    */
-  func testReconnectingToPubnub() {
-    // tag::CON-5[]
-    print("Reconnecting to PubNub")
-    // end::CON-5[]
+  func testDisconnectFromPubNub() {
+    let leaveExpectation = expectation(description: "Waiting second user to leave chat.")
+    let pubnub: PubNub! = pubNubClient
+
+    observerPubNubClient.subscribe()
+      .channels(["room-1"])
+      .withPresence(true)
+      .perform()
+
+    registerStatusHandler(observerPubNubClient, handler: { status in
+      if status.operation == .subscribeOperation {
+        pubnub.subscribe()
+          .channels(["room-1"])
+          .withPresence(true)
+          .perform()
+      }
+    })
+
+    registerStatusHandler(pubnub, handler: { status in
+      if status.operation == .subscribeOperation {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+          // tag::CON-6[]
+          pubnub.unsubscribeFromAll()
+          // end::CON-6[]
+        }
+      }
+    })
+
+    registerPresenceHandler(observerPubNubClient, handler: { event in
+      if event.data.presenceEvent == "leave" && event.data.presence.uuid == pubnub.uuid() {
+        leaveExpectation.fulfill()
+      }
+    })
+
+    wait(for: [leaveExpectation], timeout: 10)
+  }
+
+  /**
+   * Reconnecting to PubNub.
+   */
+  func testReconnectToPubNub() {
+    // tag::CON-7.1[]
+    let configuration = PNConfiguration(publishKey: publishKey,
+                                        subscribeKey: subscribeKey)
+    // enable catchup on missed messages
+    configuration.catchUpOnSubscriptionRestore = true
+    configuration.stripMobilePayload = false
+    let pubnub = PubNub.clientWithConfiguration(configuration)
+    // end::CON-7.1[]
+
+    // tag::CON-7.2[]
+    /**
+     * If connection availability check will be done in other way,
+     * then use this  function to reconnect to PubNub.
+     */
+    pubnub.subscribe().perform()
+    // end::CON-7.2[]
+
+    XCTAssertNotNil(pubnub)
+    XCTAssertTrue(pubnub.currentConfiguration().catchUpOnSubscriptionRestore)
   }
 }

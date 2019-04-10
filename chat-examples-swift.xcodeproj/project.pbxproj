@@ -29,6 +29,7 @@
 		35E5474A224C07CA0086FB8F /* PubNubClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35765C72223AE60C000B4B8D /* PubNubClient.swift */; };
 		3B2AAA6B2AD1545E0E9B888D /* Pods_RCDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F58B94B594A2D23708B1EDE7 /* Pods_RCDemo.framework */; };
 		3BA1276995BAEDA889C34CD2 /* Pods_RCDemoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CE1A27742468F86C9BB8B45 /* Pods_RCDemoTests.framework */; };
+		797416C1225AAAC400D677B9 /* PNTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797416C0225AAAC400D677B9 /* PNTestCase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +73,7 @@
 		35E54743224BF0DB0086FB8F /* RCDemo.debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = RCDemo.debug.xcconfig; sourceTree = "<group>"; };
 		35E54744224BF0DB0086FB8F /* RCDemo.release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = RCDemo.release.xcconfig; sourceTree = "<group>"; };
 		403A356F9F4DCF80405DF3DA /* Pods-RCDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RCDemo.release.xcconfig"; path = "Target Support Files/Pods-RCDemo/Pods-RCDemo.release.xcconfig"; sourceTree = "<group>"; };
+		797416C0225AAAC400D677B9 /* PNTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PNTestCase.swift; sourceTree = "<group>"; };
 		7E459D8EAAB6DECDE706C193 /* Pods-RCDemoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RCDemoTests.release.xcconfig"; path = "Target Support Files/Pods-RCDemoTests/Pods-RCDemoTests.release.xcconfig"; sourceTree = "<group>"; };
 		9CE1A27742468F86C9BB8B45 /* Pods_RCDemoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RCDemoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4C63B72FBF38A86B5088F76 /* Pods_Snippets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Snippets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -173,6 +175,7 @@
 		35765C89223FF5B4000B4B8D /* ChatResourceCenter */ = {
 			isa = PBXGroup;
 			children = (
+				797416C0225AAAC400D677B9 /* PNTestCase.swift */,
 				35765C8B224132EE000B4B8D /* ConnectToPubnub.swift */,
 				35765C9C224134A5000B4B8D /* ManageChannels.swift */,
 				35765C8E2241330D000B4B8D /* Messages.swift */,
@@ -542,6 +545,7 @@
 				35765C9322413332000B4B8D /* Presence.swift in Sources */,
 				35765C9522413343000B4B8D /* Authorization.swift in Sources */,
 				35765C8C224132EE000B4B8D /* ConnectToPubnub.swift in Sources */,
+				797416C1225AAAC400D677B9 /* PNTestCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
