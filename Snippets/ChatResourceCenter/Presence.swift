@@ -77,7 +77,7 @@ class Presence: PNTestCase {
             // end::ignore[]
             .verbosity(.state)
             .performWithCompletion({ (result, status) in
-              // handle state setting response
+              // handle status, response
               // tag::ignore[]
 
               XCTAssertNil(status)

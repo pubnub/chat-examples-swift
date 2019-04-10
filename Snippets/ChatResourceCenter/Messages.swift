@@ -43,7 +43,7 @@ class Messages: PNTestCase {
            */
           // end::ignore[]
           .performWithCompletion({ status in
-            // handle status, response
+            // handle status
             // tag::ignore[]
 
             XCTAssertFalse(status.isError)
@@ -139,21 +139,58 @@ class Messages: PNTestCase {
     // tag::MSG-2[]
     // Add 'PNObjectEventListener' protocol to class which would like to receive updates.
     class PNTestCase: XCTestCase, PNObjectEventListener {
-      func client(_ client: PubNub, didReceive status: PNStatus) {
-        if status.operation == .subscribeOperation {
-          publishSampleMessage()
-        }
+     
+      func client(_ client: PubNub, didReceiveMessage
+                  message: PNMessageResult) {
+     
+        // handle message
+        // the channel for which the message belongs
+        let channelName = message.data.channel;
+        // the channel group or wildcard subscription match (if exists)
+        let channelGroup = message.data.subscription;
+        // publish timetoken
+        let publishTimetoken = message.data.timetoken;
+        // the payload
+        let msg = message.data.message;
+        // the publisher
+        let publisher = message.data.publisher;
       }
-    
-      func client(_ client: PubNub, didReceiveMessage message: PNMessageResult) {
-        if let receivedMessage = message.data.message as? [String: Any] {
-          print("Title: \(receivedMessage["title"])")
-          print("Description: \(receivedMessage["description"])")
-        }
-      }
-    
-      func client(_ client: PubNub, didReceivePresenceEvent event: PNPresenceEventResult) {
+
+      func client(_ client: PubNub,
+                  didReceivePresenceEvent event: PNPresenceEventResult) {
+     
         // handle presence
+        // the channel for which the message belongs
+        let channelName = event.data.channel;
+        // the channel group or wildcard subscription match (if exists)
+        let channelGroup = event.data.subscription;
+        // can be join, leave, state-change, interval or timeout
+        let action = event.data.presenceEvent;
+        // no. of users connected with the channel
+        let occupancy = event.data.presence.occupancy;
+        // user state
+        let state = event.data.presence.state;
+        // event timetoken
+        let timetoken = event.data.presence.timetoken;
+        // UUID of users who are connected with the channel
+        let uuid = event.data.presence.uuid;
+      }
+
+      func client(_ client: PubNub,
+                  didReceive status: PNStatus) {
+     
+        // handle status change
+        if let subscribeStatus = status as? PNSubscribeStatus {
+          // channels for which updated client state received
+          let channels = subscribeStatus.subscribedChannels;
+          // channel groups or wildcard subscription match (if exists)
+          let channelGroups = subscribeStatus.subscribedChannelGroups;
+        }
+     
+        // name of operation for which status update available
+        let operation = status.operation;
+        // operation result category
+        let category = status.category;
       }
     }
      
@@ -172,8 +209,18 @@ class Messages: PNTestCase {
    * Sending images and files.
    */
   func testSendingImagesAndFiles() {
+    let pubnub: PubNub! = pubNubClient
+
     // tag::MSG-3[]
-    // TODO: need a sample here
+    let channel = "room-1"
+    let message = ["senderId": "user123", "text": "Hello World"]
+
+    pubnub.size()
+      .channel(channel)
+      .message(message)
+      .performWithCompletion({ size in
+        print("Payload Size: \(size)")
+      })
     // end::MSG-3[]
   }
 
@@ -222,7 +269,7 @@ class Messages: PNTestCase {
         // end::ignore[]
         .shouldStore(false)
         .performWithCompletion({ status in
-          // handle status, response
+          // handle status
           // tag::ignore[]
 
           XCTAssertFalse(status.isError)
@@ -356,8 +403,8 @@ class Messages: PNTestCase {
       if !messageUpdateSent {
         messageTimetoken = messageId
         messageUpdateSent = true
-
         // tag::MSG-6.2[]
+
         pubnub.publish()
           // tag::ignore[]
           .channel(expectedChannel)
@@ -380,7 +427,7 @@ class Messages: PNTestCase {
             "text": "Fixed. I had a typo earlier..."
           ])
           .performWithCompletion({ status in
-            // handle status, response
+            // handle status
             // tag::ignore[]
 
             XCTAssertFalse(status.isError)
@@ -424,7 +471,7 @@ class Messages: PNTestCase {
            */
           // end::ignore[]
           .performWithCompletion({ status in
-            // handle status, response
+            // handle status
             // tag::ignore[]
 
             XCTAssertFalse(status.isError)
@@ -472,7 +519,7 @@ class Messages: PNTestCase {
            */
           // end::ignore[]
           .performWithCompletion({ status in
-            // handle status, response
+            // handle status
             // tag::ignore[]
 
             XCTAssertFalse(status.isError)

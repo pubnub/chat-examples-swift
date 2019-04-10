@@ -32,6 +32,7 @@ class MessageHistory: PNTestCase {
          */
         // end::ignore[]
         .performWithCompletion({ (result, status) in
+          // handle status, response
           // tag::ignore[]
           XCTAssertNil(status)
           XCTAssertNotNil(result)
@@ -143,7 +144,7 @@ class MessageHistory: PNTestCase {
         .channel(expectedChannel)
         /**
         // end::ignore[]
-        .channel("history_test")
+        .channel("room-1")
         // tag::ignore[]
          */
         // end::ignore[]
@@ -229,7 +230,7 @@ class MessageHistory: PNTestCase {
         // end::ignore[]
         .limit(15)
         .performWithCompletion({ (result, status) in
-          // handle response
+          // handle status, response
           // tag::ignore[]
 
           XCTAssertNil(status)

@@ -297,31 +297,31 @@ class ManageChannels: PNTestCase {
            */
           // end::ignore[]
           .performWithCompletion({ (result, status) in
-          if let errorStatus = status {
-            print("operation failed w/ error: \(errorStatus.errorData.information)")
-            return
-          }
+            if let errorStatus = status {
+              print("operation failed w/ error: \(errorStatus.errorData.information)")
+              return
+            }
 
-          if let auditResults = result {
-            // tag::ignore[]
-            XCTAssertTrue(auditResults.data.channels.contains(expectedChannels[0]))
-            XCTAssertTrue(auditResults.data.channels.contains(expectedChannels[1]))
+            if let auditResults = result {
+              // tag::ignore[]
+              XCTAssertTrue(auditResults.data.channels.contains(expectedChannels[0]))
+              XCTAssertTrue(auditResults.data.channels.contains(expectedChannels[1]))
 
-            // end::ignore[]
-            print("listing push channel for device")
-            for channel in auditResults.data.channels {
-              print(channel)
+              // end::ignore[]
+              print("listing push channel for device")
+              for channel in auditResults.data.channels {
+                print(channel)
+              }
+              // tag::ignore[]
+            } else {
+              XCTAssert(false, "Unable to check channel group audit 'result'")
+              // end::ignore[]
             }
             // tag::ignore[]
-          } else {
-            XCTAssert(false, "Unable to check channel group audit 'result'")
-            // end::ignore[]
-          }
-          // tag::ignore[]
 
-          auditExpectation.fulfill()
-          // end::ignore[]
-        })
+            auditExpectation.fulfill()
+            // end::ignore[]
+          })
         // end::CHAN-7[]
       })
 

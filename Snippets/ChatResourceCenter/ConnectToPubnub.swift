@@ -15,7 +15,10 @@ class ConnectToPubnub: PNTestCase {
   func testSetup() {
     /**
     // tag::CON-1[]
-    // Create Podfile in project root directory with following content:
+    /**
+     * Create Podfile in project root directory with following
+     * content:
+     */
     platform :ios, '9.0'
     use_frameworks!
     
@@ -26,15 +29,16 @@ class ConnectToPubnub: PNTestCase {
      
      
     /**
-     * Make sure to replace 'TargetName' with your project target name before
-     * running following command with Terminal from project root directory:
+     * Make sure to replace 'TargetName' with your project target name
+     * before running following command with Terminal from project
+     * root directory:
      */
     pod install
     
      
     /**
-     * CocoaPods will create .xcworkspace file in project root directory which
-     * you should use from now on.
+     * CocoaPods will create .xcworkspace file in project root
+     * directory which you should use from now on.
      */
     // end::CON-1[]
     */
@@ -45,7 +49,8 @@ class ConnectToPubnub: PNTestCase {
    */
   func testInitializePubNub() {
     // tag::CON-2[]
-    let configuration = PNConfiguration(publishKey: publishKey, subscribeKey: subscribeKey)
+    let configuration = PNConfiguration(publishKey: publishKey,
+                                        subscribeKey: subscribeKey)
     configuration.stripMobilePayload = false
     let pubnub = PubNub.clientWithConfiguration(configuration)
     // end::CON-2[]
@@ -58,10 +63,11 @@ class ConnectToPubnub: PNTestCase {
    * Setting a unique ID for each user
    */
   func testSettingUniqueID() {
-    // tag::CON-3[]
     let uuid = UUID().uuidString
 
-    let configuration = PNConfiguration(publishKey: publishKey, subscribeKey: subscribeKey)
+    // tag::CON-3[]
+    let configuration = PNConfiguration(publishKey: publishKey,
+                                        subscribeKey: subscribeKey)
     configuration.stripMobilePayload = false
     configuration.uuid = uuid
 
@@ -168,13 +174,27 @@ class ConnectToPubnub: PNTestCase {
   }
 
   /**
-   * Reconnecting Manually.
+   * Reconnecting to PubNub.
    */
-  func testManualReconnect() {
-    let pubnub: PubNub! = pubNubClient
+  func testReconnectToPubNub() {
+    // tag::CON-7.1[]
+    let configuration = PNConfiguration(publishKey: publishKey,
+                                        subscribeKey: subscribeKey)
+    // enable catchup on missed messages
+    configuration.catchUpOnSubscriptionRestore = true
+    configuration.stripMobilePayload = false
+    let pubnub = PubNub.clientWithConfiguration(configuration)
+    // end::CON-7.1[]
 
-    // tag::CON-7[]
+    // tag::CON-7.2[]
+    /**
+     * If connection availability check will be done in other way,
+     * then use this  function to reconnect to PubNub.
+     */
     pubnub.subscribe().perform()
-    // end::CON-7[]
+    // end::CON-7.2[]
+
+    XCTAssertNotNil(pubnub)
+    XCTAssertTrue(pubnub.currentConfiguration().catchUpOnSubscriptionRestore)
   }
 }
