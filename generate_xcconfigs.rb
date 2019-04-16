@@ -31,8 +31,8 @@ def generate_xcconfigs()
       text = File.read("#{supporting_files_dir}/#{target_name}.#{config}.xcconfig")
 
       # Attempt to replace the PubNub keys inside the file
-      new_contents = text.gsub(/^(#{target_name.upcase}_PUBLISH_KEY=)(.*)$/, "#{target_name.upcase}_PUBLISH_KEY=\"#{pub_key}\"")
-      new_contents = new_contents.gsub(/^(#{target_name.upcase}_SUBSCRIBE_KEY=)(.*)$/, "#{target_name.upcase}_SUBSCRIBE_KEY=\"#{sub_key}\"")
+      new_contents = text.gsub(/^(#{target_name.upcase}_PUBLISH_KEY=)(.*)$/, "#{target_name.upcase}_PUBLISH_KEY=#{pub_key}")
+      new_contents = new_contents.gsub(/^(#{target_name.upcase}_SUBSCRIBE_KEY=)(.*)$/, "#{target_name.upcase}_SUBSCRIBE_KEY=#{sub_key}")
 
       # Write changes to new file in the supporting files dir
       File.open("#{supporting_files_dir}/#{target_name}.#{config}.xcconfig", "w") {|file| file.puts new_contents }

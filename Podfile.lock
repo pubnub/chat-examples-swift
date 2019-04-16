@@ -1,22 +1,39 @@
 PODS:
+  - InputBarAccessoryView (4.3.0)
+  - MessageKit (3.0.0-beta-swift5):
+    - InputBarAccessoryView (~> 4.3.0)
   - PubNub (4.8.7):
     - PubNub/Core (= 4.8.7)
   - PubNub/Core (4.8.7)
   - SwiftLint (0.31.0)
 
 DEPENDENCIES:
-  - PubNub (~> 4.8)
+  - MessageKit (from `https://github.com/MessageKit/MessageKit.git`, branch `3.0.0-swift5`)
+  - PubNub (~> 4.0)
   - SwiftLint (~> 0.30)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - InputBarAccessoryView
     - PubNub
     - SwiftLint
 
+EXTERNAL SOURCES:
+  MessageKit:
+    :branch: 3.0.0-swift5
+    :git: https://github.com/MessageKit/MessageKit.git
+
+CHECKOUT OPTIONS:
+  MessageKit:
+    :commit: 46f303da48424aec055d31f39b4434250241ac0f
+    :git: https://github.com/MessageKit/MessageKit.git
+
 SPEC CHECKSUMS:
+  InputBarAccessoryView: 28dca73f28df7822fe5377f83cfc4547e22f90ff
+  MessageKit: 96420f1fe84d037451cc7b11800a559189f40c25
   PubNub: c767e96befde348b990b2fed1e9e76048e7c0abd
   SwiftLint: 7a0227733d786395817373b2d0ca799fd0093ff3
 
-PODFILE CHECKSUM: 94a57bb125ad3bf76c18258724d1710845774023
+PODFILE CHECKSUM: d319b1a18b8ec4fe730a65413a7bcd97bb9a6cb8
 
 COCOAPODS: 1.6.1
