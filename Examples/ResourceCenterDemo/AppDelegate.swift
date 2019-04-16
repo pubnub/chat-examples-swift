@@ -7,6 +7,8 @@
 
 import UIKit
 
+import PubNub
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -14,23 +16,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication,
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-    // Ensure that the pub/sub keys were set inside the RCDemo.<CONFIG>.xcconfig files
-    guard let pubnubInfoDictionary = Bundle.main.object(forInfoDictionaryKey: "PubNub") as? [String: String],
-      let pubKey = pubnubInfoDictionary["PubKey"],
-      let subKey = pubnubInfoDictionary["SubKey"],
-      !pubKey.isEmpty, !subKey.isEmpty else {
 
-        NSLog("Please verify that your pub/sub keys are set inside the RCDemo.<CONFIG>.xcconfig files")
+    if let navController = self.window?.rootViewController as? UINavigationController,
+       let chatVC = navController.viewControllers.first as? ChatViewController {
 
-        // This will only crash on debug configurations
-        assertionFailure("Please ensure that your Pub/Sub keys are set inside the RCDemo.xcconfig files")
+      let senderId = User.defaultSender.senderId
+      let pubNub = PubNub.configure(with: senderId)
 
-        return false
+      chatVC.viewModel = ChatViewModel(chatProvider: pubNub)
     }
 
-    NSLog("PubNub Dict: \(pubnubInfoDictionary)")
-    NSLog("Sub Key: \(subKey)")
-    NSLog("Pub Key: \(pubKey)")
     return true
   }
 

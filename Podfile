@@ -8,6 +8,8 @@ pod 'SwiftLint', '~> 0.30'
 
 target 'RCDemo' do
 
+  pod 'MessageKit', :git => 'https://github.com/MessageKit/MessageKit.git', :branch => '3.0.0-swift5'
+
   # Pods for chat-example
   target 'RCDemoTests' do
     inherit! :search_paths
