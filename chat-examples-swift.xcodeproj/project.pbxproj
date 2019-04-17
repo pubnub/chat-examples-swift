@@ -33,6 +33,8 @@
 		359564702264D024008442A0 /* UserDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3595646F2264D024008442A0 /* UserDetailViewModel.swift */; };
 		359564722264D03B008442A0 /* ChannelDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359564712264D03B008442A0 /* ChannelDetailsViewModel.swift */; };
 		359564742264E07D008442A0 /* FileStorageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359564732264E07D008442A0 /* FileStorageProvider.swift */; };
+		3595647722669120008442A0 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3595647622669120008442A0 /* UIColor+Ext.swift */; };
+		3595647922679F78008442A0 /* PubNub+ChatProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3595647822679F78008442A0 /* PubNub+ChatProvider.swift */; };
 		35AEBF15225E4355005F1D41 /* PNConfiguration+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AEBF14225E4355005F1D41 /* PNConfiguration+Ext.swift */; };
 		35AEBF1722601964005F1D41 /* Models+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AEBF1622601964005F1D41 /* Models+Ext.swift */; };
 		35AEBF1E226026F9005F1D41 /* Message+MessageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AEBF1D226026F9005F1D41 /* Message+MessageType.swift */; };
@@ -94,6 +96,8 @@
 		3595646F2264D024008442A0 /* UserDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailViewModel.swift; sourceTree = "<group>"; };
 		359564712264D03B008442A0 /* ChannelDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelDetailsViewModel.swift; sourceTree = "<group>"; };
 		359564732264E07D008442A0 /* FileStorageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileStorageProvider.swift; sourceTree = "<group>"; };
+		3595647622669120008442A0 /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
+		3595647822679F78008442A0 /* PubNub+ChatProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PubNub+ChatProvider.swift"; sourceTree = "<group>"; };
 		35AEBF14225E4355005F1D41 /* PNConfiguration+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PNConfiguration+Ext.swift"; sourceTree = "<group>"; };
 		35AEBF1622601964005F1D41 /* Models+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Models+Ext.swift"; sourceTree = "<group>"; };
 		35AEBF1D226026F9005F1D41 /* Message+MessageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+MessageType.swift"; sourceTree = "<group>"; };
@@ -143,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				35765C72223AE60C000B4B8D /* ChatProvider.swift */,
+				3595647822679F78008442A0 /* PubNub+ChatProvider.swift */,
 				359564732264E07D008442A0 /* FileStorageProvider.swift */,
 			);
 			path = Providers;
@@ -266,6 +271,7 @@
 			children = (
 				35AEBF14225E4355005F1D41 /* PNConfiguration+Ext.swift */,
 				35765C71223AE60C000B4B8D /* PubNub+Ext.swift */,
+				3595647622669120008442A0 /* UIColor+Ext.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -631,8 +637,10 @@
 				35E547752252B3670086FB8F /* User.swift in Sources */,
 				359564702264D024008442A0 /* UserDetailViewModel.swift in Sources */,
 				35AEBF20226027CC005F1D41 /* User+SenderType.swift in Sources */,
+				3595647722669120008442A0 /* UIColor+Ext.swift in Sources */,
 				3558366B225BE7F00053E1F9 /* AppStateService.swift in Sources */,
 				355836632256A2410053E1F9 /* Message.swift in Sources */,
+				3595647922679F78008442A0 /* PubNub+ChatProvider.swift in Sources */,
 				3552571E223852930095AAFD /* AppDelegate.swift in Sources */,
 				35AEBF15225E4355005F1D41 /* PNConfiguration+Ext.swift in Sources */,
 				359564742264E07D008442A0 /* FileStorageProvider.swift in Sources */,

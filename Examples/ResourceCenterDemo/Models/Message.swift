@@ -25,7 +25,7 @@ extension Message {
 
   var user: User {
     guard let user = User.firstStored(with: { $0.senderId == senderId }) else {
-      return User(uuid: senderId, firstName: nil, lastName: nil, avatarImageName: nil)
+      return User.defaultUser
     }
 
     return user

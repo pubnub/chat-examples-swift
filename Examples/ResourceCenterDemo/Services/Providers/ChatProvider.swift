@@ -62,84 +62,45 @@ protocol ChatEmitter {
 protocol ChatRequester {
   var uuid: String { get }
 
-  func publish(_ request: ChatPublishRequest, completion: @escaping  (Result<NSNumber, NSError>) -> Void)
-  func history(_ request: ChatHistoryRequest, completion: @escaping  (Result<[String: Any?], NSError>) -> Void)
-  func hereNow(for channel: String, completion: @escaping  (Result<[String: Any?], NSError>) -> Void)
+  func publish(_ request: ChatPublishRequest, completion: @escaping  (Result<ChatPublishRepsonse, NSError>) -> Void)
+  func history(_ request: ChatHistoryRequest, completion: @escaping  (Result<ChatHistoryRepsonse?, NSError>) -> Void)
+  func hereNow(for channel: String, completion: @escaping  (Result<ChatChannelPresenceResponse?, NSError>) -> Void)
 }
 
 typealias ChatProvider = ChatRequester & ChatEmitter
 
-extension PubNub: ChatProvider {
-  // MARK: - ChatRequester
-  var uuid: String {
-    return self.uuid()
-  }
+protocol ChatHistoryRepsonse {
+  var start: Date { get }
+  var end: Date { get }
+  var messages: [Message] { get }
+}
 
-  func publish(_ request: ChatPublishRequest, completion: @escaping (Result<NSNumber, NSError>) -> Void) {
-    publish(request.message,
-            toChannel: request.channel,
-            mobilePushPayload: request.parameters.mobilePushPayload,
-            storeInHistory: request.parameters.storeInHistory,
-            compressed: request.parameters.compressed,
-            withMetadata: request.parameters.metadata)
-    { (status) in
-      // swiftlint:disable:previous opening_brace
-      if let error = status.error {
-        completion(.failure(error))
-      } else {
-        completion(.success(status.data.timetoken))
-      }
-    }
-  }
+protocol ChatPublishRepsonse {
+  var sentAt: Date { get }
+  var responseMessage: String { get }
+}
 
-  func history(_ request: ChatHistoryRequest, completion: @escaping  (Result<[String: Any?], NSError>) -> Void) {
-    historyForChannel(request.channel,
-                      start: request.parameters.start,
-                      end: request.parameters.end,
-                      limit: request.parameters.limit,
-                      reverse: request.parameters.reverse,
-                      includeTimeToken: request.parameters.includeTimeToken)
-    { (result, status) in
-      // swiftlint:disable:previous opening_brace
-      if let error = status?.error {
-        completion(.failure(error))
-      } else {
-        completion(.success(["start": result?.data.start, "end": result?.data.end, "messages": result?.data.messages]))
-      }
-    }
-  }
+protocol ChatChannelPresenceResponse {
+  var occupancy: Int { get }
+  var uuids: [String] { get }
+}
 
-  func hereNow(for channel: String, completion: @escaping  (Result<[String: Any?], NSError>) -> Void) {
-    hereNowForChannel(channel) { (result, status) in
-      if let error = status?.error {
-        completion(.failure(error))
-      } else {
-        completion(.success(["occupancy": result?.data.occupancy, "uuids": result?.data.uuids]))
-      }
-    }
-  }
+protocol ChatMessageEvent {
+  var channel: String { get }
+  var message: Message? { get }
+}
 
-  // MARK: - ChatEmitter
-  func add(_ listener: AnyObject) {
-    guard let pnObjectListener = listener as? PNObjectEventListener else {
-      return
-    }
+protocol ChatPresenceEvent {
+  var channel: String { get }
+  var occupancy: Int { get }
+  var joined: [String] { get }
+  var timedout: [String] { get }
+  var left: [String] { get }
+  var refreshNow: Bool { get }
+  var state: [String: Any]? { get }
+}
 
-    addListener(pnObjectListener)
-  }
-
-  func remove(_ listener: AnyObject) {
-    guard let pnObjectListener = listener as? PNObjectEventListener else {
-      return
-    }
-    removeListener(pnObjectListener)
-  }
-
-  func subscribe(to channels: [String], withPresence: Bool) {
-    self.subscribeToChannels(channels, withPresence: withPresence)
-  }
-
-  func unsubscribe(from channels: [String], withPresence: Bool) {
-    self.unsubscribeFromChannels(channels, withPresence: withPresence)
-  }
+protocol ChatStatusEvent {
+  var status: String { get }
+  var request: String { get }
 }

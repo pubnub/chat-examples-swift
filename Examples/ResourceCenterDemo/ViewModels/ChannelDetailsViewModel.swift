@@ -16,6 +16,8 @@ struct ChannelDetailsViewModel {
 
   var chatService: ChatService?
 
+  var sender: User = User.defaultSender
+
   typealias Listener = (ChangeType) -> Void
 
   enum ChangeType {
@@ -50,5 +52,17 @@ struct ChannelDetailsViewModel {
     }
 
     return members ?? []
+  }
+
+  func occupantDisplayName(at indexPath: IndexPath) -> String {
+
+    guard indexPath.row < activeMembers.count else {
+        return ""
+    }
+
+    let user = activeMembers[indexPath.row]
+    let displayName = user.displayName
+
+    return user.uuid == sender.uuid ? "\(displayName) (You)" : displayName
   }
 }
