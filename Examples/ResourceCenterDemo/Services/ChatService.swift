@@ -130,32 +130,17 @@ class ChatService: NSObject {
     chatProvider.history(historyRequest) { [weak self] (result) in
       switch result {
       case .success(let response):
-        // ["start": result?.data.start, "end": result?.data.end, "messages": result?.data.messages]
+        guard let response = response else {
+          return
+        }
+
         self?.messageQueue.async(flags: .barrier) {
-          if let messages = response["messages"] as? [[String: Any]] {
-            if let endToken = response["end"] as? NSNumber {
-              self?.latestTimetoken = endToken
-            }
+          self?.latestTimetoken = response.end.timeToken
 
-            var count = 0
-            for  message in messages {
-              if let payload = message["message"] as? [String: String],
-                let senderId = payload["senderId"],
-                let timeToken = message["timetoken"] as? NSNumber,
-                let text = payload["text"] {
-                count += 1
+          self?._messages.append(contentsOf: response.messages)
 
-                // Verify that the message isn't already inside the messages list
-                self?._messages.append(Message(uuid: timeToken.description,
-                                              text: text,
-                                              senderId: senderId,
-                                              sentDate: Date.from(timeToken)))
-              }
-            }
-
-            self?.eventQueue.async {
-              self?.listener?(.message(count))
-            }
+          self?.eventQueue.async {
+            self?.listener?(.message(response.messages.count))
           }
         }
       case .failure(let error):
@@ -168,20 +153,18 @@ class ChatService: NSObject {
     chatProvider.hereNow(for: channel) { [weak self] (result) in
       switch result {
       case .success(let response):
-        // ["start": result?.data.start, "end": result?.data.end, "messages": result?.data.messages]
-        guard let occupancy = response["occupancy"] as? Int, let uuids = response["uuids"] as? [[String: Any]] else {
+        guard let response = response else {
           return
         }
+
         self?.presenceQueue.async(flags: .barrier) {
           // Verify our knownledge of the room
-          for uuid in uuids {
-            if let uuid = uuid["uuid"] as? String {
+          for uuid in response.uuids {
               self?._occupantUUIDs.insert(uuid)
-            }
           }
 
           // Update Static Occupancy Count
-          self?.occupancy = occupancy
+          self?.occupancy = response.occupancy
 
           if self?._occupantUUIDs.count != self?.occupancy {
             NSLog("There is a mismatch between the occupancy count and the occupants list")
@@ -189,7 +172,7 @@ class ChatService: NSObject {
 
           // Signal that the occupants list has changes
           self?.eventQueue.async {
-            self?.listener?(.presence(occupancy))
+            self?.listener?(.presence(response.occupancy))
           }
         }
 
@@ -222,30 +205,23 @@ class ChatService: NSObject {
     }
   }
 
-  private func didReceive(message: [String: Any?], on channel: String) {
-    NSLog("Received Message \(message)")
+  private func didReceive(message response: ChatMessageEvent) {
+    NSLog("Received Message \(String(describing: response.message)) from \(response.message?.sender.displayName ?? "")")
 
-    guard self.channel == channel,
-          let timetoken = message["timeToken"] as? NSNumber,
-          let text = message["text"] as? String,
-          let senderId = message["senderId"] as? String else {
+    guard self.channel == response.channel,
+          let message = response.message else {
       return
     }
-
-    let message = Message(uuid: timetoken.description,
-                          text: text,
-                          senderId: senderId,
-                          sentDate: Date.from(timetoken))
 
     messageQueue.async(flags: .barrier) { [weak self] in
       // TODO: Find a good way to only filter out messages sent from this device.
       // Determine if we've alrady added this published message
-      if let strongSelf = self, senderId == strongSelf.chatProvider.uuid {
+      if let strongSelf = self, message.senderId == strongSelf.chatProvider.uuid {
         NSLog("Message was already published by this user")
 
         return
       }
-      self?.latestTimetoken = timetoken
+      self?.latestTimetoken = message.sentDate.timeToken
 
       self?._messages.append(message)
 
@@ -255,21 +231,18 @@ class ChatService: NSObject {
     }
   }
 
-  private func didReceive(status event: Result<[String: String], Error>) {
+  private func didReceive(status event: Result<ChatStatusEvent, Error>) {
     switch event {
-    case .success(let status):
-      NSLog("Status Change Received: \(status)")
-      guard let category = status["category"] else {
-        return
-      }
+    case .success(let response):
+      NSLog("Status Change Received: \(response.status)")
 
-      switch category {
+      switch response.status {
       case "Connected":
         didConnect()
       case "Expected Disconnect":
         didDisconnect()
       default:
-        NSLog("Category \(category) was not processed.")
+        NSLog("Category \(response.status) was not processed.")
       }
 
     case .failure(let error):
@@ -277,59 +250,40 @@ class ChatService: NSObject {
     }
   }
 
-  private func didReceive(presence event: [String: Any?], on channel: String) {
-    NSLog("Presence Event Received: \(event)")
-    guard self.channel == channel,
-          let occupancy = event["occupancy"] as? Int,
-          let presenceEvent = event["eventType"] as? String else {
+  private func didReceive(presence response: ChatPresenceEvent) {
+    guard self.channel == response.channel else {
       return
     }
 
     presenceQueue.async(flags: .barrier) { [weak self] in
-      self?.occupancy = occupancy
+      self?.occupancy = response.occupancy
 
-      let uuid = event["uuid"] as? String ?? ""
-      var count = 0
-      switch presenceEvent {
-      case "state-change":
-          NSLog("State-Change Presence Received: \(String(describing: event["state"] as? [String: Any])) for \(uuid)")
-      case "join":
-        self?._occupantUUIDs.insert(uuid)
-        count += 1
-      case "leave", "timeout":
-        self?._occupantUUIDs.remove(uuid)
-        count -= 1
-      case "interval":
-        if let timeouts = event["timeout"] as? [String] {
-          timeouts.forEach {
-            self?._occupantUUIDs.remove($0)
-            count -= 1
-          }
-        }
-        if let leaves = event["leave"] as? [String] {
-          leaves.forEach {
-            self?._occupantUUIDs.remove($0)
-            count -= 1
-          }
-        }
-        if let joins = event["join"] as? [String] {
-          joins.forEach {
-            self?._occupantUUIDs.insert($0)
-            count += 1
-          }
-        }
-      default:
-        break
+      if let state = response.state {
+        NSLog("State-Change Presence Received: \(state) for \(response)")
       }
 
-      self?.eventQueue.async { [weak self] in
-        if !(event["hereNowRefresh"] as? Bool ?? false) {
+      var count = 0
+      for uuid in response.joined {
+        self?._occupantUUIDs.insert(uuid)
+        count += 1
+      }
+      for uuid in response.timedout {
+        self?._occupantUUIDs.remove(uuid)
+        count -= 1
+      }
+      for uuid in response.left {
+        self?._occupantUUIDs.remove(uuid)
+        count -= 1
+      }
+
+      self?.eventQueue.async {
+        if response.refreshNow {
           DispatchQueue.main.async {
             self?.getChannelOccupancy()
           }
-        } else {
-          self?.listener?(.presence(count))
         }
+
+        self?.listener?(.presence(count))
       }
     }
   }
@@ -338,36 +292,18 @@ class ChatService: NSObject {
 // MARK: - PNObjectEventListener Extension
 extension ChatService: PNObjectEventListener {
   func client(_ client: PubNub, didReceiveMessage message: PNMessageResult) {
-    if message.data.channel == channel, var payload = message.data.message as? [String: Any?] {
-
-      payload["timeToken"] = message.data.timetoken
-
-      didReceive(message: payload, on: message.data.channel)
-    }
+    didReceive(message: message)
   }
 
   func client(_ client: PubNub, didReceive status: PNStatus) {
     if let error = status.error {
       didReceive(status: .failure(error))
     } else {
-      didReceive(status: .success(["category": status.stringifiedCategory(),
-                                   "operation": status.stringifiedOperation()]))
+      didReceive(status: .success(status))
     }
   }
 
   func client(_ client: PubNub, didReceivePresenceEvent event: PNPresenceEventResult) {
-    let payload: [String: Any?] = [
-      "occupancy": event.data.presence.occupancy.intValue,
-      "uuid": event.data.presence.uuid,
-      "eventType": event.data.presenceEvent,
-      "state": event.data.presence.state,
-      "timeout": event.data.presence.timeout,
-      "leave": event.data.presence.leave,
-      "join": event.data.presence.join,
-      // TODO: What to read for here_now_refresh value?
-      "hereNowRefresh": false
-    ]
-
-    didReceive(presence: payload, on: event.data.channel)
+    didReceive(presence: event)
   }
 }

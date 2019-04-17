@@ -18,7 +18,6 @@ extension PNConfiguration {
 
     if pubKey.isEmpty || subKey.isEmpty {
       NSLog("Please verify that your pub/sub keys are set inside the RCDemo.<CONFIG>.xcconfig files.")
-      NSLog("Pub: \(pubKey) Sub :\(subKey)")
 
       // This will only crash on debug configurations
       assertionFailure("Please ensure that your Pub/Sub keys are set inside the RCDemo.xcconfig files")

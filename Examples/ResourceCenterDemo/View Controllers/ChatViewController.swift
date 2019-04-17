@@ -15,7 +15,6 @@ class ChatViewController: MessagesViewController {
   var viewModel: ChatViewModel!
   var titleView: UILabel?
 
-  let userDetailSegue = "ChatViewShowUserDetailSegue"
   let channelDetailSegue = "ChatViewShowChannelDetailSegue"
 
   override func viewDidLoad() {
@@ -26,21 +25,6 @@ class ChatViewController: MessagesViewController {
     self.messagesCollectionView.messagesDisplayDelegate = self
 
     self.messageInputBar.delegate = self
-
-    // Create a new button
-    let button = UIButton(type: .custom)
-    button.widthAnchor.constraint(equalToConstant: 32.0).isActive = true
-    button.heightAnchor.constraint(equalToConstant: 32.0).isActive = true
-
-    if let imageName = viewModel.sender.avatarImageName {
-      button.setImage(UIImage(named: imageName), for: .normal)
-    }
-    // Add function for button
-    button.addTarget(self, action: #selector(userDetailButtonPressed), for: .touchUpInside)
-    // Set frame
-    button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-    // Assign button to navigationbar
-    self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
 
     // Title Bar
     self.setTitleView()
@@ -67,10 +51,6 @@ class ChatViewController: MessagesViewController {
     self.messagesCollectionView.reloadData()
   }
 
-  @objc func userDetailButtonPressed() {
-    self.performSegue(withIdentifier: userDetailSegue, sender: nil)
-  }
-
   func setTitleView() {
     if titleView == nil {
       // Setting to 0 to force min-width
@@ -80,8 +60,13 @@ class ChatViewController: MessagesViewController {
       titleView?.textAlignment = NSTextAlignment.center
     }
 
-    titleView?.text = viewModel.channelTitle
+    titleView?.attributedText = viewModel.attributedChannelTitle
     navigationItem.titleView = titleView
+  }
+
+  func nextMessage(of indexPath: IndexPath) -> Message? {
+    guard indexPath.section + 1 < viewModel.messages.count else { return nil }
+    return viewModel.messages[indexPath.section + 1]
   }
 
   func isPreviousMessageSameSender(at indexPath: IndexPath) -> Bool {
@@ -97,9 +82,6 @@ class ChatViewController: MessagesViewController {
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if let identifier = segue.identifier {
       switch identifier {
-      case userDetailSegue:
-        let destination = segue.destination as? UserDetailViewController
-        destination?.viewModel = UserDetailViewModel(with: self.viewModel.sender)
       case channelDetailSegue:
         let destination = segue.destination as? ChannelDetailsViewController
         destination?.viewModel = self.viewModel.channelDetailVieModel
@@ -116,6 +98,11 @@ extension ChatViewController: MessagesDataSource, MessagesDisplayDelegate, Messa
     return viewModel.sender
   }
 
+  func backgroundColor(for message: MessageType, at indexPath: IndexPath,
+                       in messagesCollectionView: MessagesCollectionView) -> UIColor {
+    return isFromCurrentSender(message: message) ? UIColor.messageSender : UIColor.messageReceiver
+  }
+
   func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageType {
     return viewModel.messages[indexPath.section]
   }
@@ -129,9 +116,34 @@ extension ChatViewController: MessagesDataSource, MessagesDisplayDelegate, Messa
 
     if let message = message as? Message, let avatarImageName = message.user.avatarImageName {
       avatarView.image = UIImage(named: avatarImageName)
-      avatarView.isHidden = isNextMessageSameSender(at: indexPath)
-      avatarView.layer.borderWidth = 2
+      avatarView.isHidden = isPreviousMessageSameSender(at: indexPath)
     }
+  }
+
+  func cellTopLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
+    if viewModel.shouldDisplayTime(between: message as? Message, and: nextMessage(of: indexPath)) {
+      return NSAttributedString(string: MessageKitDateFormatter.shared.string(from: message.sentDate),
+                                attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 10),
+                                             NSAttributedString.Key.foregroundColor: UIColor.darkGray])
+    }
+    return nil
+  }
+
+  func cellTopLabelHeight(for message: MessageType, at indexPath: IndexPath,
+                          in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+    if viewModel.shouldDisplayTime(between: message as? Message, and: nextMessage(of: indexPath)) {
+      return 18
+    }
+    return 0
+  }
+
+  func messageTopLabelHeight(for message: MessageType, at indexPath: IndexPath,
+                             in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+    return isPreviousMessageSameSender(at: indexPath) ? CGFloat.leastNonzeroMagnitude : 16
+  }
+
+  func messageTopLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
+    return isPreviousMessageSameSender(at: indexPath) ? nil : viewModel.messageName(for: message as? Message)
   }
 
   func messageBottomLabelHeight(for message: MessageType, at indexPath: IndexPath,
@@ -140,7 +152,7 @@ extension ChatViewController: MessagesDataSource, MessagesDisplayDelegate, Messa
   }
 
   func messageBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
-    return isNextMessageSameSender(at: indexPath) ? nil : viewModel.detailText(for: message as? Message)
+    return isNextMessageSameSender(at: indexPath) ? nil : viewModel.messageDate(for: message as? Message)
   }
 }
 

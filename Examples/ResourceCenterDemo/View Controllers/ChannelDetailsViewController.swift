@@ -51,7 +51,7 @@ class ChannelDetailsViewController: UIViewController, UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = self.activeMemberTableView.dequeueReusableCell(withIdentifier: "MemberStatusCell", for: indexPath)
 
-    cell.textLabel?.text = self.viewModel.activeMembers[indexPath.row].displayName
+    cell.textLabel?.text = self.viewModel.occupantDisplayName(at: indexPath)
 
     return cell
   }

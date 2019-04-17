@@ -17,8 +17,9 @@ struct ChatViewModel {
   typealias Listener = (ChangeType) -> Void
 
   // Public Vars
-  let chatChannel = "demo-animal-chat-swift"
+  let chatChannel = "demo-animal-chat"
   let sender: User
+  let channelDisplayName = "Animal Forest"
   var listener: Listener?
 
   // Services
@@ -26,6 +27,7 @@ struct ChatViewModel {
   private var appStateService: AppStateService
   private var chatService: ChatService
 
+  private let maxTimeBetweenMesssages: TimeInterval = 60 * 60 // 1 Hour
   private let chatDateFormatter = DateFormatter()
 
   init(chatProvider: ChatProvider) {
@@ -93,27 +95,36 @@ struct ChatViewModel {
     return chatService.messages
   }
 
-  func detailText(for message: Message?) -> NSAttributedString? {
+  func messageName(for message: Message?) -> NSAttributedString? {
     guard let message = message else {
       return nil
     }
 
     // Format the displayname
-    let displayname = NSMutableAttributedString(string: message.user.displayName,
-                                            attributes: messageHeaderStringAttributes(with: UIColor.black))
-
-    // Note: We're using string interpolation to add a single buffering space between the
-    let messageTime = NSAttributedString(string: " \(chatDateFormatter.string(from: message.sentDate))",
-                                            attributes: messageHeaderStringAttributes(with: UIColor.gray))
-
-    displayname.append(messageTime)
-
+    let displayname = NSAttributedString(string: message.user.displayName,
+                                         attributes: messageStringAttributes(with: UIColor.black))
     return displayname
   }
 
-  private func messageHeaderStringAttributes(with color: UIColor) -> [NSAttributedString.Key: Any] {
+  func messageDate(for message: Message?) -> NSAttributedString? {
+    guard let message = message else {
+      return nil
+    }
+
+    let messageTime = NSAttributedString(string: chatDateFormatter.string(from: message.sentDate),
+                                         attributes: messageStringAttributes(with: UIColor.gray))
+
+    return messageTime
+  }
+
+  private func messageStringAttributes(with color: UIColor) -> [NSAttributedString.Key: Any] {
     return [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 10),
             NSAttributedString.Key.foregroundColor: color]
+  }
+
+  private func titleStringAttributes(with size: CGFloat) -> [NSAttributedString.Key: Any] {
+    return [NSAttributedString.Key.font: UIFont.systemFont(ofSize: size),
+            NSAttributedString.Key.foregroundColor: UIColor.black]
   }
 
   func history() {
@@ -130,18 +141,39 @@ struct ChatViewModel {
     chatService.getChannelOccupancy()
   }
 
-  var channelTitle: String {
+  func shouldDisplayTime(between previous: Message?, and next: Message?) -> Bool {
+    // If the last message sent is older than an hour display the time text
+    if let previous = previous,
+      let next = next, next.sentDate.timeIntervalSince(previous.sentDate) > maxTimeBetweenMesssages {
+      return true
+    }
+
+    return false
+  }
+
+  var attributedChannelTitle: NSAttributedString {
+    // Format the displayname
+    let displayname = NSMutableAttributedString(string: "\(channelDisplayName)\n",
+                                                attributes: titleStringAttributes(with: 17))
+
     switch chatService.state {
     case .connected:
       if chatService.occupancy <= 0 {
-        return "Animal Chat"
+        return displayname
       } else if chatService.occupancy == 1 {
-        return "Animal Chat\n1 Member Online"
+        let subtitle = NSAttributedString(string: "1 Member Online",
+                                          attributes: titleStringAttributes(with: 12))
+        displayname.append(subtitle)
+        return displayname
       }
-
-      return String(format: "Animal Chat\n%i Members Online", chatService.occupancy)
+      let subtitle = NSAttributedString(string: "\(chatService.occupancy) Members Online",
+        attributes: titleStringAttributes(with: 12))
+      displayname.append(subtitle)
+      return displayname
     case .notConnected:
-      return String(format: "Animal Chat\n%Not Connected", chatService.occupancy)
+      let subtitle = NSAttributedString(string: "Not Connected", attributes: titleStringAttributes(with: 12))
+      displayname.append(subtitle)
+      return displayname
     }
   }
 }
