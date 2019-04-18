@@ -13,7 +13,7 @@ import PubNub
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
-
+// tag::INIT-1[]
   func application(_ application: UIApplication,
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     return true
   }
-
+// end::INIT-1[]
   func applicationWillResignActive(_ application: UIApplication) {
     // Sent when the application is about to move from active to inactive state.
     // This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message)

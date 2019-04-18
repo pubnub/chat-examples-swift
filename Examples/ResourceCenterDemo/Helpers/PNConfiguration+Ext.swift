@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+// tag::INIT-1[]
 import PubNub
 
 extension PNConfiguration {
@@ -26,3 +26,4 @@ extension PNConfiguration {
     return (pubKey, subKey)
   }
 }
+// end::INIT-1[]
