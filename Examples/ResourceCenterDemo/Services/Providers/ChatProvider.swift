@@ -48,7 +48,7 @@ struct ChatHistoryParameters {
   var reverse: Bool = true
   var includeTimeToken: Bool = true
 }
-
+// tag::WRAP-1[]
 protocol ChatEmitter {
   func add(_ listener: AnyObject)
   func remove(_ listener: AnyObject)
@@ -68,6 +68,7 @@ protocol ChatRequester {
 }
 
 typealias ChatProvider = ChatRequester & ChatEmitter
+// end::WRAP-1[]
 
 protocol ChatHistoryRepsonse {
   var start: Date { get }
@@ -85,6 +86,7 @@ protocol ChatChannelPresenceResponse {
   var uuids: [String] { get }
 }
 
+// tag::SERV-2[]
 protocol ChatMessageEvent {
   var channel: String { get }
   var message: Message? { get }
@@ -104,3 +106,4 @@ protocol ChatStatusEvent {
   var status: String { get }
   var request: String { get }
 }
+// end::SERV-2[]

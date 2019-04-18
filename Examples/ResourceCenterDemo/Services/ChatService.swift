@@ -71,6 +71,7 @@ class ChatService: NSObject {
     return messages
   }
 
+// tag::SUB-1[]
   // MARK: - Service Stop/Start
   func start() {
     chatProvider.add(self)
@@ -89,8 +90,11 @@ class ChatService: NSObject {
   func leaveChannel() {
     chatProvider.unsubscribe(from: [channel], withPresence: true)
   }
+// end::SUB-1[]
 
   // MARK: - Public (Internal) Methods
+
+// tag::PUB-1[]
   func publish(_ message: String, completion: @escaping (Result<Message, NSError>) -> Void) -> Message {
     let request = ChatPublishRequest(channel: channel, message: message, senderId: chatProvider.uuid)
     let sendDate = Date()
@@ -115,7 +119,9 @@ class ChatService: NSObject {
 
     return message
   }
+// end::PUB-1[]
 
+// tag::HIST-1[]
   func getChannelHistory() {
 
     // TODO: Check local cache for any archived messages
@@ -148,7 +154,9 @@ class ChatService: NSObject {
       }
     }
   }
+// end::HIST-1[]
 
+// tag::HERE-1[]
   func getChannelOccupancy() {
     chatProvider.hereNow(for: channel) { [weak self] (result) in
       switch result {
@@ -181,6 +189,7 @@ class ChatService: NSObject {
       }
     }
   }
+// end::HERE-1[]
 
   // MARK: - Private Methods
   private func didConnect() {
@@ -289,6 +298,7 @@ class ChatService: NSObject {
   }
 }
 
+// tag::SERV-1[]
 // MARK: - PNObjectEventListener Extension
 extension ChatService: PNObjectEventListener {
   func client(_ client: PubNub, didReceiveMessage message: PNMessageResult) {
@@ -307,3 +317,4 @@ extension ChatService: PNObjectEventListener {
     didReceive(presence: event)
   }
 }
+// end::SERV-1[]

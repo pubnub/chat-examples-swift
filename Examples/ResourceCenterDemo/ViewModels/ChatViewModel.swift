@@ -30,6 +30,7 @@ struct ChatViewModel {
   private let maxTimeBetweenMesssages: TimeInterval = 60 * 60 // 1 Hour
   private let chatDateFormatter = DateFormatter()
 
+// tag::CVM-1[]
   init(chatProvider: ChatProvider) {
     self.sender = User.defaultSender
 
@@ -41,6 +42,7 @@ struct ChatViewModel {
     self.chatDateFormatter.locale = Locale(identifier: "en_US_POSIX")
     self.chatDateFormatter.dateFormat = "h:mm a"
   }
+// end::CVM-1[]
 
   var channelDetailVieModel: ChannelDetailsViewModel {
     return ChannelDetailsViewModel(with: chatService, on: chatChannel)
@@ -73,6 +75,7 @@ struct ChatViewModel {
       }
     }
 
+// tag::SUB-2[]
     chatService.listener = { (chatEvent) in
       switch chatEvent {
       case .message:
@@ -84,6 +87,7 @@ struct ChatViewModel {
       }
     }
     chatService.start()
+// end::SUB-2[]
   }
 
   func stop() {
