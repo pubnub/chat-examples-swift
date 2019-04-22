@@ -46,7 +46,9 @@ extension PNPublishStatus: ChatPublishRepsonse {
   }
 }
 
+// tag::WRAP-1[]
 extension PNHistoryResult: ChatHistoryRepsonse {
+  // tag::ignore[]
   var start: Date {
     return Date.from(data.start)
   }
@@ -54,6 +56,7 @@ extension PNHistoryResult: ChatHistoryRepsonse {
   var end: Date {
     return Date.from(data.end)
   }
+  // end::ignore[]
 
   var messages: [Message] {
     guard let payload = data.messages as? [[String: Any]] else {
@@ -85,6 +88,7 @@ extension PNHistoryResult: ChatHistoryRepsonse {
     return response
   }
 }
+// end::WRAP-1[]
 
 // swiftlint:disable opening_brace
 // tag::WRAP-0[]
