@@ -7,31 +7,24 @@
 
 import Foundation
 
-protocol BaseConvertibleType {
-  associatedtype BaseType
-
-  var baseValue: BaseType? { get }
-}
-
 enum StorableTarget {
   case userDefaults
-  case diskCache
-  case disk
 }
 
-protocol Storable {
+protocol Defaultable {
   associatedtype Element
 
-  static var storedValues: [Element] { get }
+  static var defaultValue: Element { get }
+  static var defaultValues: [Element] { get }
 }
 
-extension Storable {
+extension Defaultable {
   static func firstStored(with predicate: (Element) -> Bool) -> Element? {
-    return storedValues.first(where: predicate)
+    return defaultValues.first(where: predicate)
   }
 
   static func fetchStored(with predicate: (Element) -> Bool) -> [Element]? {
-    return storedValues.filter(predicate)
+    return defaultValues.filter(predicate)
   }
 }
 
@@ -41,10 +34,6 @@ extension Encodable {
     case .userDefaults:
       let encodedSelf = try? JSONEncoder().encode(self)
       UserDefaults.standard.set(encodedSelf, forKey: name)
-    case .diskCache:
-      FileStorageProvider.store(self, to: .caches, as: name)
-    case .disk:
-      FileStorageProvider.store(self, to: .documents, as: name)
     }
   }
 }
@@ -57,10 +46,6 @@ extension Decodable {
         return nil
       }
       return try? JSONDecoder().decode(Self.self, from: storedData)
-    case .diskCache:
-      return FileStorageProvider.retrieve(name, from: .caches, as: Self.self)
-    case .disk:
-      return FileStorageProvider.retrieve(name, from: .documents, as: Self.self)
     }
   }
 }

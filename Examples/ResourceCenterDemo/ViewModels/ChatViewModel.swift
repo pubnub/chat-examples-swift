@@ -16,19 +16,21 @@ struct ChatViewModel {
 
   typealias Listener = (ChangeType) -> Void
 
-  // Public Vars
-  let chatChannel = "demo-animal-chat"
-  let sender: User
+  // Public Properties
+  let chatChannel = "demo-animal-forest"
+  let sender: User?
   let channelDisplayName = "Animal Forest"
+  private(set) var channelAvatarName = "avatar_animal_forest"
   var listener: Listener?
+
+  // Private Properties
+  private let maxTimeBetweenMesssages: TimeInterval = 60 * 60 // 1 Hour
+  private let chatDateFormatter = DateFormatter()
 
   // Services
   private var reachabilityService: ReachabilityService?
   private var appStateService: AppStateService
   private var chatService: ChatService
-
-  private let maxTimeBetweenMesssages: TimeInterval = 60 * 60 // 1 Hour
-  private let chatDateFormatter = DateFormatter()
 
 // tag::CVM-1[]
   init(chatProvider: ChatProvider) {
@@ -105,7 +107,7 @@ struct ChatViewModel {
     }
 
     // Format the displayname
-    let displayname = NSAttributedString(string: message.user.displayName,
+    let displayname = NSAttributedString(string: message.user?.displayName ?? "",
                                          attributes: messageStringAttributes(with: UIColor.black))
     return displayname
   }
@@ -136,8 +138,8 @@ struct ChatViewModel {
   }
 
   func publish(_ message: String, completion: @escaping (Result<Message, NSError>) -> Void) {
-    _ = chatService.publish(message) { (_) in
-
+    _ = chatService.publish(message) { (result) in
+      completion(result)
     }
   }
 

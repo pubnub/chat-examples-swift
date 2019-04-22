@@ -11,5 +11,5 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-RCDEMO_PUBLISH_KEY=""
-RCDEMO_SUBSCRIBE_KEY=""
+RCDEMO_PUBLISH_KEY=
+RCDEMO_SUBSCRIBE_KEY=

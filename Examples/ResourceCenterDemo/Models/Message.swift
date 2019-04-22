@@ -23,12 +23,8 @@ extension Message {
     ]
   }
 
-  var user: User {
-    guard let user = User.firstStored(with: { $0.senderId == senderId }) else {
-      return User.defaultUser
-    }
-
-    return user
+  var user: User? {
+    return  User.firstStored(with: { $0.senderId == senderId })
   }
 
   func updateTimetoken(with token: NSNumber) -> Message {
