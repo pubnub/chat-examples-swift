@@ -25,7 +25,6 @@ class ChatService: NSObject {
   let channel: String
   var state: ChatState = .notConnected
 
-  private(set) var occupancy: Int = 0
   private var _occupantUUIDs = Set<String>()
   private var _messages = [Message]()
 
@@ -69,6 +68,10 @@ class ChatService: NSObject {
     }
 
     return messages
+  }
+
+  var occupancy: Int {
+    return occupantUUIDs.count
   }
 
 // tag::SUB-1[]
@@ -123,8 +126,6 @@ class ChatService: NSObject {
 
 // tag::HIST-1[]
   func getChannelHistory() {
-
-    // TODO: Check local cache for any archived messages
     var params = ChatHistoryParameters()
     if let timetoken = self.latestTimetoken {
       // Previous received timestoken
@@ -169,13 +170,6 @@ class ChatService: NSObject {
           // Verify our knownledge of the room
           for uuid in response.uuids {
               self?._occupantUUIDs.insert(uuid)
-          }
-
-          // Update Static Occupancy Count
-          self?.occupancy = response.occupancy
-
-          if self?._occupantUUIDs.count != self?.occupancy {
-            NSLog("There is a mismatch between the occupancy count and the occupants list")
           }
 
           // Signal that the occupants list has changes
@@ -223,8 +217,7 @@ class ChatService: NSObject {
     }
 
     messageQueue.async(flags: .barrier) { [weak self] in
-      // TODO: Find a good way to only filter out messages sent from this device.
-      // Determine if we've alrady added this published message
+      // Determine if we've already added this published message
       if let strongSelf = self, message.senderId == strongSelf.chatProvider.uuid {
         NSLog("Message was already published by this user")
 
@@ -265,8 +258,6 @@ class ChatService: NSObject {
     }
 
     presenceQueue.async(flags: .barrier) { [weak self] in
-      self?.occupancy = response.occupancy
-
       if let state = response.state {
         NSLog("State-Change Presence Received: \(state) for \(response)")
       }

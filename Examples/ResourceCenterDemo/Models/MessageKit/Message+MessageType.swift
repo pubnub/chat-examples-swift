@@ -13,7 +13,7 @@ extension Message: MessageType {
   }
 
   var sender: SenderType {
-    return user
+    return user ?? User.defaultValue
   }
 
   var kind: MessageKind {

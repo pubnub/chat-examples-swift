@@ -11,12 +11,13 @@ struct ChannelDetailsViewModel {
 
   var channel: String
 
-  var chatroomTitle = "Animal Chat"
+  var chatroomTitle = "Animal Forest"
   var chatroomDescription = "A chat group to talk to all your fuzzy friends in the animal kingdom."
+  private(set) var channelAvatarName = "avatar_animal_forest"
 
   var chatService: ChatService?
 
-  var sender: User = User.defaultSender
+  var sender: User? = User.defaultSender
 
   typealias Listener = (ChangeType) -> Void
 
@@ -47,22 +48,57 @@ struct ChannelDetailsViewModel {
   }
 
   var activeMembers: [User] {
-    let members = chatService?.occupantUUIDs.compactMap { (uuid) in
+    guard let sender = sender else {
+      return []
+    }
+
+    var members = chatService?.occupantUUIDs.compactMap { (uuid) in
       User.firstStored(with: { $0.uuid == uuid })
+    }
+
+    members?.sort { (first, second) -> Bool in
+      // We want the 'sender' to be the top of the list
+      if first.uuid == sender.uuid {
+        return true
+      } else if second.uuid == sender.uuid {
+        return false
+      }
+
+      // Otherwise sort alphabetically 
+      return first.displayName < second.displayName
     }
 
     return members ?? []
   }
 
-  func occupantDisplayName(at indexPath: IndexPath) -> String {
-
+  func activeMember(at indexPath: IndexPath) -> User? {
     guard indexPath.row < activeMembers.count else {
-        return ""
+      return nil
     }
 
-    let user = activeMembers[indexPath.row]
+    return activeMembers[indexPath.row]
+  }
+
+  func occupantDisplayName(for user: User?) -> String? {
+    guard let user = user else {
+      return nil
+    }
+
     let displayName = user.displayName
 
-    return user.uuid == sender.uuid ? "\(displayName) (You)" : displayName
+    if let sender = sender, user.uuid == sender.uuid {
+      return "\(displayName) (You)"
+    } else {
+      return displayName
+    }
+
+  }
+
+  func occupantDesignation(for user: User?) -> String? {
+    return user?.designation
+  }
+
+  func occupantAvatarImageName(for user: User?) -> String? {
+    return user?.avatarImageName
   }
 }

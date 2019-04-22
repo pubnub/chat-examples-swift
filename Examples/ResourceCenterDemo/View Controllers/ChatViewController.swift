@@ -20,14 +20,18 @@ class ChatViewController: MessagesViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    // Set Delegates
     self.messagesCollectionView.messagesDataSource = self
     self.messagesCollectionView.messagesLayoutDelegate = self
     self.messagesCollectionView.messagesDisplayDelegate = self
-
     self.messageInputBar.delegate = self
 
     // Title Bar
     self.setTitleView()
+
+    // Set Custom Send Icon
+    messageInputBar.sendButton.image = UIImage(named: "ic_send_arrow")
+    messageInputBar.sendButton.title = nil
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -53,15 +57,29 @@ class ChatViewController: MessagesViewController {
 
   func setTitleView() {
     if titleView == nil {
-      // Setting to 0 to force min-width
-      titleView = UILabel(frame: CGRect(x: 0.0, y: 0.0, width: 0.0, height: 44.0))
+      // Create a Multiline Title Label
+      titleView = UILabel(frame: CGRect(x: 0.0, y: 0.0, width: 0.0, height: 35.0))
+      titleView?.widthAnchor.constraint(equalToConstant: 150.0).isActive = true
+      titleView?.heightAnchor.constraint(equalToConstant: 35.0).isActive = true
       titleView?.backgroundColor = UIColor.clear
       titleView?.numberOfLines = 0
-      titleView?.textAlignment = NSTextAlignment.center
+      titleView?.textAlignment = NSTextAlignment.left
+
+      // Add Channel Avatar to Title Bar
+      let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 35.0, height: 35.0))
+      imageView.widthAnchor.constraint(equalToConstant: 35.0).isActive = true
+      imageView.heightAnchor.constraint(equalToConstant: 35.0).isActive = true
+      imageView.image = UIImage(named: viewModel.channelAvatarName)
+
+      let stackView = UIStackView(arrangedSubviews: [imageView, titleView!])
+      stackView.distribution = .fill
+      stackView.alignment = .center
+      stackView.spacing = 15
+
+      self.navigationItem.titleView = stackView
     }
 
     titleView?.attributedText = viewModel.attributedChannelTitle
-    navigationItem.titleView = titleView
   }
 
   func nextMessage(of indexPath: IndexPath) -> Message? {
@@ -95,7 +113,7 @@ class ChatViewController: MessagesViewController {
 // MARK: MessagesDataSource
 extension ChatViewController: MessagesDataSource, MessagesDisplayDelegate, MessagesLayoutDelegate {
   func currentSender() -> SenderType {
-    return viewModel.sender
+    return viewModel.sender ?? User.defaultValue
   }
 
   func backgroundColor(for message: MessageType, at indexPath: IndexPath,
@@ -114,7 +132,7 @@ extension ChatViewController: MessagesDataSource, MessagesDisplayDelegate, Messa
   func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath,
                            in messagesCollectionView: MessagesCollectionView) {
 
-    if let message = message as? Message, let avatarImageName = message.user.avatarImageName {
+    if let message = message as? Message, let avatarImageName = message.user?.avatarImageName {
       avatarView.image = UIImage(named: avatarImageName)
       avatarView.isHidden = isPreviousMessageSameSender(at: indexPath)
     }
