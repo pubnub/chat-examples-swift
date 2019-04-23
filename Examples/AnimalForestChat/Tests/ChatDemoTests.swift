@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import RCDemo
+@testable import AnimalForestChat
 
 class ChatDemoTests: XCTestCase {
 
