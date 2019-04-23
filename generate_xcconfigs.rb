@@ -1,13 +1,5 @@
 require 'fileutils'
-
 require 'optparse'
-
-options = {}
-OptionParser.new do |opt|
-  opt.on('--target_name TARGETNAME') { |target|
-    options[:target_name] = target
-  }
-end.parse!
 
 def generate_xcconfigs(target_name)
   # Get project directory. Used when running from inside Xcode
@@ -50,4 +42,10 @@ def generate_xcconfigs(target_name)
   return return_bool
 end
 
-generate_xcconfigs(options[:target_name])
+options = {}
+OptionParser.new do |opt|
+  opt.on('--target_name TARGETNAME') { |target|
+    options[:target_name] = target
+    generate_xcconfigs(options[:target_name])
+  }
+end.parse!
