@@ -1,15 +1,15 @@
 //
-//  RCDemo.debug.xcconfig
+//  AnimalForestChat.release.xcconfig
 //  chat-examples-swift
 //
 //  Created by Craig Lane on 3/27/19.
 //
 
 // Include the Cocoapods xcconfig file for this target
-#include "Pods/Target Support Files/Pods-RCDemo/Pods-RCDemo.debug.xcconfig"
+#include "Pods/Target Support Files/Pods-AnimalForestChat/Pods-AnimalForestChat.release.xcconfig"
 
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-RCDEMO_PUBLISH_KEY=
-RCDEMO_SUBSCRIBE_KEY=
+ANIMALFORESTCHAT_PUBLISH_KEY=
+ANIMALFORESTCHAT_SUBSCRIBE_KEY=

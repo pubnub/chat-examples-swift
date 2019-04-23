@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>Animal Forest</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -23,9 +25,9 @@
 	<key>PubNub</key>
 	<dict>
 		<key>PubKey</key>
-		<string>$(RCDEMO_PUBLISH_KEY)</string>
+		<string>$(ANIMALFORESTCHAT_PUBLISH_KEY)</string>
 		<key>SubKey</key>
-		<string>$(RCDEMO_SUBSCRIBE_KEY)</string>
+		<string>$(ANIMALFORESTCHAT_SUBSCRIBE_KEY)</string>
 	</dict>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
