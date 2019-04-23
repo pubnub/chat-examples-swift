@@ -16,8 +16,8 @@
                   <BuildableReference
                      BuildableIdentifier = "primary"
                      BlueprintIdentifier = "3552571A223852930095AAFD"
-                     BuildableName = "RCDemo.app"
-                     BlueprintName = "RCDemo"
+                     BuildableName = "AnimalForestChat.app"
+                     BlueprintName = "AnimalForestChat"
                      ReferencedContainer = "container:chat-examples-swift.xcodeproj">
                   </BuildableReference>
                </EnvironmentBuildable>
@@ -34,8 +34,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3552571A223852930095AAFD"
-               BuildableName = "RCDemo.app"
-               BlueprintName = "RCDemo"
+               BuildableName = "AnimalForestChat.app"
+               BlueprintName = "AnimalForestChat"
                ReferencedContainer = "container:chat-examples-swift.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -52,8 +52,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3552571A223852930095AAFD"
-            BuildableName = "RCDemo.app"
-            BlueprintName = "RCDemo"
+            BuildableName = "AnimalForestChat.app"
+            BlueprintName = "AnimalForestChat"
             ReferencedContainer = "container:chat-examples-swift.xcodeproj">
          </BuildableReference>
       </CodeCoverageTargets>
@@ -63,8 +63,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3552572D223852970095AAFD"
-               BuildableName = "RCDemoTests.xctest"
-               BlueprintName = "RCDemoTests"
+               BuildableName = "AnimalForestChatTests.xctest"
+               BlueprintName = "AnimalForestChatTests"
                ReferencedContainer = "container:chat-examples-swift.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -73,8 +73,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3552571A223852930095AAFD"
-            BuildableName = "RCDemo.app"
-            BlueprintName = "RCDemo"
+            BuildableName = "AnimalForestChat.app"
+            BlueprintName = "AnimalForestChat"
             ReferencedContainer = "container:chat-examples-swift.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -98,8 +98,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3552571A223852930095AAFD"
-            BuildableName = "RCDemo.app"
-            BlueprintName = "RCDemo"
+            BuildableName = "AnimalForestChat.app"
+            BlueprintName = "AnimalForestChat"
             ReferencedContainer = "container:chat-examples-swift.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -117,8 +117,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3552571A223852930095AAFD"
-            BuildableName = "RCDemo.app"
-            BlueprintName = "RCDemo"
+            BuildableName = "AnimalForestChat.app"
+            BlueprintName = "AnimalForestChat"
             ReferencedContainer = "container:chat-examples-swift.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

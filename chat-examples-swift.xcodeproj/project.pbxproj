@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0FF2D90AE28F1C86626A6AB6 /* Pods_Snippets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4C63B72FBF38A86B5088F76 /* Pods_Snippets.framework */; };
 		3552571E223852930095AAFD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552571D223852930095AAFD /* AppDelegate.swift */; };
 		35525720223852930095AAFD /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552571F223852930095AAFD /* ChatViewController.swift */; };
 		35525723223852930095AAFD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35525721223852930095AAFD /* Main.storyboard */; };
@@ -38,13 +37,14 @@
 		35AEBF1722601964005F1D41 /* Models+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AEBF1622601964005F1D41 /* Models+Ext.swift */; };
 		35AEBF1E226026F9005F1D41 /* Message+MessageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AEBF1D226026F9005F1D41 /* Message+MessageType.swift */; };
 		35AEBF20226027CC005F1D41 /* User+SenderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AEBF1F226027CC005F1D41 /* User+SenderType.swift */; };
-		35E54745224BF0DB0086FB8F /* RCDemo.debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E54743224BF0DB0086FB8F /* RCDemo.debug.xcconfig */; };
-		35E54746224BF0DB0086FB8F /* RCDemo.release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E54744224BF0DB0086FB8F /* RCDemo.release.xcconfig */; };
+		35E54745224BF0DB0086FB8F /* AnimalForestChat.debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E54743224BF0DB0086FB8F /* AnimalForestChat.debug.xcconfig */; };
+		35E54746224BF0DB0086FB8F /* AnimalForestChat.release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E54744224BF0DB0086FB8F /* AnimalForestChat.release.xcconfig */; };
 		35E5474A224C07CA0086FB8F /* ChatProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35765C72223AE60C000B4B8D /* ChatProvider.swift */; };
 		35E547752252B3670086FB8F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E547742252B3670086FB8F /* User.swift */; };
-		3B2AAA6B2AD1545E0E9B888D /* Pods_RCDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F58B94B594A2D23708B1EDE7 /* Pods_RCDemo.framework */; };
-		3BA1276995BAEDA889C34CD2 /* Pods_RCDemoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CE1A27742468F86C9BB8B45 /* Pods_RCDemoTests.framework */; };
+		6EDA490E19398C5F11FCF6F3 /* Pods_AnimalForestChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB5444322A415DDA4F7DD073 /* Pods_AnimalForestChat.framework */; };
 		797416C1225AAAC400D677B9 /* PNTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797416C0225AAAC400D677B9 /* PNTestCase.swift */; };
+		87026EA39BD3559F5FD72237 /* Pods_AnimalForestChatTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92CD672C223C7CD38819D8ED /* Pods_AnimalForestChatTests.framework */; };
+		BA94CDE95814EDB830865B08 /* Pods_Snippets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCA0C05914869F9538EE481F /* Pods_Snippets.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,17 +58,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		082CE134CD139828AF98CC1A /* Pods-Snippets.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Snippets.release.xcconfig"; path = "Target Support Files/Pods-Snippets/Pods-Snippets.release.xcconfig"; sourceTree = "<group>"; };
-		1084BC24ACEB00513329434A /* Pods-Snippets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Snippets.debug.xcconfig"; path = "Target Support Files/Pods-Snippets/Pods-Snippets.debug.xcconfig"; sourceTree = "<group>"; };
-		2B44F0DDB8ABC0C3AADBD817 /* Pods-RCDemoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RCDemoTests.debug.xcconfig"; path = "Target Support Files/Pods-RCDemoTests/Pods-RCDemoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		35461A7A223A9A1900B59EB6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		3552571B223852930095AAFD /* RCDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RCDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3552571B223852930095AAFD /* AnimalForestChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnimalForestChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3552571D223852930095AAFD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3552571F223852930095AAFD /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		35525722223852930095AAFD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		35525724223852970095AAFD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		35525729223852970095AAFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3552572E223852970095AAFD /* RCDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RCDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3552572E223852970095AAFD /* AnimalForestChatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnimalForestChatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		35525732223852970095AAFD /* ChatDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDemoTests.swift; sourceTree = "<group>"; };
 		35525734223852970095AAFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3558365E2256766C0053E1F9 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
@@ -99,16 +96,19 @@
 		35AEBF1622601964005F1D41 /* Models+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Models+Ext.swift"; sourceTree = "<group>"; };
 		35AEBF1D226026F9005F1D41 /* Message+MessageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+MessageType.swift"; sourceTree = "<group>"; };
 		35AEBF1F226027CC005F1D41 /* User+SenderType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+SenderType.swift"; sourceTree = "<group>"; };
-		35E54743224BF0DB0086FB8F /* RCDemo.debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = RCDemo.debug.xcconfig; sourceTree = "<group>"; };
-		35E54744224BF0DB0086FB8F /* RCDemo.release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = RCDemo.release.xcconfig; sourceTree = "<group>"; };
+		35E54743224BF0DB0086FB8F /* AnimalForestChat.debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AnimalForestChat.debug.xcconfig; sourceTree = "<group>"; };
+		35E54744224BF0DB0086FB8F /* AnimalForestChat.release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AnimalForestChat.release.xcconfig; sourceTree = "<group>"; };
 		35E547742252B3670086FB8F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		403A356F9F4DCF80405DF3DA /* Pods-RCDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RCDemo.release.xcconfig"; path = "Target Support Files/Pods-RCDemo/Pods-RCDemo.release.xcconfig"; sourceTree = "<group>"; };
+		46834D8BF08205419E2E7F43 /* Pods-Snippets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Snippets.debug.xcconfig"; path = "Target Support Files/Pods-Snippets/Pods-Snippets.debug.xcconfig"; sourceTree = "<group>"; };
 		797416C0225AAAC400D677B9 /* PNTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PNTestCase.swift; sourceTree = "<group>"; };
-		7E459D8EAAB6DECDE706C193 /* Pods-RCDemoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RCDemoTests.release.xcconfig"; path = "Target Support Files/Pods-RCDemoTests/Pods-RCDemoTests.release.xcconfig"; sourceTree = "<group>"; };
-		9CE1A27742468F86C9BB8B45 /* Pods_RCDemoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RCDemoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D4C63B72FBF38A86B5088F76 /* Pods_Snippets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Snippets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D6B2A737780EBEF037E52670 /* Pods-RCDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RCDemo.debug.xcconfig"; path = "Target Support Files/Pods-RCDemo/Pods-RCDemo.debug.xcconfig"; sourceTree = "<group>"; };
-		F58B94B594A2D23708B1EDE7 /* Pods_RCDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RCDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		92CD672C223C7CD38819D8ED /* Pods_AnimalForestChatTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnimalForestChatTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A8C7656BDC6E6D6772D43570 /* Pods-AnimalForestChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnimalForestChat.release.xcconfig"; path = "Target Support Files/Pods-AnimalForestChat/Pods-AnimalForestChat.release.xcconfig"; sourceTree = "<group>"; };
+		AB5444322A415DDA4F7DD073 /* Pods_AnimalForestChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnimalForestChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AFC9B246DB872546F5E2E7A7 /* Pods-AnimalForestChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnimalForestChat.debug.xcconfig"; path = "Target Support Files/Pods-AnimalForestChat/Pods-AnimalForestChat.debug.xcconfig"; sourceTree = "<group>"; };
+		C1FD98B887DD6A99DCFC1185 /* Pods-AnimalForestChatTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnimalForestChatTests.release.xcconfig"; path = "Target Support Files/Pods-AnimalForestChatTests/Pods-AnimalForestChatTests.release.xcconfig"; sourceTree = "<group>"; };
+		DCA0C05914869F9538EE481F /* Pods_Snippets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Snippets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC7BCDCBF79C31393D83D4C8 /* Pods-AnimalForestChatTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnimalForestChatTests.debug.xcconfig"; path = "Target Support Files/Pods-AnimalForestChatTests/Pods-AnimalForestChatTests.debug.xcconfig"; sourceTree = "<group>"; };
+		EC9CE89DB388D943B7ABCC85 /* Pods-Snippets.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Snippets.release.xcconfig"; path = "Target Support Files/Pods-Snippets/Pods-Snippets.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,7 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3B2AAA6B2AD1545E0E9B888D /* Pods_RCDemo.framework in Frameworks */,
+				6EDA490E19398C5F11FCF6F3 /* Pods_AnimalForestChat.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,7 +124,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3BA1276995BAEDA889C34CD2 /* Pods_RCDemoTests.framework in Frameworks */,
+				87026EA39BD3559F5FD72237 /* Pods_AnimalForestChatTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,7 +132,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0FF2D90AE28F1C86626A6AB6 /* Pods_Snippets.framework in Frameworks */,
+				BA94CDE95814EDB830865B08 /* Pods_Snippets.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,33 +152,25 @@
 			isa = PBXGroup;
 			children = (
 				35461A7A223A9A1900B59EB6 /* README.md */,
-				35765C69223AE323000B4B8D /* Snippets */,
-				35525716223852450095AAFD /* Examples */,
+				35765C69223AE323000B4B8D /* Documentation Code Snippets */,
+				3552571C223852930095AAFD /* Animal Forest Chat */,
 				355257042237FF420095AAFD /* Products */,
 				C696971A976BA20BB837FD14 /* Pods */,
-				DD1A0EA641317258F844B09E /* Frameworks */,
+				90E76E81DB627E5C9F7FB4CE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		355257042237FF420095AAFD /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3552571B223852930095AAFD /* RCDemo.app */,
-				3552572E223852970095AAFD /* RCDemoTests.xctest */,
+				3552571B223852930095AAFD /* AnimalForestChat.app */,
+				3552572E223852970095AAFD /* AnimalForestChatTests.xctest */,
 				35765C7A223AE694000B4B8D /* Snippets.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		35525716223852450095AAFD /* Examples */ = {
-			isa = PBXGroup;
-			children = (
-				3552571C223852930095AAFD /* ResourceCenterDemo */,
-			);
-			path = Examples;
-			sourceTree = "<group>";
-		};
-		3552571C223852930095AAFD /* ResourceCenterDemo */ = {
+		3552571C223852930095AAFD /* Animal Forest Chat */ = {
 			isa = PBXGroup;
 			children = (
 				3552571D223852930095AAFD /* AppDelegate.swift */,
@@ -193,7 +185,8 @@
 				35E54742224BF0950086FB8F /* Supporting Files */,
 				35765C85223AE768000B4B8D /* Tests */,
 			);
-			path = ResourceCenterDemo;
+			name = "Animal Forest Chat";
+			path = Examples/AnimalForestChat;
 			sourceTree = "<group>";
 		};
 		3558365D2256764B0053E1F9 /* ViewModels */ = {
@@ -241,12 +234,13 @@
 			path = Nibs;
 			sourceTree = "<group>";
 		};
-		35765C69223AE323000B4B8D /* Snippets */ = {
+		35765C69223AE323000B4B8D /* Documentation Code Snippets */ = {
 			isa = PBXGroup;
 			children = (
 				35765C89223FF5B4000B4B8D /* ChatResourceCenter */,
 				35765C7E223AE694000B4B8D /* Info.plist */,
 			);
+			name = "Documentation Code Snippets";
 			path = Snippets;
 			sourceTree = "<group>";
 		};
@@ -298,8 +292,8 @@
 		35E54742224BF0950086FB8F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				35E54743224BF0DB0086FB8F /* RCDemo.debug.xcconfig */,
-				35E54744224BF0DB0086FB8F /* RCDemo.release.xcconfig */,
+				35E54743224BF0DB0086FB8F /* AnimalForestChat.debug.xcconfig */,
+				35E54744224BF0DB0086FB8F /* AnimalForestChat.release.xcconfig */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -325,57 +319,57 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		90E76E81DB627E5C9F7FB4CE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AB5444322A415DDA4F7DD073 /* Pods_AnimalForestChat.framework */,
+				92CD672C223C7CD38819D8ED /* Pods_AnimalForestChatTests.framework */,
+				DCA0C05914869F9538EE481F /* Pods_Snippets.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		C696971A976BA20BB837FD14 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				D6B2A737780EBEF037E52670 /* Pods-RCDemo.debug.xcconfig */,
-				403A356F9F4DCF80405DF3DA /* Pods-RCDemo.release.xcconfig */,
-				2B44F0DDB8ABC0C3AADBD817 /* Pods-RCDemoTests.debug.xcconfig */,
-				7E459D8EAAB6DECDE706C193 /* Pods-RCDemoTests.release.xcconfig */,
-				1084BC24ACEB00513329434A /* Pods-Snippets.debug.xcconfig */,
-				082CE134CD139828AF98CC1A /* Pods-Snippets.release.xcconfig */,
+				AFC9B246DB872546F5E2E7A7 /* Pods-AnimalForestChat.debug.xcconfig */,
+				A8C7656BDC6E6D6772D43570 /* Pods-AnimalForestChat.release.xcconfig */,
+				EC7BCDCBF79C31393D83D4C8 /* Pods-AnimalForestChatTests.debug.xcconfig */,
+				C1FD98B887DD6A99DCFC1185 /* Pods-AnimalForestChatTests.release.xcconfig */,
+				46834D8BF08205419E2E7F43 /* Pods-Snippets.debug.xcconfig */,
+				EC9CE89DB388D943B7ABCC85 /* Pods-Snippets.release.xcconfig */,
 			);
 			path = Pods;
-			sourceTree = "<group>";
-		};
-		DD1A0EA641317258F844B09E /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				F58B94B594A2D23708B1EDE7 /* Pods_RCDemo.framework */,
-				9CE1A27742468F86C9BB8B45 /* Pods_RCDemoTests.framework */,
-				D4C63B72FBF38A86B5088F76 /* Pods_Snippets.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3552571A223852930095AAFD /* RCDemo */ = {
+		3552571A223852930095AAFD /* AnimalForestChat */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 35525735223852970095AAFD /* Build configuration list for PBXNativeTarget "RCDemo" */;
+			buildConfigurationList = 35525735223852970095AAFD /* Build configuration list for PBXNativeTarget "AnimalForestChat" */;
 			buildPhases = (
-				D0EA4F560EA6D6290B19725C /* [CP] Check Pods Manifest.lock */,
+				3A71F4301AFBDF3625EBBA2A /* [CP] Check Pods Manifest.lock */,
 				35525717223852930095AAFD /* Sources */,
 				35525718223852930095AAFD /* Frameworks */,
 				35525719223852930095AAFD /* Resources */,
-				51F3CC95C61C6688F2AEB5BD /* [CP] Embed Pods Frameworks */,
 				35E54749224C04930086FB8F /* SwiftLint */,
+				D674B3EEED96EE57ACB7D98A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = RCDemo;
+			name = AnimalForestChat;
 			productName = "chat-example";
-			productReference = 3552571B223852930095AAFD /* RCDemo.app */;
+			productReference = 3552571B223852930095AAFD /* AnimalForestChat.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3552572D223852970095AAFD /* RCDemoTests */ = {
+		3552572D223852970095AAFD /* AnimalForestChatTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 35525738223852970095AAFD /* Build configuration list for PBXNativeTarget "RCDemoTests" */;
+			buildConfigurationList = 35525738223852970095AAFD /* Build configuration list for PBXNativeTarget "AnimalForestChatTests" */;
 			buildPhases = (
-				5F87F83A1F603A39D55B1EF7 /* [CP] Check Pods Manifest.lock */,
+				77D81AF72861481D49843063 /* [CP] Check Pods Manifest.lock */,
 				3552572A223852970095AAFD /* Sources */,
 				3552572B223852970095AAFD /* Frameworks */,
 				3552572C223852970095AAFD /* Resources */,
@@ -385,21 +379,21 @@
 			dependencies = (
 				35525730223852970095AAFD /* PBXTargetDependency */,
 			);
-			name = RCDemoTests;
+			name = AnimalForestChatTests;
 			productName = "chat-exampleTests";
-			productReference = 3552572E223852970095AAFD /* RCDemoTests.xctest */;
+			productReference = 3552572E223852970095AAFD /* AnimalForestChatTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		35765C79223AE694000B4B8D /* Snippets */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 35765C7F223AE694000B4B8D /* Build configuration list for PBXNativeTarget "Snippets" */;
 			buildPhases = (
-				9ABA358D9626887A96CC6557 /* [CP] Check Pods Manifest.lock */,
+				3C6FC10938E575728D3EA4D7 /* [CP] Check Pods Manifest.lock */,
 				35765C76223AE694000B4B8D /* Sources */,
 				35765C77223AE694000B4B8D /* Frameworks */,
 				35765C78223AE694000B4B8D /* Resources */,
-				CE80F8812FC48FC46D732ABD /* [CP] Embed Pods Frameworks */,
 				35765C88223AFEB9000B4B8D /* SwiftLint */,
+				E327F394CCB40B899B0ED7A7 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -444,8 +438,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3552571A223852930095AAFD /* RCDemo */,
-				3552572D223852970095AAFD /* RCDemoTests */,
+				3552571A223852930095AAFD /* AnimalForestChat */,
+				3552572D223852970095AAFD /* AnimalForestChatTests */,
 				35765C79223AE694000B4B8D /* Snippets */,
 			);
 		};
@@ -456,11 +450,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				35E54745224BF0DB0086FB8F /* RCDemo.debug.xcconfig in Resources */,
+				35E54745224BF0DB0086FB8F /* AnimalForestChat.debug.xcconfig in Resources */,
 				35525725223852970095AAFD /* Assets.xcassets in Resources */,
 				3595647F2268E1F4008442A0 /* UserDetailTableViewCell.xib in Resources */,
 				35525723223852930095AAFD /* Main.storyboard in Resources */,
-				35E54746224BF0DB0086FB8F /* RCDemo.release.xcconfig in Resources */,
+				35E54746224BF0DB0086FB8F /* AnimalForestChat.release.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,33 +511,7 @@
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which \"${PODS_ROOT}/SwiftLint/swiftlint\" >/dev/null; then\n    \"${PODS_ROOT}/SwiftLint/swiftlint\"\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
-		51F3CC95C61C6688F2AEB5BD /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RCDemo/Pods-RCDemo-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/InputBarAccessoryView/InputBarAccessoryView.framework",
-				"${BUILT_PRODUCTS_DIR}/MessageKit/MessageKit.framework",
-				"${BUILT_PRODUCTS_DIR}/PubNub/PubNub.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InputBarAccessoryView.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MessageKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PubNub.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RCDemo/Pods-RCDemo-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5F87F83A1F603A39D55B1EF7 /* [CP] Check Pods Manifest.lock */ = {
+		3A71F4301AFBDF3625EBBA2A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -558,14 +526,14 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RCDemoTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-AnimalForestChat-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		9ABA358D9626887A96CC6557 /* [CP] Check Pods Manifest.lock */ = {
+		3C6FC10938E575728D3EA4D7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -587,7 +555,55 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CE80F8812FC48FC46D732ABD /* [CP] Embed Pods Frameworks */ = {
+		77D81AF72861481D49843063 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AnimalForestChatTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D674B3EEED96EE57ACB7D98A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AnimalForestChat/Pods-AnimalForestChat-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/InputBarAccessoryView/InputBarAccessoryView.framework",
+				"${BUILT_PRODUCTS_DIR}/MessageKit/MessageKit.framework",
+				"${BUILT_PRODUCTS_DIR}/PubNub/PubNub.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InputBarAccessoryView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MessageKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PubNub.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AnimalForestChat/Pods-AnimalForestChat-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E327F394CCB40B899B0ED7A7 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -607,28 +623,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Snippets/Pods-Snippets-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D0EA4F560EA6D6290B19725C /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RCDemo-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -690,7 +684,7 @@
 /* Begin PBXTargetDependency section */
 		35525730223852970095AAFD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 3552571A223852930095AAFD /* RCDemo */;
+			target = 3552571A223852930095AAFD /* AnimalForestChat */;
 			targetProxy = 3552572F223852970095AAFD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -777,7 +771,7 @@
 		};
 		35525736223852970095AAFD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35E54743224BF0DB0086FB8F /* RCDemo.debug.xcconfig */;
+			baseConfigurationReference = 35E54743224BF0DB0086FB8F /* AnimalForestChat.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -831,7 +825,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = Examples/ResourceCenterDemo/Info.plist;
+				INFOPLIST_FILE = Examples/AnimalForestChat/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -850,7 +844,7 @@
 		};
 		35525737223852970095AAFD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35E54744224BF0DB0086FB8F /* RCDemo.release.xcconfig */;
+			baseConfigurationReference = 35E54744224BF0DB0086FB8F /* AnimalForestChat.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -898,7 +892,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = Examples/ResourceCenterDemo/Info.plist;
+				INFOPLIST_FILE = Examples/AnimalForestChat/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -917,7 +911,7 @@
 		};
 		35525739223852970095AAFD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2B44F0DDB8ABC0C3AADBD817 /* Pods-RCDemoTests.debug.xcconfig */;
+			baseConfigurationReference = EC7BCDCBF79C31393D83D4C8 /* Pods-AnimalForestChatTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -970,7 +964,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = Examples/ResourceCenterDemo/Tests/Info.plist;
+				INFOPLIST_FILE = Examples/AnimalForestChat/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -991,7 +985,7 @@
 		};
 		3552573A223852970095AAFD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7E459D8EAAB6DECDE706C193 /* Pods-RCDemoTests.release.xcconfig */;
+			baseConfigurationReference = C1FD98B887DD6A99DCFC1185 /* Pods-AnimalForestChatTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1038,7 +1032,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = Examples/ResourceCenterDemo/Tests/Info.plist;
+				INFOPLIST_FILE = Examples/AnimalForestChat/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1059,7 +1053,7 @@
 		};
 		35765C80223AE694000B4B8D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1084BC24ACEB00513329434A /* Pods-Snippets.debug.xcconfig */;
+			baseConfigurationReference = 46834D8BF08205419E2E7F43 /* Pods-Snippets.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1104,7 +1098,7 @@
 		};
 		35765C81223AE694000B4B8D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 082CE134CD139828AF98CC1A /* Pods-Snippets.release.xcconfig */;
+			baseConfigurationReference = EC9CE89DB388D943B7ABCC85 /* Pods-Snippets.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1155,7 +1149,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		35525735223852970095AAFD /* Build configuration list for PBXNativeTarget "RCDemo" */ = {
+		35525735223852970095AAFD /* Build configuration list for PBXNativeTarget "AnimalForestChat" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				35525736223852970095AAFD /* Debug */,
@@ -1164,7 +1158,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		35525738223852970095AAFD /* Build configuration list for PBXNativeTarget "RCDemoTests" */ = {
+		35525738223852970095AAFD /* Build configuration list for PBXNativeTarget "AnimalForestChatTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				35525739223852970095AAFD /* Debug */,

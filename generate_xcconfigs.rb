@@ -1,18 +1,24 @@
 require 'fileutils'
 
-def generate_xcconfigs()
+require 'optparse'
+
+options = {}
+OptionParser.new do |opt|
+  opt.on('--target_name TARGETNAME') { |target|
+    options[:target_name] = target
+  }
+end.parse!
+
+def generate_xcconfigs(target_name)
   # Get project directory. Used when running from inside Xcode
   curr_dir = File.expand_path File.dirname(__FILE__)
 
   # Path to the stored examples and the git ignored supporting files
-  examples_dir = "#{curr_dir}/Examples/ResourceCenterDemo/BuildConfig"
-  supporting_files_dir = "#{curr_dir}/Examples/ResourceCenterDemo/Supporting Files"
+  examples_dir = "#{curr_dir}/Examples/AnimalForestChat/BuildConfig"
+  supporting_files_dir = "#{curr_dir}/Examples/AnimalForestChat/Supporting Files"
 
   # Lowercase name of the xcode configurations
   configurations = ["debug", "release"]
-
-  # Name of the target that is having keys generated
-  target_name = "RCDemo"
 
   return_bool = true
 
@@ -44,4 +50,4 @@ def generate_xcconfigs()
   return return_bool
 end
 
-generate_xcconfigs()
+generate_xcconfigs(options[:target_name])
