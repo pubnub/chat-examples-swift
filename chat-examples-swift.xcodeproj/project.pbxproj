@@ -37,8 +37,6 @@
 		35AEBF1722601964005F1D41 /* Models+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AEBF1622601964005F1D41 /* Models+Ext.swift */; };
 		35AEBF1E226026F9005F1D41 /* Message+MessageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AEBF1D226026F9005F1D41 /* Message+MessageType.swift */; };
 		35AEBF20226027CC005F1D41 /* User+SenderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AEBF1F226027CC005F1D41 /* User+SenderType.swift */; };
-		35E54745224BF0DB0086FB8F /* AnimalForestChat.debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E54743224BF0DB0086FB8F /* AnimalForestChat.debug.xcconfig */; };
-		35E54746224BF0DB0086FB8F /* AnimalForestChat.release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E54744224BF0DB0086FB8F /* AnimalForestChat.release.xcconfig */; };
 		35E5474A224C07CA0086FB8F /* ChatProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35765C72223AE60C000B4B8D /* ChatProvider.swift */; };
 		35E547752252B3670086FB8F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E547742252B3670086FB8F /* User.swift */; };
 		6EDA490E19398C5F11FCF6F3 /* Pods_AnimalForestChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB5444322A415DDA4F7DD073 /* Pods_AnimalForestChat.framework */; };
@@ -411,7 +409,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1020;
 				TargetAttributes = {
 					3552571A223852930095AAFD = {
 						CreatedOnToolsVersion = 10.2;
@@ -450,11 +448,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				35E54745224BF0DB0086FB8F /* AnimalForestChat.debug.xcconfig in Resources */,
 				35525725223852970095AAFD /* Assets.xcassets in Resources */,
 				3595647F2268E1F4008442A0 /* UserDetailTableViewCell.xib in Resources */,
 				35525723223852930095AAFD /* Main.storyboard in Resources */,
-				35E54746224BF0DB0086FB8F /* AnimalForestChat.release.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

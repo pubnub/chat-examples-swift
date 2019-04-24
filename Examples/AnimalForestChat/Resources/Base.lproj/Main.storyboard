@@ -13,7 +13,7 @@
         <!--Chat View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ChatViewController" customModule="RCDemo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ChatViewController" customModule="AnimalForestChat" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="J3O-oW-SVj">
                         <barButtonItem key="rightBarButtonItem" image="ic_info" id="y2K-Vw-qk5">
                             <connections>
@@ -29,41 +29,44 @@
         <!--Channel Details View Controller-->
         <scene sceneID="5Tb-5G-Rei">
             <objects>
-                <viewController id="ASZ-f5-UPl" customClass="ChannelDetailsViewController" customModule="RCDemo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ASZ-f5-UPl" customClass="ChannelDetailsViewController" customModule="AnimalForestChat" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7gA-hZ-3SQ">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="p7g-2j-Siy">
+                                <rect key="frame" x="10" y="74" width="394" height="284"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="u8v-kf-ySX">
+                                        <rect key="frame" x="0.0" y="0.0" width="394" height="146"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="146" id="Y57-Ju-A3Q"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GeX-SV-lCs">
+                                        <rect key="frame" x="0.0" y="151" width="394" height="133"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hGb-rr-G2K">
                                 <rect key="frame" x="0.0" y="368" width="414" height="368"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="u8v-kf-ySX">
-                                <rect key="frame" x="51.666666666666657" y="89" width="310.66666666666674" height="146"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="146" id="Y57-Ju-A3Q"/>
-                                </constraints>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GeX-SV-lCs">
-                                <rect key="frame" x="52" y="268" width="311" height="92"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="u8v-kf-ySX" firstAttribute="centerX" secondItem="Mwq-Qp-41b" secondAttribute="centerX" id="1RP-Lr-ZMm"/>
-                            <constraint firstItem="u8v-kf-ySX" firstAttribute="width" secondItem="7gA-hZ-3SQ" secondAttribute="width" multiplier="0.75" id="4wb-Sq-gAc"/>
                             <constraint firstItem="hGb-rr-G2K" firstAttribute="centerX" secondItem="Mwq-Qp-41b" secondAttribute="centerX" id="6RP-w2-Bmb"/>
-                            <constraint firstItem="u8v-kf-ySX" firstAttribute="top" secondItem="Mwq-Qp-41b" secondAttribute="top" constant="25" id="GZO-9c-vky"/>
                             <constraint firstItem="hGb-rr-G2K" firstAttribute="height" secondItem="7gA-hZ-3SQ" secondAttribute="height" multiplier="0.5" id="Guh-iR-Vim"/>
-                            <constraint firstItem="u8v-kf-ySX" firstAttribute="centerX" secondItem="GeX-SV-lCs" secondAttribute="centerX" id="JuK-el-EuF"/>
                             <constraint firstItem="hGb-rr-G2K" firstAttribute="width" secondItem="7gA-hZ-3SQ" secondAttribute="width" id="Oc6-y4-Zge"/>
-                            <constraint firstItem="hGb-rr-G2K" firstAttribute="top" secondItem="GeX-SV-lCs" secondAttribute="bottom" constant="25" id="Sp4-k5-Axu"/>
+                            <constraint firstItem="hGb-rr-G2K" firstAttribute="top" secondItem="p7g-2j-Siy" secondAttribute="bottom" constant="10" id="UVi-0I-Ty9"/>
                             <constraint firstItem="Mwq-Qp-41b" firstAttribute="bottom" secondItem="hGb-rr-G2K" secondAttribute="bottom" id="Uvm-a1-dwr"/>
-                            <constraint firstItem="GeX-SV-lCs" firstAttribute="width" secondItem="u8v-kf-ySX" secondAttribute="width" id="i0K-Qx-bRu"/>
-                            <constraint firstItem="GeX-SV-lCs" firstAttribute="top" secondItem="u8v-kf-ySX" secondAttribute="bottom" constant="8" symbolic="YES" id="vy1-HI-LCd"/>
+                            <constraint firstItem="p7g-2j-Siy" firstAttribute="leading" secondItem="Mwq-Qp-41b" secondAttribute="leading" constant="10" id="iQ1-6j-ar6"/>
+                            <constraint firstItem="p7g-2j-Siy" firstAttribute="trailing" secondItem="Mwq-Qp-41b" secondAttribute="trailing" constant="-10" id="z4j-x4-MG1"/>
+                            <constraint firstItem="p7g-2j-Siy" firstAttribute="top" secondItem="Mwq-Qp-41b" secondAttribute="top" constant="10" id="zbi-3A-ea6"/>
+                            <constraint firstItem="p7g-2j-Siy" firstAttribute="centerX" secondItem="Mwq-Qp-41b" secondAttribute="centerX" id="zdI-Kp-2Ep"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Mwq-Qp-41b"/>
                     </view>

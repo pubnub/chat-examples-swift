@@ -28,6 +28,18 @@ extension Message {
   }
 
   func updateTimetoken(with token: NSNumber) -> Message {
-    return Message(uuid: token.description, text: self.text, senderId: self.senderId, sentDate: Date.from(token))
+    return Message(uuid: self.uuid, text: self.text, senderId: self.senderId, sentDate: Date.from(token))
+  }
+}
+
+extension Message: Equatable {
+  /// Returns whether the two Message values are equal.
+  ///
+  /// - parameter lhs: The left-hand side value to compare.
+  /// - parameter rhs: The right-hand side value to compare.
+  ///
+  /// - returns: `true` if the two values are equal, `false` otherwise.
+  static func == (lhs: Message, rhs: Message) -> Bool {
+    return lhs.uuid == rhs.uuid
   }
 }

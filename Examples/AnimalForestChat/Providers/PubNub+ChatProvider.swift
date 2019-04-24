@@ -36,7 +36,7 @@ extension PNPresenceChannelHereNowResult: ChatChannelPresenceResponse {
   }
 }
 
-extension PNPublishStatus: ChatPublishRepsonse {
+extension PNPublishStatus: ChatPublishResponse {
   var sentAt: Date {
     return Date.from(data.timetoken)
   }
@@ -47,7 +47,7 @@ extension PNPublishStatus: ChatPublishRepsonse {
 }
 
 // tag::WRAP-1[]
-extension PNHistoryResult: ChatHistoryRepsonse {
+extension PNHistoryResult: ChatHistoryResponse {
   // tag::ignore[]
   var start: Date {
     return Date.from(data.start)
@@ -79,7 +79,7 @@ extension PNHistoryResult: ChatHistoryRepsonse {
       }
 
       response.append(
-        Message(uuid: senderId,
+        Message(uuid: message["uuid"] as? String ?? UUID().uuidString,
                 text: text,
                 senderId: senderId,
                 sentDate: Date.from(timeToken)))
@@ -98,7 +98,7 @@ extension PubNub: ChatProvider {
     return self.uuid()
   }
 
-  func publish(_ request: ChatPublishRequest, completion: @escaping (Result<ChatPublishRepsonse, NSError>) -> Void) {
+  func publish(_ request: ChatPublishRequest, completion: @escaping (Result<ChatPublishResponse, NSError>) -> Void) {
     publish(request.message,
             toChannel: request.channel,
             mobilePushPayload: request.parameters.mobilePushPayload,
@@ -114,7 +114,7 @@ extension PubNub: ChatProvider {
     }
   }
 
-  func history(_ request: ChatHistoryRequest, completion: @escaping  (Result<ChatHistoryRepsonse?, NSError>) -> Void) {
+  func history(_ request: ChatHistoryRequest, completion: @escaping  (Result<ChatHistoryResponse?, NSError>) -> Void) {
     historyForChannel(request.channel,
                       start: request.parameters.start,
                       end: request.parameters.end,
@@ -256,7 +256,7 @@ extension PNMessageResult: ChatMessageEvent {
         return nil
     }
 
-    return Message(uuid: data.timetoken.description,
+    return Message(uuid: payload["uuid"] as? String ?? UUID().uuidString,
                    text: text,
                    senderId: senderId,
                    sentDate: Date.from(data.timetoken))

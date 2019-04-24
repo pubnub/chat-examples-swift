@@ -35,6 +35,18 @@ struct User: Codable, Hashable {
   }
 }
 
+extension User: Equatable {
+  /// Returns whether the two User values are equal.
+  ///
+  /// - parameter lhs: The left-hand side value to compare.
+  /// - parameter rhs: The right-hand side value to compare.
+  ///
+  /// - returns: `true` if the two values are equal, `false` otherwise.
+  static func == (lhs: User, rhs: User) -> Bool {
+    return lhs.uuid == rhs.uuid 
+  }
+}
+
 extension User: Defaultable {
   static var defaultValue: User {
     return User(uuid: "", firstName: nil, lastName: nil, designation: nil, avatarImageName: nil)
