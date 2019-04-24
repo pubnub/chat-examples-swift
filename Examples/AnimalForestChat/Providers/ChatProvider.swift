@@ -13,12 +13,13 @@ struct ChatPublishRequest {
   var parameters: ChatPublishParameters
 
   init(channel: String,
-       message: String,
-       senderId: String,
+       message: Message,
        parameters: ChatPublishParameters = ChatPublishParameters())
   {
     // swiftlint:disable:previous opening_brace
-    self.message = ["senderId": senderId, "text": message]
+    self.message = ["senderId": message.senderId,
+                    "text": message.text,
+                    "uuid": message.uuid]
     self.channel = channel
     self.parameters = ChatPublishParameters()
   }
@@ -45,7 +46,7 @@ struct ChatHistoryParameters {
   var start: NSNumber?
   var end: NSNumber?
   var limit: UInt = 100
-  var reverse: Bool = true
+  var reverse: Bool = false
   var includeTimeToken: Bool = true
 }
 
@@ -63,21 +64,21 @@ protocol ChatEmitter {
 protocol ChatRequester {
   var uuid: String { get }
 
-  func publish(_ request: ChatPublishRequest, completion: @escaping  (Result<ChatPublishRepsonse, NSError>) -> Void)
-  func history(_ request: ChatHistoryRequest, completion: @escaping  (Result<ChatHistoryRepsonse?, NSError>) -> Void)
+  func publish(_ request: ChatPublishRequest, completion: @escaping  (Result<ChatPublishResponse, NSError>) -> Void)
+  func history(_ request: ChatHistoryRequest, completion: @escaping  (Result<ChatHistoryResponse?, NSError>) -> Void)
   func hereNow(for channel: String, completion: @escaping  (Result<ChatChannelPresenceResponse?, NSError>) -> Void)
 }
 
 typealias ChatProvider = ChatRequester & ChatEmitter
 // end::WRAP-1[]
 
-protocol ChatHistoryRepsonse {
+protocol ChatHistoryResponse {
   var start: Date { get }
   var end: Date { get }
   var messages: [Message] { get }
 }
 
-protocol ChatPublishRepsonse {
+protocol ChatPublishResponse {
   var sentAt: Date { get }
   var responseMessage: String { get }
 }

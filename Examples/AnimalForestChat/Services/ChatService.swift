@@ -98,21 +98,24 @@ class ChatService: NSObject {
   // MARK: - Public (Internal) Methods
 
 // tag::PUB-1[]
-  func publish(_ message: String, completion: @escaping (Result<Message, NSError>) -> Void) -> Message {
-    let request = ChatPublishRequest(channel: channel, message: message, senderId: chatProvider.uuid)
+  func publish(_ text: String, completion: @escaping (Result<Message, NSError>) -> Void) -> Message {
     let sendDate = Date()
 
-    let message = Message(uuid: sendDate.timeToken.description,
-                          text: message,
+    let message = Message(uuid: UUID().uuidString,
+                          text: text,
                           senderId: chatProvider.uuid,
                           sentDate: sendDate)
 
-    chatProvider.publish(request) { (result) in
-      switch result {
-      case .success:
-        completion(.success(message))
-      case .failure(let error):
-        completion(.failure(error))
+    let request = ChatPublishRequest(channel: channel, message: message)
+
+    eventQueue.async { [weak self] in
+      self?.chatProvider.publish(request) { (result) in
+        switch result {
+        case .success:
+          completion(.success(message))
+        case .failure(let error):
+          completion(.failure(error))
+        }
       }
     }
 
@@ -127,31 +130,35 @@ class ChatService: NSObject {
 // tag::HIST-1[]
   func getChannelHistory() {
     var params = ChatHistoryParameters()
+
+    // Search for any messages that we might have missed from our last token
     if let timetoken = self.latestTimetoken {
-      // Previous received timestoken
       params.start = timetoken
+      params.reverse = true
     }
 
     let historyRequest = ChatHistoryRequest(channel: channel, parameters: params)
 
-    chatProvider.history(historyRequest) { [weak self] (result) in
-      switch result {
-      case .success(let response):
-        guard let response = response else {
-          return
-        }
-
-        self?.messageQueue.async(flags: .barrier) {
-          self?.latestTimetoken = response.end.timeToken
-
-          self?._messages.append(contentsOf: response.messages)
-
-          self?.eventQueue.async {
-            self?.listener?(.message(response.messages.count))
+    eventQueue.async { [weak self] in
+      self?.chatProvider.history(historyRequest) { [weak self] (result) in
+        switch result {
+        case .success(let response):
+          guard let response = response else {
+            return
           }
+
+          self?.messageQueue.async(flags: .barrier) {
+            self?.latestTimetoken = response.end.timeToken
+
+            self?._messages.append(contentsOf: response.messages)
+
+            self?.eventQueue.async {
+              self?.listener?(.message(response.messages.count))
+            }
+          }
+        case .failure(let error):
+          NSLog("Error getting message history: \(error.debugDescription)")
         }
-      case .failure(let error):
-        NSLog("Error getting message history: \(error.debugDescription)")
       }
     }
   }
@@ -159,27 +166,33 @@ class ChatService: NSObject {
 
 // tag::HERE-1[]
   func getChannelOccupancy() {
-    chatProvider.hereNow(for: channel) { [weak self] (result) in
-      switch result {
-      case .success(let response):
-        guard let response = response else {
-          return
-        }
+    eventQueue.async { [weak self] in
+      guard let channel = self?.channel else {
+        return
+      }
 
-        self?.presenceQueue.async(flags: .barrier) {
-          // Verify our knownledge of the room
-          for uuid in response.uuids {
-              self?._occupantUUIDs.insert(uuid)
+      self?.chatProvider.hereNow(for: channel) { [weak self] (result) in
+        switch result {
+        case .success(let response):
+          guard let response = response else {
+            return
           }
 
-          // Signal that the occupants list has changes
-          self?.eventQueue.async {
-            self?.listener?(.presence(response.occupancy))
-          }
-        }
+          self?.presenceQueue.async(flags: .barrier) {
+            // Verify our knownledge of the room
+            for uuid in response.uuids {
+                self?._occupantUUIDs.insert(uuid)
+            }
 
-      case .failure(let error):
-        NSLog("Error getting current channel members: \(error.debugDescription)")
+            // Signal that the occupants list has changes
+            self?.eventQueue.async {
+              self?.listener?(.presence(response.occupancy))
+            }
+          }
+
+        case .failure(let error):
+          NSLog("Error getting current channel members: \(error.debugDescription)")
+        }
       }
     }
   }
@@ -217,12 +230,15 @@ class ChatService: NSObject {
     }
 
     messageQueue.async(flags: .barrier) { [weak self] in
-      // Determine if we've already added this published message
-      if let strongSelf = self, message.senderId == strongSelf.chatProvider.uuid {
-        NSLog("Message was already published by this user")
+      // Determine if this device already added this published message
+      if let strongSelf = self,
+        message.senderId == strongSelf.chatProvider.uuid,
+        strongSelf._messages.contains(message) {
+          NSLog("Message was already notified on this device")
 
-        return
+          return
       }
+
       self?.latestTimetoken = message.sentDate.timeToken
 
       self?._messages.append(message)
