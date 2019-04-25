@@ -28,8 +28,15 @@ jobs:
     - stage: snippets
       name: "Integration tests"
       env: LANE='lint_and_test_snippets' SOURCE_DIR='Snippets'
-      before_install: gem install bundler
-      install: bundle install
+      before_install: 
+        - brew update
+        - gem install bundler
+      install: 
+        - bundle install
+        - brew ls --versions node && brew upgrade node || brew install node
+        - npm config set strict-ssl false
+      before_script:
+        - pushd Snippets/ChatResourceCenter/Resources/ && node .create-keysset.js && popd
       script: bundle exec fastlane "${LANE}" source_dir:"${SOURCE_DIR}" kickoff_reason:"${TRAVIS_EVENT_TYPE}" travis_token:"${TRAVIS_API_TOKEN}"
 
     - stage: submodule

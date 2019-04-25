@@ -4,36 +4,44 @@
 //
 //  Created by Craig Lane on 3/19/19.
 //
-
 import XCTest
-
 import PubNub
 
-class Encryption: XCTestCase {
-
-  override func setUp() {
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-  }
-
-  override func tearDown() {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-  }
+class Encryption: PNTestCase {
 
   /**
-   Enabling SSL/TLS encryption
+   * Enabling SSL/TLS encryption.
    */
   func testEnablingSSL_TLS_Encryption() {
+    let uuid = UUID().uuidString
+
     // tag::ENCR-1[]
-    print("Enabling SSL/TLS encryption")
+    let configuration = PNConfiguration(publishKey: publishKey,
+                                        subscribeKey: subscribeKey)
+    configuration.stripMobilePayload = false
+    configuration.TLSEnabled = true
+    configuration.uuid = uuid
+    let pubnub = PubNub.clientWithConfiguration(configuration)
     // end::ENCR-1[]
+
+    XCTAssertNotNil(pubnub)
+    XCTAssertNotNil(pubnub.uuid())
+    XCTAssertEqual(pubnub.uuid(), uuid)
   }
 
   /**
-   Encrypting message payloads (using AES-256)
+   * Encrypting message payloads (using AES-256).
    */
   func testEncryptingMessagePayloadsUsingAES() {
     // tag::ENCR-2[]
-    print("Encrypting message payloads (using AES-256)")
+    let configuration = PNConfiguration(publishKey: publishKey,
+                                        subscribeKey: subscribeKey)
+    configuration.stripMobilePayload = false
+    configuration.cipherKey = "myCipherKey"
+    let pubnub = PubNub.clientWithConfiguration(configuration)
     // end::ENCR-2[]
+
+    XCTAssertNotNil(pubnub)
+    XCTAssertNotNil(pubnub.uuid())
   }
 }
