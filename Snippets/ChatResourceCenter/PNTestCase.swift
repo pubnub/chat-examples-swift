@@ -27,17 +27,19 @@ class PNTestCase: XCTestCase, PNObjectEventListener {
 
     loadKeysSet()
 
+    let callbackQueue = DispatchQueue(label: "test-queue", qos: DispatchQoS.default, attributes: [],
+                                      autoreleaseFrequency: .inherit, target: DispatchQueue.global())
     let tSubscribeKey = accessManagerEnabled() ? pamSubscribeKey : subscribeKey
     let tPublishKey = accessManagerEnabled() ? pamPublishKey : publishKey
     let configuration = PNConfiguration(publishKey: tPublishKey, subscribeKey: tSubscribeKey)
     configuration.stripMobilePayload = false
 
     configuration.uuid = UUID().uuidString
-    pubNubClient = PubNub.clientWithConfiguration(configuration, callbackQueue: DispatchQueue.global())
+    pubNubClient = PubNub.clientWithConfiguration(configuration, callbackQueue: callbackQueue)
     pubNubClient.addListener(self)
 
     configuration.uuid = UUID().uuidString
-    observerPubNubClient = PubNub.clientWithConfiguration(configuration, callbackQueue: DispatchQueue.global())
+    observerPubNubClient = PubNub.clientWithConfiguration(configuration, callbackQueue: callbackQueue)
     observerPubNubClient.addListener(self)
   }
 
