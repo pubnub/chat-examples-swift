@@ -12,23 +12,35 @@ class PNTestCase: XCTestCase, PNObjectEventListener {
   fileprivate var messageHandlers: [String: (_ status: PNMessageResult) -> Void] = [:]
   fileprivate var statusHandlers: [String: (_ status: PNStatus) -> Void] = [:]
   var observerPubNubClient: PubNub!
-  let subscribeKey = "***REMOVED***"
-  let publishKey = "***REMOVED***"
+  var pamSubscribeKey = "***REMOVED***"
+  var pamPublishKey = "***REMOVED***"
+  var subscribeKey = "***REMOVED***"
+  var publishKey = "***REMOVED***"
   var pubNubClient: PubNub!
+
+  public func accessManagerEnabled () -> Bool {
+    return false
+  }
 
   override func setUp() {
     super.setUp()
 
-    let configuration = PNConfiguration(publishKey: publishKey, subscribeKey: subscribeKey)
+    loadKeysSet()
+
+    let callbackQueue = DispatchQueue(label: "test-queue", qos: DispatchQoS.default, attributes: [],
+                                      autoreleaseFrequency: .inherit, target: DispatchQueue.global())
+    let tSubscribeKey = accessManagerEnabled() ? pamSubscribeKey : subscribeKey
+    let tPublishKey = accessManagerEnabled() ? pamPublishKey : publishKey
+    let configuration = PNConfiguration(publishKey: tPublishKey, subscribeKey: tSubscribeKey)
     configuration.stripMobilePayload = false
 
     configuration.uuid = UUID().uuidString
-    observerPubNubClient = PubNub.clientWithConfiguration(configuration, callbackQueue: DispatchQueue.global())
-    observerPubNubClient.addListener(self)
+    pubNubClient = PubNub.clientWithConfiguration(configuration, callbackQueue: callbackQueue)
+    pubNubClient.addListener(self)
 
     configuration.uuid = UUID().uuidString
-    pubNubClient = PubNub.clientWithConfiguration(configuration, callbackQueue: DispatchQueue.global())
-    pubNubClient.addListener(self)
+    observerPubNubClient = PubNub.clientWithConfiguration(configuration, callbackQueue: callbackQueue)
+    observerPubNubClient.addListener(self)
   }
 
   override func tearDown() {
@@ -112,5 +124,16 @@ class PNTestCase: XCTestCase, PNObjectEventListener {
     if let handler = messageHandlers[client.uuid()] {
       handler(message)
     }
+  }
+
+  private func loadKeysSet () {
+    let bundle = Bundle.init(for: type(of: self))
+    let keysPath = bundle.path(forResource: "keysset", ofType: "plist")!
+    let keysSet = NSDictionary.init(contentsOfFile: keysPath)
+
+    pamSubscribeKey = keysSet!.value(forKeyPath: "pam.subscribe") as? String ?? "***REMOVED***"
+    pamPublishKey = keysSet!.value(forKeyPath: "pam.publish") as? String ?? "***REMOVED***"
+    subscribeKey = keysSet!.value(forKeyPath: "regular.subscribe") as? String ?? "***REMOVED***"
+    publishKey = keysSet!.value(forKeyPath: "regular.publish") as? String ?? "***REMOVED***"
   }
 }

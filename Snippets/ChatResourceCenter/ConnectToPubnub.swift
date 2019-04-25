@@ -56,7 +56,7 @@ class ConnectToPubnub: PNTestCase {
     // end::CON-2[]
 
     XCTAssertNotNil(pubnub)
-    XCTAssertNotNil(pubnub.uuid)
+    XCTAssertNotNil(pubnub.uuid())
   }
 
   /**
@@ -75,7 +75,7 @@ class ConnectToPubnub: PNTestCase {
     // end::CON-3[]
 
     XCTAssertNotNil(pubnub)
-    XCTAssertNotNil(pubnub.uuid)
+    XCTAssertNotNil(pubnub.uuid())
     XCTAssert(pubnub.uuid() == uuid)
   }
 
