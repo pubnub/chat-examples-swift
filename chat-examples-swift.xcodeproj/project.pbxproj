@@ -41,6 +41,7 @@
 		35E547752252B3670086FB8F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E547742252B3670086FB8F /* User.swift */; };
 		6EDA490E19398C5F11FCF6F3 /* Pods_AnimalForestChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB5444322A415DDA4F7DD073 /* Pods_AnimalForestChat.framework */; };
 		797416C1225AAAC400D677B9 /* PNTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797416C0225AAAC400D677B9 /* PNTestCase.swift */; };
+		79BFB2E32271B36C00771EA0 /* keysset.plist in Resources */ = {isa = PBXBuildFile; fileRef = 79BFB2E22271B36C00771EA0 /* keysset.plist */; };
 		87026EA39BD3559F5FD72237 /* Pods_AnimalForestChatTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92CD672C223C7CD38819D8ED /* Pods_AnimalForestChatTests.framework */; };
 		BA94CDE95814EDB830865B08 /* Pods_Snippets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCA0C05914869F9538EE481F /* Pods_Snippets.framework */; };
 /* End PBXBuildFile section */
@@ -99,6 +100,7 @@
 		35E547742252B3670086FB8F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		46834D8BF08205419E2E7F43 /* Pods-Snippets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Snippets.debug.xcconfig"; path = "Target Support Files/Pods-Snippets/Pods-Snippets.debug.xcconfig"; sourceTree = "<group>"; };
 		797416C0225AAAC400D677B9 /* PNTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PNTestCase.swift; sourceTree = "<group>"; };
+		79BFB2E22271B36C00771EA0 /* keysset.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = keysset.plist; sourceTree = "<group>"; };
 		92CD672C223C7CD38819D8ED /* Pods_AnimalForestChatTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnimalForestChatTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8C7656BDC6E6D6772D43570 /* Pods-AnimalForestChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnimalForestChat.release.xcconfig"; path = "Target Support Files/Pods-AnimalForestChat/Pods-AnimalForestChat.release.xcconfig"; sourceTree = "<group>"; };
 		AB5444322A415DDA4F7DD073 /* Pods_AnimalForestChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnimalForestChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -254,6 +256,7 @@
 		35765C89223FF5B4000B4B8D /* ChatResourceCenter */ = {
 			isa = PBXGroup;
 			children = (
+				79BFB2E12271B35200771EA0 /* Resources */,
 				797416C0225AAAC400D677B9 /* PNTestCase.swift */,
 				35765C8B224132EE000B4B8D /* ConnectToPubnub.swift */,
 				35765C9C224134A5000B4B8D /* ManageChannels.swift */,
@@ -315,6 +318,14 @@
 				35AEBF1C226026CB005F1D41 /* MessageKit */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		79BFB2E12271B35200771EA0 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				79BFB2E22271B36C00771EA0 /* keysset.plist */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		90E76E81DB627E5C9F7FB4CE /* Frameworks */ = {
@@ -387,6 +398,7 @@
 			buildConfigurationList = 35765C7F223AE694000B4B8D /* Build configuration list for PBXNativeTarget "Snippets" */;
 			buildPhases = (
 				3C6FC10938E575728D3EA4D7 /* [CP] Check Pods Manifest.lock */,
+				79BFB2E42271BCA200771EA0 /* Create keys set */,
 				35765C76223AE694000B4B8D /* Sources */,
 				35765C77223AE694000B4B8D /* Frameworks */,
 				35765C78223AE694000B4B8D /* Resources */,
@@ -465,6 +477,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79BFB2E32271B36C00771EA0 /* keysset.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -572,6 +585,24 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		79BFB2E42271BCA200771EA0 /* Create keys set */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Create keys set";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho $CI\n";
 		};
 		D674B3EEED96EE57ACB7D98A /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -804,7 +835,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 8XP4D6N55Z;
+				DEVELOPMENT_TEAM = LJE3GJ53Z7;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -877,7 +908,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 8XP4D6N55Z;
+				DEVELOPMENT_TEAM = LJE3GJ53Z7;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;

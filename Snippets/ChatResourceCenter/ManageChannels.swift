@@ -22,30 +22,28 @@ class ManageChannels: PNTestCase {
       .withPresence(true)
       .perform()
 
-    registerStatusHandler(observerPubNubClient, handler: { status in
-      if status.operation == .subscribeOperation {
-        // tag::CHAN-1[]
-        pubnub.subscribe()
-          // tag::ignore[]
-          .channels([expectedChannel])
-          /**
-          // end::ignore[]
-          .channels(["room-1"])
-          // tag::ignore[]
-           */
-          // end::ignore[]
-          .perform()
-        // end::CHAN-1[]
-      }
-    })
-
     registerPresenceHandler(observerPubNubClient, handler: { event in
-      if event.data.presenceEvent == "join" && event.data.presence.uuid == pubnub.uuid() {
-        joinExpectation.fulfill()
+      if event.data.presenceEvent == "join" {
+        if event.data.presence.uuid == self.observerPubNubClient.uuid() {
+          // tag::CHAN-1[]
+          pubnub.subscribe()
+            // tag::ignore[]
+            .channels([expectedChannel])
+            /**
+            // end::ignore[]
+            .channels(["room-1"])
+            // tag::ignore[]
+             */
+            // end::ignore[]
+            .perform()
+          // end::CHAN-1[]
+        } else {
+          joinExpectation.fulfill()
+        }
       }
     })
 
-    wait(for: [joinExpectation], timeout: 10)
+    wait(for: [joinExpectation], timeout: 30)
   }
 
   /**
@@ -53,7 +51,9 @@ class ManageChannels: PNTestCase {
    */
   func testSubscribingToMultipleChannels() {
     let joinExpectation = expectation(description: "Waiting second user to join chat.")
-    var channelsToJoin = [UUID().uuidString, UUID().uuidString, UUID().uuidString]
+    let channelsToJoin = [UUID().uuidString, UUID().uuidString]
+    var observerJoinedChannels: [String] = []
+    var clientJoinedChannels: [String] = []
     let pubnub: PubNub! = pubNubClient
 
     observerPubNubClient.subscribe()
@@ -61,36 +61,36 @@ class ManageChannels: PNTestCase {
       .withPresence(true)
       .perform()
 
-    registerStatusHandler(observerPubNubClient, handler: { status in
-      if status.operation == .subscribeOperation {
-        // tag::CHAN-2[]
-        pubnub.subscribe()
-          // tag::ignore[]
-          .channels(channelsToJoin)
-          /**
-          // end::ignore[]
-          .channels(["room-1", "room-2", "room-3"])
-          // tag::ignore[]
-           */
-          // end::ignore[]
-          .perform()
-        // end::CHAN-2[]
-      }
-    })
-
     registerPresenceHandler(observerPubNubClient, handler: { event in
-      if event.data.presenceEvent == "join" && event.data.presence.uuid == pubnub.uuid() {
-        if let channelIdx = channelsToJoin.firstIndex(of: event.data.channel) {
-          channelsToJoin.remove(at: channelIdx)
-        }
+      if event.data.presenceEvent == "join" {
+        if event.data.presence.uuid == self.observerPubNubClient.uuid() {
+          observerJoinedChannels.append(event.data.channel)
 
-        if channelsToJoin.count == 0 {
-          joinExpectation.fulfill()
+          if observerJoinedChannels.count == channelsToJoin.count {
+            // tag::CHAN-2[]
+            pubnub.subscribe()
+              // tag::ignore[]
+              .channels(channelsToJoin)
+              /**
+              // end::ignore[]
+              .channels(["room-1", "room-2", "room-3"])
+              // tag::ignore[]
+               */
+              // end::ignore[]
+              .perform()
+            // end::CHAN-2[]
+          }
+        } else if event.data.presence.uuid == pubnub.uuid() {
+          clientJoinedChannels.append(event.data.channel)
+
+          if clientJoinedChannels.count == channelsToJoin.count {
+            joinExpectation.fulfill()
+          }
         }
       }
     })
 
-    wait(for: [joinExpectation], timeout: 10)
+    wait(for: [joinExpectation], timeout: 30)
   }
 
   /**
