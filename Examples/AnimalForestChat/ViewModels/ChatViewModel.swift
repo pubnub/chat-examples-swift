@@ -8,121 +8,172 @@
 import UIKit
 
 struct ChatViewModel {
+  // MARK: Types
 
+  /// Defines the different areas a `Date` can be displayed
+  ///
+  /// - header:  The area between two messages
+  /// - message: The area directly above a message
   enum DateDisplayArea {
+    /// The area between two messages
     case header
+    /// The area directly above a message
     case message
   }
 
+  /// Defines the type of change event emitted
+  ///
+  /// - messages:   A new message has been recieved
+  /// - occupancy:  The occupancy of the chat room has increased or decreased
   enum ChangeType {
+    /// A new message has been recieved
     case messages
+    /// The occupancy of the chat room has increased or decreased
     case occupancy
   }
 
   typealias Listener = (ChangeType) -> Void
 
-  // Public Properties
-  let chatChannel = "demo-animal-forest"
-  let sender: User?
-  let channelDisplayName = "Animal Forest"
-  private(set) var channelAvatarName = "avatar_animal_forest"
+  // MARK: Public Properties
+  /// A closure executed when the view model data changes. The closure takes a single argument: the
+  /// chat event `ChangeType`.
   var listener: Listener?
 
-  // Private Properties
+  // MARK: Private Properties
+  private let chatURLString = "https://ps.pndsn.com/time/0"
   private let maxTimeBetweenMesssages: TimeInterval = 60 * 60 // 1 Hour
   private let chatDateFormatter = DateFormatter()
 
-  // Services
+  // MARK: Services
   private var reachabilityService: ReachabilityService?
   private var appStateService: AppStateService
-  private var chatService: ChatService
+  private var chatService: ChatRoomService
 
 // tag::CVM-1[]
-  init(chatProvider: ChatProvider) {
-    self.sender = User.defaultSender
+  init(with chatService: ChatRoomService,
+       reachabilityService: ReachabilityService? = ReachabilityService(),
+       appStateService: AppStateService = AppStateService()) {
 
-    self.chatService = ChatService(with: chatProvider, on: chatChannel)
-    self.reachabilityService = ReachabilityService(host: "https://ps.pndsn.com/time/0")
-    self.appStateService = AppStateService()
+    self.chatService = chatService
+    self.reachabilityService = reachabilityService
+    self.appStateService = appStateService
 
+    // tag::ignore[]
     // Configure Message Date Formatter
     self.chatDateFormatter.locale = Locale(identifier: "en_US_POSIX")
+    // end::ignore[]
   }
 // end::CVM-1[]
 
-  var channelDetailVieModel: ChannelDetailsViewModel {
-    return ChannelDetailsViewModel(with: chatService, on: chatChannel)
+  // MARK: Listeners
+// tag::SUB-2[]
+  private var chatListener: ChatRoomService.Listener {
+    return { (chatEvent) in
+      switch chatEvent {
+      case .messages:
+        self.listener?(.messages)
+      case .users:
+        self.listener?(.occupancy)
+      case .status(let event):
+        switch event {
+        case .success(let statusEvent):
+          switch statusEvent {
+          case .connected:
+            // Get chat room Info
+            self.chatService.fetchMessageHistory()
+            self.chatService.fetchCurrentUsers()
+          case .notConnected:
+            break
+          }
+        case .failure:
+          break
+        }
+      }
+    }
   }
+// end::SUB-2[]
 
-  func start() {
-    reachabilityService?.listener = { (status) in
+  private var reachabilityListener: ReachabilityService.Listener {
+    return { (status) in
       switch status {
       case .unknown:
         break
       case .notReachable:
-        self.chatService.leaveChannel()
+        self.chatService.stop()
       case .reachable:
-        self.chatService.joinChannel()
+        self.chatService.start()
       }
     }
-    reachabilityService?.start()
+  }
 
-    appStateService.start { (appState) in
+  private var appStateListener: AppStateService.Listener {
+    return { (appState) in
       switch appState {
       case .didBecomeActive:
         // Start Subscribing
-        self.chatService.joinChannel()
+        self.chatService.start()
       case .willResignActive:
         // Stop Subscribing
-        self.chatService.leaveChannel()
+        self.chatService.stop()
       case .didEnterBackground, .willEnterForeground:
         // We're not doing anything special outside of active/inactive
         break
       }
     }
-
-// tag::SUB-2[]
-    chatService.listener = { (chatEvent) in
-      switch chatEvent {
-      case .message:
-        self.listener?(.messages)
-      case .presence:
-        self.listener?(.occupancy)
-      case .status:
-        break
-      }
-    }
-    chatService.start()
-// end::SUB-2[]
   }
 
+  /// Starts listening for changes managed by this view model.
+  func start() {
+    reachabilityService?.listener = reachabilityListener
+    reachabilityService?.start()
+
+    appStateService.listener = appStateListener
+    appStateService.start()
+
+    chatService.listener = chatListener
+    chatService.start()
+  }
+
+  /// Stops listening for changes managed by this view model.
   func stop() {
     self.reachabilityService?.stop()
     self.appStateService.stop()
-    self.chatService.stop()  }
+    self.chatService.stop()
+  }
 
+  // MARK: Chat Data Source
+  /// The user sending messages
+  var sender: User {
+    return chatService.sender
+  }
+  /// The room being tracked by the view model
+  var chatRoom: ChatRoom {
+    return chatService.room
+  }
+
+  /// List of `Message` values that are associted with the chat room
   var messages: [Message] {
     return chatService.messages
   }
 
-  func history() {
-    chatService.getChannelHistory()
-  }
-
+  /// Publish a message to the service's chat room
+  /// - parameter message: The text to be published
   func publish(_ message: String, completion: @escaping (Result<Message, NSError>) -> Void) {
     _ = chatService.publish(message) { (result) in
       completion(result)
     }
   }
 
-  func getChannelOccupancy() {
-    chatService.getChannelOccupancy()
+  // MARK: Presentation
+  /// View model that can be used to provide data about chat room details
+  var chatRoomDetailVieModel: ChatRoomDetailsViewModel {
+    return ChatRoomDetailsViewModel(with: chatService)
   }
 
-  // MARK: Presentation
-  var channelTitle: NSAttributedString {
+  /// The attributed string representing the chat room's name
+  var chatRoomAttributedTitle: NSAttributedString {
     // Format the displayname
-    let displayname = NSMutableAttributedString(string: "\(channelDisplayName)\n",
+    let displayname = NSMutableAttributedString(string: "\(chatRoom.name)\n",
       attributes: titleStringAttributes(with: 17))
 
     switch chatService.state {
@@ -147,7 +198,7 @@ struct ChatViewModel {
   }
 
   func messageBackgroundColor(at index: Int) -> UIColor {
-    if let sender = sender, messages[index].senderId == sender.uuid {
+    if messages[index].senderId == sender.uuid {
       return UIColor.messageSender
     }
 
@@ -155,7 +206,7 @@ struct ChatViewModel {
   }
 
   func messageAvatarImage(at index: Int) -> UIImage? {
-    if let imageName = messages[index].user?.avatarImageName {
+    if let imageName = messages[index].user?.avatarName {
       return UIImage(named: imageName)
     }
 

@@ -17,7 +17,7 @@
                     <navigationItem key="navigationItem" id="J3O-oW-SVj">
                         <barButtonItem key="rightBarButtonItem" image="ic_info" id="y2K-Vw-qk5">
                             <connections>
-                                <segue destination="ASZ-f5-UPl" kind="show" identifier="ChatViewShowChannelDetailSegue" id="kaU-sj-fLT"/>
+                                <segue destination="ASZ-f5-UPl" kind="show" identifier="ChatViewShowRoomDetailSegue" id="kaU-sj-fLT"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -26,10 +26,10 @@
             </objects>
             <point key="canvasLocation" x="1014" y="774"/>
         </scene>
-        <!--Channel Details View Controller-->
+        <!--Chat Room Details View Controller-->
         <scene sceneID="5Tb-5G-Rei">
             <objects>
-                <viewController id="ASZ-f5-UPl" customClass="ChannelDetailsViewController" customModule="AnimalForestChat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ASZ-f5-UPl" customClass="ChatRoomDetailsViewController" customModule="AnimalForestChat" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7gA-hZ-3SQ">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -72,8 +72,8 @@
                     </view>
                     <connections>
                         <outlet property="activeMemberTableView" destination="hGb-rr-G2K" id="mOg-wh-neO"/>
-                        <outlet property="channelAvatarImageView" destination="u8v-kf-ySX" id="2jV-Te-wiV"/>
-                        <outlet property="channelDescriptionLabel" destination="GeX-SV-lCs" id="3ek-Dr-esg"/>
+                        <outlet property="roomAvatarImageView" destination="u8v-kf-ySX" id="zBI-al-jVy"/>
+                        <outlet property="roomDescriptionLabel" destination="GeX-SV-lCs" id="qTj-Vp-eyd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZSa-rz-UV3" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -6,8 +6,6 @@
 //
 
 import UIKit
-// tag::INIT-1[]
-import PubNub
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,24 +15,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ application: UIApplication,
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-    // tag::ignore[]
     // Set the Bar Button Text Color
     UINavigationBar.appearance().tintColor = #colorLiteral(red: 0.8117647059, green: 0.1294117647, blue: 0.1607843137, alpha: 1)
     UINavigationBar.appearance().backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-    // end::ignore[]
 
+    // Assign default values for initial view controller
     if let navController = self.window?.rootViewController as? UINavigationController,
        let chatVC = navController.viewControllers.first as? ChatViewController {
 
-      let senderId = User.defaultSender?.senderId
-      let pubNub = PubNub.configure(with: senderId)
+      // Typically there would be user authentication flows prior to displaying
+      // the default chat room view, but this app currently uses default values for
+      // all users and rooms.
+      let service = ChatRoomService(for: User.defaultValue)
 
-      chatVC.viewModel = ChatViewModel(chatProvider: pubNub)
+      chatVC.viewModel = ChatViewModel(with: service)
     }
 
     return true
   }
-// end::INIT-1[]
 
   func applicationWillResignActive(_ application: UIApplication) {
     // Sent when the application is about to move from active to inactive state.

@@ -7,10 +7,6 @@
 
 import Foundation
 
-enum StorableTarget {
-  case userDefaults
-}
-
 protocol Defaultable {
   associatedtype Element
 
@@ -19,6 +15,10 @@ protocol Defaultable {
 }
 
 extension Defaultable {
+  static var defaultValues: [Element] {
+    return [defaultValue]
+  }
+
   static func firstStored(with predicate: (Element) -> Bool) -> Element? {
     return defaultValues.first(where: predicate)
   }
@@ -26,6 +26,10 @@ extension Defaultable {
   static func fetchStored(with predicate: (Element) -> Bool) -> [Element]? {
     return defaultValues.filter(predicate)
   }
+}
+
+enum StorableTarget {
+  case userDefaults
 }
 
 extension Encodable {

@@ -8,27 +8,26 @@
 import Foundation
 
 struct Message: Codable, Hashable {
+  /// Unique identifier for the message
   var uuid: String
+  /// The text content for the message
   var text: String
-
-  var senderId: String
+  /// The date at which the message was created
   var sentDate: Date
+  /// Identifier of the user who sent the message
+  var senderId: String
+  /// Identifier of the room to which the message belongs
+  var roomId: String
 }
 
 extension Message {
-  static func payload(for message: String, by senderId: String) -> [String: String] {
-    return [
-      "senderId": senderId,
-      "text": message
-    ]
-  }
-
+  /// The user who sent the message
   var user: User? {
-    return  User.firstStored(with: { $0.senderId == senderId })
+    return  User.firstStored(with: { $0.uuid == senderId })
   }
-
-  func updateTimetoken(with token: NSNumber) -> Message {
-    return Message(uuid: self.uuid, text: self.text, senderId: self.senderId, sentDate: Date.from(token))
+  /// The room to which the message belongs
+  var room: ChatRoom? {
+    return ChatRoom.firstStored(with: { $0.uuid == roomId })
   }
 }
 

@@ -8,14 +8,20 @@
 import SystemConfiguration
 
 class ReachabilityService {
+  /// Default `Host` string used by the service
+  static var defaultURLString = "https://ps.pndsn.com/time/0"
+
   /// Defines the various states of network reachability.
   ///
   /// - unknown:      It is unknown whether the network is reachable.
   /// - notReachable: The network is not reachable.
   /// - reachable:    The network is reachable.
   enum NetworkReachabilityStatus {
+    /// It is unknown whether the network is reachable.
     case unknown
+    /// The network is not reachable.
     case notReachable
+    /// The network is reachable.
     case reachable(ConnectionType)
   }
 
@@ -24,7 +30,9 @@ class ReachabilityService {
   /// - ethernetOrWiFi: The connection type is either over Ethernet or WiFi.
   /// - wwan:           The connection type is a WWAN connection.
   enum ConnectionType {
+    /// The connection type is either over Ethernet or WiFi.
     case ethernetOrWiFi
+    /// The connection type is a WWAN connection.
     case wwan
   }
 
@@ -68,7 +76,7 @@ class ReachabilityService {
 
   // MARK: - Initialization
 
-  required init?(host: String) {
+  required init?(host: String = defaultURLString) {
     guard let scnReachability = SCNetworkReachabilityCreateWithName(nil, host) else { return nil }
     self.reachability = scnReachability
 

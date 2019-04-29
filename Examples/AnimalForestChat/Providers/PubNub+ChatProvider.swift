@@ -7,9 +7,93 @@
 
 import Foundation
 
+// tag::WRAP-0[]
 import PubNub
+// end::WRAP-0[]
 
-extension PNPresenceChannelHereNowResult: ChatChannelPresenceResponse {
+// swiftlint:disable opening_brace
+// tag::WRAP-1[]
+extension PubNub: ChatProvider {
+  func publish(_ request: ChatPublishRequest, completion: @escaping (Result<ChatPublishResponse, NSError>) -> Void) {
+    publish(request.message,
+            toChannel: request.roomId,
+            mobilePushPayload: request.parameters.mobilePushPayload,
+            storeInHistory: request.parameters.storeInHistory,
+            compressed: request.parameters.compressed,
+            withMetadata: request.parameters.metadata)
+    { (status) in
+      if let error = status.error {
+        completion(.failure(error))
+      } else {
+        completion(.success(status))
+      }
+    }
+  }
+  // end::WRAP-1[]
+
+  // tag::WRAP-2[]
+  func history(_ request: ChatHistoryRequest, completion: @escaping  (Result<ChatHistoryResponse?, NSError>) -> Void) {
+    historyForChannel(request.roomId,
+                      start: request.parameters.start?.timeToken,
+                      end: request.parameters.end?.timeToken,
+                      limit: request.parameters.limit,
+                      reverse: request.parameters.reverse,
+                      includeTimeToken: request.parameters.includeTimeToken)
+    { (result, status) in
+      if let error = status?.error {
+        completion(.failure(error))
+      } else if let result = result {
+        completion(.success(result))
+      }
+    }
+  }
+  // end::WRAP-2[]
+
+  // tag::WRAP-3[]
+  func presence(for roomId: String, completion: @escaping  (Result<ChatRoomPresenceResponse?, NSError>) -> Void) {
+    hereNowForChannel(roomId) { (result, status) in
+      if let error = status?.error {
+        completion(.failure(error))
+      } else if let result = result {
+        completion(.success(result))
+      }
+    }
+  }
+  // end::WRAP-3[]
+
+  // tag::WRAP-4[]
+  func add(_ listener: AnyObject) {
+    // Verify that we're passing the correct object type
+    guard let pnObjectListener = listener as? PNObjectEventListener else {
+      return
+    }
+
+    addListener(pnObjectListener)
+  }
+
+  func remove(_ listener: AnyObject) {
+    // Verify that we're passing the correct object type
+    guard let pnObjectListener = listener as? PNObjectEventListener else {
+      return
+    }
+    removeListener(pnObjectListener)
+  }
+  // end::WRAP-4[]
+
+  // tag::WRAP-5[]
+  func subscribe(to roomId: String) {
+    self.subscribeToChannels([roomId], withPresence: true)
+  }
+
+  func unsubscribe(from roomId: String) {
+    self.unsubscribeFromChannels([roomId], withPresence: true)
+  }
+}
+// end::WRAP-5[]
+// swiftlint:enable opening_brace
+
+// MARK: Request Responses
+extension PNPresenceChannelHereNowResult: ChatRoomPresenceResponse {
   var occupancy: Int {
     return data.occupancy.intValue
   }
@@ -74,15 +158,18 @@ extension PNHistoryResult: ChatHistoryResponse {
       guard let payload = message["message"] as? [String: String],
         let senderId = payload["senderId"],
         let timeToken = message["timetoken"] as? NSNumber,
-        let text = payload["text"] else {
+        let text = payload["text"],
+        // /v2/history/sub-key/{sub_key}/channel/{channel}
+        let roomId = clientRequest?.url?.lastPathComponent else {
           continue
       }
 
       response.append(
         Message(uuid: message["uuid"] as? String ?? UUID().uuidString,
                 text: text,
+                sentDate: Date.from(timeToken),
                 senderId: senderId,
-                sentDate: Date.from(timeToken)))
+                roomId: roomId))
     }
 
     return response
@@ -90,97 +177,37 @@ extension PNHistoryResult: ChatHistoryResponse {
 }
 // end::WRAP-1[]
 
-// swiftlint:disable opening_brace
-// tag::WRAP-0[]
-extension PubNub: ChatProvider {
-  // MARK: - ChatRequester
-  var uuid: String {
-    return self.uuid()
+// MARK: Listener Responses
+// tag::EVENT-1[]
+extension PNMessageResult: ChatMessageEvent {
+  var roomId: String {
+    return data.channel
   }
-
-  func publish(_ request: ChatPublishRequest, completion: @escaping (Result<ChatPublishResponse, NSError>) -> Void) {
-    publish(request.message,
-            toChannel: request.channel,
-            mobilePushPayload: request.parameters.mobilePushPayload,
-            storeInHistory: request.parameters.storeInHistory,
-            compressed: request.parameters.compressed,
-            withMetadata: request.parameters.metadata)
-    { (status) in
-      if let error = status.error {
-        completion(.failure(error))
-      } else {
-        completion(.success(status))
-      }
-    }
-  }
-
-  func history(_ request: ChatHistoryRequest, completion: @escaping  (Result<ChatHistoryResponse?, NSError>) -> Void) {
-    historyForChannel(request.channel,
-                      start: request.parameters.start,
-                      end: request.parameters.end,
-                      limit: request.parameters.limit,
-                      reverse: request.parameters.reverse,
-                      includeTimeToken: request.parameters.includeTimeToken)
-    { (result, status) in
-      if let error = status?.error {
-        completion(.failure(error))
-      } else if let result = result {
-        completion(.success(result))
-      }
-    }
-  }
-
-  func hereNow(for channel: String, completion: @escaping  (Result<ChatChannelPresenceResponse?, NSError>) -> Void) {
-    hereNowForChannel(channel) { (result, status) in
-      if let error = status?.error {
-        completion(.failure(error))
-      } else if let result = result {
-        completion(.success(result))
-      }
-    }
-  }
-
-  // MARK: - ChatEmitter
-  func add(_ listener: AnyObject) {
-    // Verify that we're passing the correct object type
-    guard let pnObjectListener = listener as? PNObjectEventListener else {
-      return
+  var message: Message? {
+    guard let payload = data.message as? [String: Any?] else {
+      return nil
     }
 
-    addListener(pnObjectListener)
+    return decode(payload)
   }
-
-  func remove(_ listener: AnyObject) {
-    // Verify that we're passing the correct object type
-    guard let pnObjectListener = listener as? PNObjectEventListener else {
-      return
+  func decode(_ payload: [String: Any?]) -> Message? {
+    guard let text = payload["text"] as? String,
+      let senderId = payload["senderId"] as? String else {
+        return nil
     }
-    removeListener(pnObjectListener)
-  }
 
-  func subscribe(to channels: [String], withPresence: Bool) {
-    self.subscribeToChannels(channels, withPresence: withPresence)
-  }
-
-  func unsubscribe(from channels: [String], withPresence: Bool) {
-    self.unsubscribeFromChannels(channels, withPresence: withPresence)
+    return Message(uuid: payload["uuid"] as? String ?? UUID().uuidString,
+                   text: text,
+                   sentDate: Date.from(data.timetoken),
+                   senderId: senderId,
+                   roomId: data.channel)
   }
 }
-// end::WRAP-0[]
-// swiftlint:enable opening_brace
+// end::EVENT-1[]
 
-extension PNStatus: ChatStatusEvent {
-  var status: String {
-    return stringifiedCategory()
-  }
-
-  var request: String {
-    return stringifiedOperation()
-  }
-}
-
+// tag::EVENT-2[]
 extension PNPresenceEventResult: ChatPresenceEvent {
-  var channel: String {
+  var roomId: String {
     return data.channel
   }
 
@@ -229,36 +256,17 @@ extension PNPresenceEventResult: ChatPresenceEvent {
 
     return left
   }
+}
+// end::EVENT-2[]
 
-  var refreshNow: Bool {
-    return false
+// tag::EVENT-3[]
+extension PNStatus: ChatStatusEvent {
+  var status: String {
+    return stringifiedCategory()
   }
 
-  var state: [String: Any]? {
-    return data.presence.state
+  var request: String {
+    return stringifiedOperation()
   }
 }
-
-extension PNMessageResult: ChatMessageEvent {
-  var channel: String {
-    return data.channel
-  }
-  var message: Message? {
-    guard let payload = data.message as? [String: Any?] else {
-      return nil
-    }
-
-    return decode(payload)
-  }
-  func decode(_ payload: [String: Any?]) -> Message? {
-    guard let text = payload["text"] as? String,
-      let senderId = payload["senderId"] as? String else {
-        return nil
-    }
-
-    return Message(uuid: payload["uuid"] as? String ?? UUID().uuidString,
-                   text: text,
-                   senderId: senderId,
-                   sentDate: Date.from(data.timetoken))
-  }
-}
+// end::EVENT-3[]

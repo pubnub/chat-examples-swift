@@ -5,7 +5,7 @@ PODS:
   - PubNub (4.8.7):
     - PubNub/Core (= 4.8.7)
   - PubNub/Core (4.8.7)
-  - SwiftLint (0.31.0)
+  - SwiftLint (0.32.0)
 
 DEPENDENCIES:
   - MessageKit (from `https://github.com/MessageKit/MessageKit.git`, branch `3.0.0-swift5`)
@@ -25,15 +25,15 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MessageKit:
-    :commit: 46f303da48424aec055d31f39b4434250241ac0f
+    :commit: bed54d3c2a8a96dee7f24f4eefbc281a42bf5a78
     :git: https://github.com/MessageKit/MessageKit.git
 
 SPEC CHECKSUMS:
   InputBarAccessoryView: 28dca73f28df7822fe5377f83cfc4547e22f90ff
   MessageKit: 96420f1fe84d037451cc7b11800a559189f40c25
   PubNub: c767e96befde348b990b2fed1e9e76048e7c0abd
-  SwiftLint: 7a0227733d786395817373b2d0ca799fd0093ff3
+  SwiftLint: 009a898ef2a1c851f45e1b59349bf6ff2ddc990d
 
-PODFILE CHECKSUM: 08e939d5b4090348f281a3cbf0977d91249c30b6
+PODFILE CHECKSUM: 581a05434bbdba36cda77782a6e9dfa4af38d8ba
 
 COCOAPODS: 1.6.1

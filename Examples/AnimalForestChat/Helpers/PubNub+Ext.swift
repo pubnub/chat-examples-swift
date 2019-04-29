@@ -33,7 +33,7 @@ extension PNStatus {
 }
 
 extension PubNub {
-  static func configure(with userId: String?) -> PubNub {
+  static func configure(with userId: String? = User.defaultValue.uuid) -> PubNub {
     // Read Pub/Sub Keys from Info.plist
     let (pubKey, subKey) = PNConfiguration.keys(fromBundle: Bundle.main)
 

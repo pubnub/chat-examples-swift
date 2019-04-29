@@ -16,7 +16,7 @@ class ChatViewController: MessagesViewController {
   var titleView: UILabel?
 
   let outgoingAvatarOverlap: CGFloat = 17.5
-  let channelDetailSegue = "ChatViewShowChannelDetailSegue"
+  let chatRoomDetailSegue = "ChatViewShowRoomDetailSegue"
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -61,9 +61,10 @@ class ChatViewController: MessagesViewController {
     }
     self.viewModel.start()
 
-    // Reload our dynamic values
+    // Reload our dynamic values and scroll to bottom
     self.setTitleView()
     self.messagesCollectionView.reloadData()
+    self.messagesCollectionView.scrollToBottom(animated: true)
   }
 
   func setTitleView() {
@@ -76,11 +77,11 @@ class ChatViewController: MessagesViewController {
       titleView?.numberOfLines = 0
       titleView?.textAlignment = NSTextAlignment.left
 
-      // Add Channel Avatar to Title Bar
+      // Add Chat Room Avatar to Title Bar
       let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 35.0, height: 35.0))
       imageView.widthAnchor.constraint(equalToConstant: 35.0).isActive = true
       imageView.heightAnchor.constraint(equalToConstant: 35.0).isActive = true
-      imageView.image = UIImage(named: viewModel.channelAvatarName)
+      imageView.image = viewModel.chatRoom.avatar
 
       let stackView = UIStackView(arrangedSubviews: [imageView, titleView!])
       stackView.distribution = .fill
@@ -90,15 +91,15 @@ class ChatViewController: MessagesViewController {
       self.navigationItem.titleView = stackView
     }
 
-    titleView?.attributedText = viewModel.channelTitle
+    titleView?.attributedText = viewModel.chatRoomAttributedTitle
   }
 
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if let identifier = segue.identifier {
       switch identifier {
-      case channelDetailSegue:
-        let destination = segue.destination as? ChannelDetailsViewController
-        destination?.viewModel = self.viewModel.channelDetailVieModel
+      case chatRoomDetailSegue:
+        let destination = segue.destination as? ChatRoomDetailsViewController
+        destination?.viewModel = self.viewModel.chatRoomDetailVieModel
       default:
         break
       }
@@ -109,7 +110,7 @@ class ChatViewController: MessagesViewController {
 // MARK: MessagesDataSource
 extension ChatViewController: MessagesDataSource, MessagesDisplayDelegate, MessagesLayoutDelegate {
   func currentSender() -> SenderType {
-    return viewModel.sender ?? User.defaultValue
+    return viewModel.sender
   }
 
   func backgroundColor(for message: MessageType, at indexPath: IndexPath,
