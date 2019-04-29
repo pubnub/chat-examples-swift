@@ -1,6 +1,6 @@
 //
 //  UserDetailTableViewCell.swift
-//  RCDemo
+//  AnimalForestChat
 //
 //  Created by Craig Lane on 4/18/19.
 //

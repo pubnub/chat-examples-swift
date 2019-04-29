@@ -1,14 +1,16 @@
 //
 //  ChatProvider.swift
-//  RCDemo
+//  AnimalForestChat
 //
 //  Created by Craig Lane on 3/14/19.
 //
 
 import Foundation
 
-// tag::WRAP-1[]
+// tag::WRAP-0[]
 protocol ChatProvider {
+// end::WRAP-0[]
+  // tag::WRAP-1[]
   /// Publish a message to a chat room
   func publish(_ request: ChatPublishRequest, completion: @escaping  (Result<ChatPublishResponse, NSError>) -> Void)
   // end::WRAP-1[]

@@ -32,7 +32,7 @@ extension ChatRoom {
 extension ChatRoom: Defaultable {
   /// Default room when no custom room is specified
   static var defaultValue: ChatRoom {
-    return ChatRoom(uuid: "demo-animal-forest-swift",
+    return ChatRoom(uuid: "demo-animal-forest",
                     name: "Animal Forest",
                     description: "A chat group to talk to all your fuzzy friends in the animal kingdom.",
                     avatarName: "avatar_animal_forest")

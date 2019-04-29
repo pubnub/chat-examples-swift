@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  chat-example
+//  AnimalForestChat
 //
 //  Created by Craig Lane on 3/12/19.
 //
@@ -12,12 +12,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
 
+  // tag::INIT-0[]
   func application(_ application: UIApplication,
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
+    // tag::ignore[]
     // Set the Bar Button Text Color
     UINavigationBar.appearance().tintColor = #colorLiteral(red: 0.8117647059, green: 0.1294117647, blue: 0.1607843137, alpha: 1)
     UINavigationBar.appearance().backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+    // end::ignore[]
 
     // Assign default values for initial view controller
     if let navController = self.window?.rootViewController as? UINavigationController,
@@ -33,6 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     return true
   }
+  // end::INIT-0[]
 
   func applicationWillResignActive(_ application: UIApplication) {
     // Sent when the application is about to move from active to inactive state.

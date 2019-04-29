@@ -1,6 +1,6 @@
 //
 //  PubNub+Ext.swift
-//  RCDemo
+//  AnimalForestChat
 //
 //  Created by Craig Lane on 3/14/19.
 //
@@ -32,10 +32,11 @@ extension PNStatus {
   }
 }
 
+// tag::INIT-1[]
 extension PubNub {
-  static func configure(with userId: String? = User.defaultValue.uuid) -> PubNub {
+  static func configure(with userId: String? = User.defaultValue.uuid, using bundle: Bundle = Bundle.main) -> PubNub {
     // Read Pub/Sub Keys from Info.plist
-    let (pubKey, subKey) = PNConfiguration.keys(fromBundle: Bundle.main)
+    let (pubKey, subKey) = bundle.pubSubKeys(for: "PubNub")
 
     let config = PNConfiguration(publishKey: pubKey, subscribeKey: subKey)
     if let uuid = userId {
@@ -46,3 +47,4 @@ extension PubNub {
     return PubNub.clientWithConfiguration(config)
   }
 }
+// end::INIT-1[]

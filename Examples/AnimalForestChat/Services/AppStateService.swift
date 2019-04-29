@@ -1,6 +1,6 @@
 //
 //  AppStateService.swift
-//  RCDemo
+//  AnimalForestChat
 //
 //  Created by Craig Lane on 4/8/19.
 //

@@ -1,6 +1,6 @@
 //
 //  ChatViewModel.swift
-//  RCDemo
+//  AnimalForestChat
 //
 //  Created by Craig Lane on 4/4/19.
 //

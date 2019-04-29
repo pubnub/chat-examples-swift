@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  chat-example
+//  AnimalForestChat
 //
 //  Created by Craig Lane on 3/12/19.
 //

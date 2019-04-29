@@ -1,6 +1,6 @@
 //
 //  ChatRoomDetailsViewModel.swift
-//  RCDemo
+//  AnimalForestChat
 //
 //  Created by Craig Lane on 4/15/19.
 //

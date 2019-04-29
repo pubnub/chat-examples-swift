@@ -1,15 +1,17 @@
 //
 //  ChatService.swift
-//  RCDemo
+//  AnimalForestChat
 //
 //  Created by Craig Lane on 4/4/19.
 //
 
 import Foundation
 
+// tag::INIT-0[]
 import PubNub
 
 class ChatRoomService: NSObject {
+  // tag::ignore[]
   // MARK: Types
   /// Tuple containing UUIDs for users that have `joined` and `left` chat
   typealias PresenceChange = (joined: [String], left: [String])
@@ -63,6 +65,7 @@ class ChatRoomService: NSObject {
   private let providerQueue = DispatchQueue(label: "ChatRoomService Provider Queue")
   private let eventQueue = DispatchQueue(label: "ChatRoomService Event Queue")
 
+  // end::ignore[]
   init(for sender: User,
        in chatRoom: ChatRoom = ChatRoom.defaultValue,
        with provider: ChatProvider = PubNub.configure()) {
@@ -72,7 +75,7 @@ class ChatRoomService: NSObject {
 
     super.init()
   }
-
+// end::INIT-0[]
   // MARK: - Thread Safe Collections
   /// List of `User` identifiers that are connected to the chat room
   var occupantUUIDs: [String] {
