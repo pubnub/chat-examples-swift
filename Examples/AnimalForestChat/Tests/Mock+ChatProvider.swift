@@ -11,6 +11,8 @@ import Foundation
 
 class MockChatProvider: ChatProvider {
   // tag::ignore[]
+  var senderIdValue = ""
+
   var listenerValue = 0
   var subscribedRoomId: String?
   // end::ignore[]
@@ -22,6 +24,11 @@ class MockChatProvider: ChatProvider {
 
   var roomHistoryError: NSError?
   var roomHistoryResponse: MockRoomHistoryResponse?
+
+  var senderID: String {
+    return senderIdValue
+  }
+
   // end::ignore[]
   func publish(_ request: ChatPublishRequest, completion: @escaping (Result<ChatPublishResponse, NSError>) -> Void) {
     if let error = publishError {

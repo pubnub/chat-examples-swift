@@ -53,9 +53,9 @@ struct ChatRoomDetailsViewModel {
 
     members.sort { (first, second) -> Bool in
       // We want the 'sender' to be the top of the list
-      if first.uuid == chatService.sender.uuid {
+      if first == chatService.sender {
         return true
-      } else if second.uuid == chatService.sender.uuid {
+      } else if second == chatService.sender {
         return false
       }
 
@@ -79,7 +79,7 @@ struct ChatRoomDetailsViewModel {
       return nil
     }
 
-    if user.uuid == chatService.sender.uuid {
+    if user == chatService.sender {
       return "\(user.displayName) (You)"
     } else {
       return user.displayName

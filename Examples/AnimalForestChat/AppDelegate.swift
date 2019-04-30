@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       // Typically there would be user authentication flows prior to displaying
       // the default chat room view, but this app currently uses default values for
       // all users and rooms.
-      let service = ChatRoomService(for: User.defaultValue)
+      let service = ChatRoomService()
 
       chatVC.viewModel = ChatViewModel(with: service)
     }

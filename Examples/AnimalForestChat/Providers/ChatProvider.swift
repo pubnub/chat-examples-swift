@@ -10,6 +10,9 @@ import Foundation
 // tag::WRAP-0[]
 protocol ChatProvider {
 // end::WRAP-0[]
+  /// The user sending messages
+  var senderID: String { get }
+
   // tag::WRAP-1[]
   /// Publish a message to a chat room
   func publish(_ request: ChatPublishRequest, completion: @escaping  (Result<ChatPublishResponse, NSError>) -> Void)

@@ -110,7 +110,10 @@ class ChatViewController: MessagesViewController {
 // MARK: MessagesDataSource
 extension ChatViewController: MessagesDataSource, MessagesDisplayDelegate, MessagesLayoutDelegate {
   func currentSender() -> SenderType {
-    return viewModel.sender
+    // MessageKit requires a non-optional sender, so we just create an anonymous User
+    return viewModel.sender ?? User(uuid: "Anonymous",
+                                    firstName: "Not-A", lastName: "Moose",
+                                    designation: nil, avatarName: nil)
   }
 
   func backgroundColor(for message: MessageType, at indexPath: IndexPath,

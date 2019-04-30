@@ -143,7 +143,7 @@ struct ChatViewModel {
 
   // MARK: Chat Data Source
   /// The user sending messages
-  var sender: User {
+  var sender: User? {
     return chatService.sender
   }
   /// The room being tracked by the view model
@@ -198,7 +198,7 @@ struct ChatViewModel {
   }
 
   func messageBackgroundColor(at index: Int) -> UIColor {
-    if messages[index].senderId == sender.uuid {
+    if messages[index].senderId == sender?.uuid {
       return UIColor.messageSender
     }
 

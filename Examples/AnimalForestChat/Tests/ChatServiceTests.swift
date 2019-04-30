@@ -27,7 +27,9 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
   override func setUp() {
     // Put setup code here. This method is called before the invocation of each test method in the class.
     mock = MockChatProvider()
-    service = ChatRoomService(for: testUser, in: testRoom, with: mock)
+    mock.senderIdValue = testUser.uuid
+
+    service = ChatRoomService(for: testRoom, with: mock)
   }
 
   override func tearDown() {
@@ -389,7 +391,8 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
       case .messages(let event):
         switch event {
         case .success(let messages):
-          XCTAssert(self.service.messages.count == 1)
+          XCTAssert(self.service.messages.count == 1,
+                    "Expected count of 1 got \(self.service.messages.count)")
           XCTAssert(messages[0] == testMessage)
           listenerExpectation.fulfill()
         case .failure:
@@ -523,8 +526,10 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
           switch event {
           case (let joined, let left):
             // Test granular changes
-            XCTAssert(joined == joined)
-            XCTAssert(left.count == 2)
+            XCTAssert(joined == testJoined,
+                      "Joined group return does not equal expected")
+            XCTAssert(left.count == testTimedOut.count + testLeft.count,
+                      "Left group count returned does not equal expected")
             // Test overall changes
             XCTAssert(self.service.occupancy == occupancy)
             XCTAssertTrue(self.service.occupantUUIDs == [self.testUser.uuid])

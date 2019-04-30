@@ -14,6 +14,10 @@ import PubNub
 // swiftlint:disable opening_brace
 // tag::WRAP-1[]
 extension PubNub: ChatProvider {
+  var senderID: String {
+    return self.uuid()
+  }
+
   func publish(_ request: ChatPublishRequest, completion: @escaping (Result<ChatPublishResponse, NSError>) -> Void) {
     publish(request.message,
             toChannel: request.roomId,

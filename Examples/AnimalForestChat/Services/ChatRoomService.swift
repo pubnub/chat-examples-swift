@@ -46,8 +46,6 @@ class ChatRoomService: NSObject {
   // MARK: Public Properties
   /// A closure executed when the chat room changes.
   var listener: Listener?
-  /// The user sending messages
-  private(set) var sender: User
   /// The room being tracked by the service
   private(set) var room: ChatRoom
 
@@ -66,10 +64,8 @@ class ChatRoomService: NSObject {
   private let eventQueue = DispatchQueue(label: "ChatRoomService Event Queue")
 
   // end::ignore[]
-  init(for sender: User,
-       in chatRoom: ChatRoom = ChatRoom.defaultValue,
+  init(for chatRoom: ChatRoom = ChatRoom.defaultValue,
        with provider: ChatProvider = PubNub.configure()) {
-    self.sender = sender
     self.room = chatRoom
     self.chatProvider = provider
 
@@ -109,6 +105,11 @@ class ChatRoomService: NSObject {
     return chatProvider.isSubscribed(on: room.uuid) ? .connected : .notConnected
   }
 
+  /// The user sending messages
+  var sender: User? {
+    return User.firstStored(with: { $0.uuid == chatProvider.senderID })
+  }
+
 // tag::SUB-1[]
   // MARK: - Service Stop/Start
   /// Connects to, and starts listening for changes on, the chat room.
@@ -139,7 +140,8 @@ class ChatRoomService: NSObject {
     let message = Message(uuid: UUID().uuidString,
                           text: text,
                           sentDate: sendDate,
-                          senderId: sender.uuid, roomId: room.uuid)
+                          senderId: chatProvider.senderID,
+                          roomId: room.uuid)
 
     let request = ChatPublishRequest(roomId: room.uuid, message: message)
 
@@ -254,7 +256,7 @@ class ChatRoomService: NSObject {
     messageQueue.async(flags: .barrier) { [weak self] in
       // Determine if this device already added this published message
       if let strongSelf = self,
-        message.senderId == strongSelf.sender.uuid,
+        message.senderId == strongSelf.chatProvider.senderID,
         strongSelf._messages.contains(message) {
           NSLog("Message was already notified on this device")
 
