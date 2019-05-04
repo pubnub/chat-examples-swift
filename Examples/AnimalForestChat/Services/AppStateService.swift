@@ -42,37 +42,38 @@ class AppStateService {
   /// A closure executed when the app state status changes.
   var listener: Listener?
 
+  private var center: NotificationCenter
+
+  init(_ center: NotificationCenter = NotificationCenter.default) {
+    self.center = center
+  }
+
   /// Starts listening for changes in app stats.
   func start() {
     if didBecomeActiveToken == nil {
-      didBecomeActiveToken = NotificationCenter.default
-        .addObserver(forName: UIApplication.didBecomeActiveNotification,
-                     object: nil, queue: nil) { [weak self] (_) in
+      didBecomeActiveToken = center.addObserver(forName: UIApplication.didBecomeActiveNotification,
+                                                object: nil, queue: nil) { [weak self] (_) in
           self?.listener?(.didBecomeActive)
       }
     }
 
     if willResignActiveToken == nil {
-      willResignActiveToken = NotificationCenter.default
-        .addObserver(forName: UIApplication.willResignActiveNotification,
-                     object: nil, queue: nil) { [weak self]  (_) in
+      willResignActiveToken = center.addObserver(forName: UIApplication.willResignActiveNotification,
+                                                 object: nil, queue: nil) { [weak self]  (_) in
         self?.listener?(.willResignActive)
       }
     }
 
     if didEnterBackgroundToken == nil {
-      didEnterBackgroundToken = NotificationCenter.default
-        .addObserver(forName: UIApplication.didEnterBackgroundNotification,
-                     object: nil,
-                     queue: nil) { [weak self]  (_) in
+      didEnterBackgroundToken = center.addObserver(forName: UIApplication.didEnterBackgroundNotification,
+                                                   object: nil, queue: nil) { [weak self]  (_) in
         self?.listener?(.didEnterBackground)
       }
     }
 
     if willEnterForegroundToken == nil {
-      willEnterForegroundToken = NotificationCenter.default
-        .addObserver(forName: UIApplication.willEnterForegroundNotification,
-                     object: nil, queue: nil) { [weak self]  (_) in
+      willEnterForegroundToken = center.addObserver(forName: UIApplication.willEnterForegroundNotification,
+                                                    object: nil, queue: nil) { [weak self]  (_) in
         self?.listener?(.willEnterForeground)
       }
     }
@@ -85,16 +86,16 @@ class AppStateService {
   /// Stops listening for changes in app state.
   func stop() {
     if let didBecomeActive = didBecomeActiveToken {
-      NotificationCenter.default.removeObserver(didBecomeActive)
+      center.removeObserver(didBecomeActive)
     }
     if let willResignActive = willResignActiveToken {
-      NotificationCenter.default.removeObserver(willResignActive)
+      center.removeObserver(willResignActive)
     }
     if let didEnterBackground = didEnterBackgroundToken {
-      NotificationCenter.default.removeObserver(didEnterBackground)
+      center.removeObserver(didEnterBackground)
     }
     if let willEnterForeground = willEnterForegroundToken {
-      NotificationCenter.default.removeObserver(willEnterForeground)
+      center.removeObserver(willEnterForeground)
     }
   }
 }

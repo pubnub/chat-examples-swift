@@ -7,18 +7,14 @@
 
 import Foundation
 
-// tag::WRAP-0[]
-import PubNub
-// end::WRAP-0[]
-
-// swiftlint:disable opening_brace
 // tag::WRAP-1[]
-extension PubNub: ChatProvider {
-  var senderID: String {
-    return self.uuid()
-  }
+import PubNub
 
-  func publish(_ request: ChatPublishRequest, completion: @escaping (Result<ChatPublishResponse, NSError>) -> Void) {
+// tag::ignore[]
+// swiftlint:disable opening_brace
+// end::ignore[]
+extension PubNub: ChatProvider {
+  func send(_ request: ChatMessageRequest, completion: @escaping (Result<ChatMessageResponse, NSError>) -> Void) {
     publish(request.message,
             toChannel: request.roomId,
             mobilePushPayload: request.parameters.mobilePushPayload,
@@ -33,20 +29,25 @@ extension PubNub: ChatProvider {
       }
     }
   }
-  // end::WRAP-1[]
+// end::WRAP-1[]
 
   // tag::WRAP-2[]
   func history(_ request: ChatHistoryRequest, completion: @escaping  (Result<ChatHistoryResponse?, NSError>) -> Void) {
+    var startToken: NSNumber?
+    if let start = request.parameters.start {
+      startToken = NSNumber(value: start)
+    }
+
     historyForChannel(request.roomId,
-                      start: request.parameters.start?.timeToken,
-                      end: request.parameters.end?.timeToken,
+                      start: startToken,
+                      end: nil,
                       limit: request.parameters.limit,
                       reverse: request.parameters.reverse,
                       includeTimeToken: request.parameters.includeTimeToken)
     { (result, status) in
       if let error = status?.error {
         completion(.failure(error))
-      } else if let result = result {
+      } else {
         completion(.success(result))
       }
     }
@@ -58,12 +59,16 @@ extension PubNub: ChatProvider {
     hereNowForChannel(roomId) { (result, status) in
       if let error = status?.error {
         completion(.failure(error))
-      } else if let result = result {
+      } else {
         completion(.success(result))
       }
     }
   }
   // end::WRAP-3[]
+
+  var senderID: String {
+    return self.uuid()
+  }
 
   // tag::WRAP-4[]
   func add(_ listener: AnyObject) {
@@ -124,9 +129,9 @@ extension PNPresenceChannelHereNowResult: ChatRoomPresenceResponse {
   }
 }
 
-extension PNPublishStatus: ChatPublishResponse {
-  var sentAt: Date {
-    return Date.from(data.timetoken)
+extension PNPublishStatus: ChatMessageResponse {
+  var sentAt: Int64 {
+    return data.timetoken.int64Value
   }
 
   var responseMessage: String {
@@ -137,12 +142,12 @@ extension PNPublishStatus: ChatPublishResponse {
 // tag::WRAP-1[]
 extension PNHistoryResult: ChatHistoryResponse {
   // tag::ignore[]
-  var start: Date {
-    return Date.from(data.start)
+  var start: Int64 {
+    return data.start.int64Value
   }
 
-  var end: Date {
-    return Date.from(data.end)
+  var end: Int64 {
+    return data.end.int64Value
   }
   // end::ignore[]
 
@@ -161,7 +166,7 @@ extension PNHistoryResult: ChatHistoryResponse {
     for message in messages {
       guard let payload = message["message"] as? [String: String],
         let senderId = payload["senderId"],
-        let timeToken = message["timetoken"] as? NSNumber,
+        let timeToken = message["timetoken"] as? Int64,
         let text = payload["text"],
         // /v2/history/sub-key/{sub_key}/channel/{channel}
         let roomId = clientRequest?.url?.lastPathComponent else {
@@ -169,9 +174,9 @@ extension PNHistoryResult: ChatHistoryResponse {
       }
 
       response.append(
-        Message(uuid: message["uuid"] as? String ?? UUID().uuidString,
+        Message(uuid: payload["uuid"] ?? UUID().uuidString,
                 text: text,
-                sentDate: Date.from(timeToken),
+                sentAt: timeToken,
                 senderId: senderId,
                 roomId: roomId))
     }
@@ -202,7 +207,7 @@ extension PNMessageResult: ChatMessageEvent {
 
     return Message(uuid: payload["uuid"] as? String ?? UUID().uuidString,
                    text: text,
-                   sentDate: Date.from(data.timetoken),
+                   sentAt: data.timetoken.int64Value,
                    senderId: senderId,
                    roomId: data.channel)
   }
@@ -238,8 +243,9 @@ extension PNPresenceEventResult: ChatPresenceEvent {
     if data.presenceEvent == "timeout", let uuid = data.presence.uuid {
       timeout.append(uuid)
     }
-    if let joins = data.presence.timeout {
-      for uuid in joins {
+
+    if let timeouts = data.presence.timeout {
+      for uuid in timeouts {
         timeout.append(uuid)
       }
     }
@@ -252,8 +258,8 @@ extension PNPresenceEventResult: ChatPresenceEvent {
     if data.presenceEvent == "leave", let uuid = data.presence.uuid {
       left.append(uuid)
     }
-    if let joins = data.presence.leave {
-      for uuid in joins {
+    if let leavers = data.presence.leave {
+      for uuid in leavers {
         left.append(uuid)
       }
     }

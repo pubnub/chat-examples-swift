@@ -36,6 +36,11 @@ extension User {
 
     return UIImage(named: image)
   }
+
+  /// Is this user the current sender
+  var isCurrentUser: Bool {
+    return User.defaultValue.uuid == self.uuid
+  }
 }
 
 extension User: Equatable {

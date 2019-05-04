@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		335AA59223139D3307C449D8 /* Pods_Snippets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A534F60A9351EC8DE1D1288 /* Pods_Snippets.framework */; };
+		3503C39C227A6CD7009ADD82 /* Models+Displayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3503C39B227A6CD7009ADD82 /* Models+Displayable.swift */; };
 		3530F68F227219B600D1AED3 /* ChatServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E4D342271F8BC00929A9C /* ChatServiceTests.swift */; };
 		3530F691227219BC00D1AED3 /* Mock+ChatProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E4D322271F0CA00929A9C /* Mock+ChatProvider.swift */; };
 		3530F6932274A7A800D1AED3 /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3530F6922274A7A800D1AED3 /* ChatRoom.swift */; };
@@ -40,6 +41,7 @@
 		35AEBF1722601964005F1D41 /* Models+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AEBF1622601964005F1D41 /* Models+Ext.swift */; };
 		35AEBF1E226026F9005F1D41 /* Message+MessageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AEBF1D226026F9005F1D41 /* Message+MessageType.swift */; };
 		35AEBF20226027CC005F1D41 /* User+SenderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AEBF1F226027CC005F1D41 /* User+SenderType.swift */; };
+		35CB460B227B66DB002E98E7 /* DateFormatter+Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CB460A227B66DB002E98E7 /* DateFormatter+Message.swift */; };
 		35E5474A224C07CA0086FB8F /* ChatProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35765C72223AE60C000B4B8D /* ChatProvider.swift */; };
 		35E547752252B3670086FB8F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E547742252B3670086FB8F /* User.swift */; };
 		770EFCBCB7AEBEECFCF4828F /* Pods_AnimalForestChatTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8A147443A72247BB2E6C3B5 /* Pods_AnimalForestChatTests.framework */; };
@@ -60,6 +62,7 @@
 
 /* Begin PBXFileReference section */
 		25EB7570FA4F25CCDD2E74BE /* Pods-AnimalForestChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnimalForestChat.debug.xcconfig"; path = "Target Support Files/Pods-AnimalForestChat/Pods-AnimalForestChat.debug.xcconfig"; sourceTree = "<group>"; };
+		3503C39B227A6CD7009ADD82 /* Models+Displayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Models+Displayable.swift"; sourceTree = "<group>"; };
 		3530F6922274A7A800D1AED3 /* ChatRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
 		35461A7A223A9A1900B59EB6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3552571B223852930095AAFD /* AnimalForestChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnimalForestChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -100,6 +103,7 @@
 		35AEBF1622601964005F1D41 /* Models+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Models+Ext.swift"; sourceTree = "<group>"; };
 		35AEBF1D226026F9005F1D41 /* Message+MessageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+MessageType.swift"; sourceTree = "<group>"; };
 		35AEBF1F226027CC005F1D41 /* User+SenderType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+SenderType.swift"; sourceTree = "<group>"; };
+		35CB460A227B66DB002E98E7 /* DateFormatter+Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Message.swift"; sourceTree = "<group>"; };
 		35E54743224BF0DB0086FB8F /* AnimalForestChat.debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AnimalForestChat.debug.xcconfig; sourceTree = "<group>"; };
 		35E54744224BF0DB0086FB8F /* AnimalForestChat.release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AnimalForestChat.release.xcconfig; sourceTree = "<group>"; };
 		35E547742252B3670086FB8F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -280,6 +284,7 @@
 			isa = PBXGroup;
 			children = (
 				35AEBF14225E4355005F1D41 /* Bundle+Ext.swift */,
+				35CB460A227B66DB002E98E7 /* DateFormatter+Message.swift */,
 				35765C71223AE60C000B4B8D /* PubNub+Ext.swift */,
 				3595647622669120008442A0 /* UIColor+Ext.swift */,
 			);
@@ -318,6 +323,7 @@
 			isa = PBXGroup;
 			children = (
 				35AEBF1622601964005F1D41 /* Models+Ext.swift */,
+				3503C39B227A6CD7009ADD82 /* Models+Displayable.swift */,
 				3530F6922274A7A800D1AED3 /* ChatRoom.swift */,
 				355836622256A2410053E1F9 /* Message.swift */,
 				35E547742252B3670086FB8F /* User.swift */,
@@ -692,6 +698,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3503C39C227A6CD7009ADD82 /* Models+Displayable.swift in Sources */,
 				35583669225BD8DD0053E1F9 /* ReachabilityService.swift in Sources */,
 				359564812268E32A008442A0 /* UserDetailTableViewCell.swift in Sources */,
 				35E5474A224C07CA0086FB8F /* ChatProvider.swift in Sources */,
@@ -701,6 +708,7 @@
 				35E547752252B3670086FB8F /* User.swift in Sources */,
 				35AEBF20226027CC005F1D41 /* User+SenderType.swift in Sources */,
 				3595647722669120008442A0 /* UIColor+Ext.swift in Sources */,
+				35CB460B227B66DB002E98E7 /* DateFormatter+Message.swift in Sources */,
 				3558366B225BE7F00053E1F9 /* AppStateService.swift in Sources */,
 				355836632256A2410053E1F9 /* Message.swift in Sources */,
 				3595647922679F78008442A0 /* PubNub+ChatProvider.swift in Sources */,
@@ -870,7 +878,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = LJE3GJ53Z7;
+				DEVELOPMENT_TEAM = 8XP4D6N55Z;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -943,7 +951,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = LJE3GJ53Z7;
+				DEVELOPMENT_TEAM = 8XP4D6N55Z;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;

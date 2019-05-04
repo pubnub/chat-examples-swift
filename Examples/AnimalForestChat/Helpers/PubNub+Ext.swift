@@ -7,13 +7,21 @@
 
 import PubNub
 
-public extension Date {
-  var timeToken: NSNumber {
-    return NSNumber(value: self.timeIntervalSince1970 * 10000000)
+extension Date {
+  /// 15-digit precision unix time (UTC) since 1970
+  ///
+  /// - note: A 64-bit `Double` has a max precision of 15-digits, so
+  ///         any value derived from a `TimeInterval` will not be precise
+  ///         enough to rely on when querying system APIs which use
+  ///         17-digit precision UTC values
+  var timeIntervalAsImpreciseToken: Int64 {
+    return Int64(self.timeIntervalSince1970 * 10000000)
   }
+}
 
-  static func from(_ timeToken: NSNumber) -> Date {
-    return Date(timeIntervalSince1970: TimeInterval(floatLiteral: timeToken.doubleValue/10000000))
+extension Message {
+  var timeToken: NSNumber {
+    return NSNumber(value: sentAt)
   }
 }
 
@@ -43,6 +51,9 @@ extension PubNub {
       NSLog("Configuring PubNub with \(uuid)")
       config.uuid = uuid
     }
+
+    // Gets rid of deprecation warning
+    config.stripMobilePayload = false
 
     return PubNub.clientWithConfiguration(config)
   }

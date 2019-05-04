@@ -7,15 +7,10 @@
 
 import Foundation
 
-// tag::WRAP-0[]
+// tag::WRAP-1[]
 protocol ChatProvider {
-// end::WRAP-0[]
-  /// The user sending messages
-  var senderID: String { get }
-
-  // tag::WRAP-1[]
-  /// Publish a message to a chat room
-  func publish(_ request: ChatPublishRequest, completion: @escaping  (Result<ChatPublishResponse, NSError>) -> Void)
+  /// Send a message to a chat room
+  func send(_ request: ChatMessageRequest, completion: @escaping  (Result<ChatMessageResponse, NSError>) -> Void)
   // end::WRAP-1[]
 
   // tag::WRAP-2[]
@@ -24,9 +19,12 @@ protocol ChatProvider {
   // end::WRAP-2[]
 
   // tag::WRAP-3[]
-  /// Get the current users currently online in a chat room
+  /// Get the current users online in a chat room
   func presence(for roomId: String, completion: @escaping  (Result<ChatRoomPresenceResponse?, NSError>) -> Void)
   // end::WRAP-3[]
+
+  /// The user sending messages
+  var senderID: String { get }
 
   // tag::WRAP-4[]
   /// Add listener delegate
@@ -53,7 +51,7 @@ protocol ChatProvider {
 // end::WRAP-6[]
 
 // MARK: Publish Request/Response
-struct ChatPublishRequest {
+struct ChatMessageRequest {
   /// Identifier of room being published on
   var roomId: String
   /// Key/Value payload of the text message
@@ -85,9 +83,9 @@ struct ChatPublishParameters {
   var mobilePushPayload: [String: Any]?
 }
 
-protocol ChatPublishResponse {
+protocol ChatMessageResponse {
   /// Updated sent `Date` from server
-  var sentAt: Date { get }
+  var sentAt: Int64 { get }
   /// Server response message
   var responseMessage: String { get }
 }
@@ -106,29 +104,25 @@ struct ChatHistoryRequest {
 }
 
 struct ChatHistoryParameters {
-  /// Start date
+  /// Start `Date` value
   ///
   /// Value is exclusive, so response will include all messages after
-  var start: Date?
-  /// End date
-  ///
-  /// Value is inclusive, so messages matching will be included
-  var end: Date?
+  var start: Int64?
   /// Amount of messages returned
   var limit: UInt = 100
   /// Direction of message sentDate.
   ///
-  /// Default is false, which means timeline is traversed newest to oldest.
+  /// Default is true, which means timeline is traversed newest to oldest.
   var reverse: Bool = false
   /// Should dates be included in message response
   var includeTimeToken: Bool = true
 }
 
 protocol ChatHistoryResponse {
-  /// Sent `Date` of first returned message
-  var start: Date { get }
-  /// Sent `Date` of last returned message
-  var end: Date { get }
+  /// Sent at `Date` value of first returned message
+  var start: Int64 { get }
+  /// Sent at `Date` value of last returned message
+  var end: Int64 { get }
   /// Historical messages for a chat room
   var messages: [Message] { get }
 }

@@ -18,6 +18,8 @@ class ChatViewController: MessagesViewController {
   let outgoingAvatarOverlap: CGFloat = 17.5
   let chatRoomDetailSegue = "ChatViewShowRoomDetailSegue"
 
+  let messageDateFormatter = DateFormatter()
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -26,6 +28,9 @@ class ChatViewController: MessagesViewController {
     self.messagesCollectionView.messagesLayoutDelegate = self
     self.messagesCollectionView.messagesDisplayDelegate = self
     self.messageInputBar.delegate = self
+
+    // Configure Message Date Formatter
+    messageDateFormatter.locale = Locale(identifier: "en_US_POSIX")
 
     // Title Bar
     self.setTitleView()
@@ -43,10 +48,7 @@ class ChatViewController: MessagesViewController {
 
     layout?.textMessageSizeCalculator.incomingAvatarPosition = AvatarPosition(vertical: .messageBottom)
     layout?.textMessageSizeCalculator.outgoingAvatarPosition = AvatarPosition(vertical: .messageBottom)
-  }
 
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
 
     self.viewModel.listener = { [weak self] (changeType) in
       DispatchQueue.main.async {
@@ -59,7 +61,13 @@ class ChatViewController: MessagesViewController {
         }
       }
     }
-    self.viewModel.start()
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    // Bind to the View Model
+    self.viewModel.bind()
 
     // Reload our dynamic values and scroll to bottom
     self.setTitleView()
@@ -118,7 +126,8 @@ extension ChatViewController: MessagesDataSource, MessagesDisplayDelegate, Messa
 
   func backgroundColor(for message: MessageType, at indexPath: IndexPath,
                        in messagesCollectionView: MessagesCollectionView) -> UIColor {
-    return viewModel.messageBackgroundColor(at: indexPath.section)
+
+    return viewModel.messages[indexPath.section].defaultBackgroundColor
   }
 
   func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageType {
@@ -131,42 +140,47 @@ extension ChatViewController: MessagesDataSource, MessagesDisplayDelegate, Messa
 
   func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath,
                            in messagesCollectionView: MessagesCollectionView) {
-    if viewModel.isMessageAvatarHidden(at: indexPath.section) {
-      avatarView.isHidden = true
-    } else {
-      avatarView.image = viewModel.messageAvatarImage(at: indexPath.section)
-      avatarView.isHidden = false
-    }
+    avatarView.isHidden = viewModel.isMessageAvatarHidden(at: indexPath.section)
+    avatarView.image = viewModel.messages[indexPath.section].user?.avatar
   }
 
   // MARK: Cell Top
   func cellTopLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
-    return viewModel.messageTimeGapDisplay(at: indexPath.section)
+    if viewModel.shouldDisplayTimeGap(at: indexPath.section) {
+      return viewModel.messages[indexPath.section].attributedHeader(using: messageDateFormatter)
+    }
+    return nil
   }
 
   func cellTopLabelHeight(for message: MessageType, at indexPath: IndexPath,
                           in messagesCollectionView: MessagesCollectionView) -> CGFloat {
-    return viewModel.messageTimeGapHeight(at: indexPath.section)
+    return viewModel.shouldDisplayTimeGap(at: indexPath.section) ? 18 : 0
   }
 
   // MARK: Message Top
   func messageTopLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
-    return viewModel.messageSenderDisplay(at: indexPath.section)
+    if viewModel.shouldDisplayMessageSender(at: indexPath.section) {
+      return viewModel.messages[indexPath.section].user?.attributedBodyHeader
+    }
+    return nil
   }
 
   func messageTopLabelHeight(for message: MessageType, at indexPath: IndexPath,
                              in messagesCollectionView: MessagesCollectionView) -> CGFloat {
-    return viewModel.messageSenderHeight(at: indexPath.section)
+    return viewModel.shouldDisplayMessageSender(at: indexPath.section) ? 16 : 0
   }
 
   // MARK: Message Bottom
   func messageBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
-    return viewModel.messageTimeDisplay(at: indexPath.section)
+    if viewModel.shouldDisplayMessageTime(at: indexPath.section) {
+      return viewModel.messages[indexPath.section].attributedBodyHeader(using: messageDateFormatter)
+    }
+    return nil
   }
 
   func messageBottomLabelHeight(for message: MessageType, at indexPath: IndexPath,
                                 in messagesCollectionView: MessagesCollectionView) -> CGFloat {
-    return viewModel.messageTimeHeight(at: indexPath.section)
+    return viewModel.shouldDisplayMessageTime(at: indexPath.section) ? 16 : 0
   }
 }
 
@@ -175,7 +189,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
 
     for component in inputBar.inputTextView.components {
       if let message = component as? String {
-        viewModel.publish(message) { (_) in
+        viewModel.send(message) { (_) in
           DispatchQueue.main.async { [weak self] in
             self?.messagesCollectionView.reloadData()
           }

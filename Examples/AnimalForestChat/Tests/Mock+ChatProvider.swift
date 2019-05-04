@@ -30,7 +30,7 @@ class MockChatProvider: ChatProvider {
   }
 
   // end::ignore[]
-  func publish(_ request: ChatPublishRequest, completion: @escaping (Result<ChatPublishResponse, NSError>) -> Void) {
+  func send(_ request: ChatMessageRequest, completion: @escaping (Result<ChatMessageResponse, NSError>) -> Void) {
     if let error = publishError {
       completion(.failure(error))
     } else {
@@ -77,8 +77,8 @@ class MockChatProvider: ChatProvider {
 }
 // end::TEST-1[]
 
-struct MockPublishResponse: ChatPublishResponse {
-  var sentAt = Date()
+struct MockPublishResponse: ChatMessageResponse {
+  var sentAt: Int64 = 1234567890
   var responseMessage = "Response String"
 }
 
@@ -88,8 +88,8 @@ struct MockRoomPresenceResponse: ChatRoomPresenceResponse {
 }
 
 struct MockRoomHistoryResponse: ChatHistoryResponse {
-  var start: Date
-  var end: Date
+  var start: Int64
+  var end: Int64
   var messages: [Message]
 }
 

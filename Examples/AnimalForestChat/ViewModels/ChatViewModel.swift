@@ -5,7 +5,7 @@
 //  Created by Craig Lane on 4/4/19.
 //
 
-import UIKit
+import Foundation
 
 struct ChatViewModel {
   // MARK: Types
@@ -41,8 +41,7 @@ struct ChatViewModel {
 
   // MARK: Private Properties
   private let chatURLString = "https://ps.pndsn.com/time/0"
-  private let maxTimeBetweenMesssages: TimeInterval = 60 * 60 // 1 Hour
-  private let chatDateFormatter = DateFormatter()
+  private let maxTimeBetweenMesssages: Int64 = 60 * 60 // 1 Hour in seconds
 
   // MARK: Services
   private var reachabilityService: ReachabilityService?
@@ -57,11 +56,6 @@ struct ChatViewModel {
     self.chatService = chatService
     self.reachabilityService = reachabilityService
     self.appStateService = appStateService
-
-    // tag::ignore[]
-    // Configure Message Date Formatter
-    self.chatDateFormatter.locale = Locale(identifier: "en_US_POSIX")
-    // end::ignore[]
   }
 // end::CVM-1[]
 
@@ -72,7 +66,7 @@ struct ChatViewModel {
       switch chatEvent {
       case .messages:
         self.listener?(.messages)
-      case .users:
+      case .presence:
         self.listener?(.occupancy)
       case .status(let event):
         switch event {
@@ -83,7 +77,8 @@ struct ChatViewModel {
             self.chatService.fetchMessageHistory()
             self.chatService.fetchCurrentUsers()
           case .notConnected:
-            break
+            // Update UI
+            self.listener?(.occupancy)
           }
         case .failure:
           break
@@ -96,12 +91,12 @@ struct ChatViewModel {
   private var reachabilityListener: ReachabilityService.Listener {
     return { (status) in
       switch status {
-      case .unknown:
-        break
-      case .notReachable:
-        self.chatService.stop()
       case .reachable:
         self.chatService.start()
+      case .notReachable:
+        self.chatService.stop()
+      case .unknown:
+        break
       }
     }
   }
@@ -123,7 +118,7 @@ struct ChatViewModel {
   }
 
   /// Starts listening for changes managed by this view model.
-  func start() {
+  func bind() {
     reachabilityService?.listener = reachabilityListener
     reachabilityService?.start()
 
@@ -132,13 +127,6 @@ struct ChatViewModel {
 
     chatService.listener = chatListener
     chatService.start()
-  }
-
-  /// Stops listening for changes managed by this view model.
-  func stop() {
-    self.reachabilityService?.stop()
-    self.appStateService.stop()
-    self.chatService.stop()
   }
 
   // MARK: Chat Data Source
@@ -158,126 +146,61 @@ struct ChatViewModel {
 
   /// Publish a message to the service's chat room
   /// - parameter message: The text to be published
-  func publish(_ message: String, completion: @escaping (Result<Message, NSError>) -> Void) {
-    _ = chatService.publish(message) { (result) in
+  func send(_ message: String, completion: @escaping (Result<Message, NSError>) -> Void) {
+    _ = chatService.send(message) { (result) in
       completion(result)
     }
   }
 
-  // MARK: Presentation
+  // MARK: Routing
   /// View model that can be used to provide data about chat room details
   var chatRoomDetailVieModel: ChatRoomDetailsViewModel {
     return ChatRoomDetailsViewModel(with: chatService)
   }
 
+  // MARK: Presentation
   /// The attributed string representing the chat room's name
-  var chatRoomAttributedTitle: NSAttributedString {
+  var chatRoomAttributedTitle: NSAttributedString? {
     // Format the displayname
-    let displayname = NSMutableAttributedString(string: "\(chatRoom.name)\n",
-      attributes: titleStringAttributes(with: 17))
-
     switch chatService.state {
     case .connected:
+      // Empty Room
       if chatService.occupancy <= 0 {
-        return displayname
+        return chatRoom.attributedTitle
+      // Single users in room
       } else if chatService.occupancy == 1 {
-        let subtitle = NSAttributedString(string: "1 Member Online",
-                                          attributes: titleStringAttributes(with: 12))
-        displayname.append(subtitle)
-        return displayname
+        return chatRoom.attributedTitle(with: "1 Member Online", using: .systemFont(ofSize: 12))
       }
-      let subtitle = NSAttributedString(string: "\(chatService.occupancy) Members Online",
-        attributes: titleStringAttributes(with: 12))
-      displayname.append(subtitle)
-      return displayname
+      // Multiple users in room
+      return chatRoom.attributedTitle(with: "\(chatService.occupancy) Members Online", using: .systemFont(ofSize: 12))
     case .notConnected:
-      let subtitle = NSAttributedString(string: "Not Connected", attributes: titleStringAttributes(with: 12))
-      displayname.append(subtitle)
-      return displayname
+      return chatRoom.attributedTitle(with: "Not Connected", using: .systemFont(ofSize: 12))
     }
-  }
-
-  func messageBackgroundColor(at index: Int) -> UIColor {
-    if messages[index].senderId == sender?.uuid {
-      return UIColor.messageSender
-    }
-
-    return UIColor.messageReceiver
-  }
-
-  func messageAvatarImage(at index: Int) -> UIImage? {
-    if let imageName = messages[index].user?.avatarName {
-      return UIImage(named: imageName)
-    }
-
-    return nil
   }
 
   func isMessageAvatarHidden(at index: Int) -> Bool {
     return isPreviousMessageSameSender(at: index)
   }
 
-  private func shouldDisplayMessageSender(at index: Int) -> Bool {
+  func shouldDisplayMessageSender(at index: Int) -> Bool {
     return !isPreviousMessageSameSender(at: index)
   }
 
-  func messageSenderDisplay(at index: Int) -> NSAttributedString? {
-    if shouldDisplayMessageSender(at: index), let sender = messages[index].user {
-      // Format the displayname
-      let displayname = NSAttributedString(string: sender.displayName,
-                                           attributes: messageStringAttributes(with: UIColor.black))
-      return displayname
-    }
-
-    return nil
-  }
-
-  func messageSenderHeight(at index: Int) -> CGFloat {
-    return shouldDisplayMessageSender(at: index) ? 16 : 0
-  }
-
-  private func shouldDisplayMessageTime(at index: Int) -> Bool {
+  func shouldDisplayMessageTime(at index: Int) -> Bool {
     return !isNextMessageSameSender(at: index) || shouldDisplayTime(between: messages[index],
                                                                     and: nextMessage(of: index))
   }
 
-  func messageTimeDisplay(at index: Int) -> NSAttributedString? {
-    if shouldDisplayMessageTime(at: index) {
-      return NSAttributedString(string: displayFormattedTime(for: messages[index].sentDate, on: .message),
-                                attributes: messageStringAttributes(with: UIColor.gray))
-    }
-
-    return nil
-  }
-
-  func messageTimeHeight(at index: Int) -> CGFloat {
-    return shouldDisplayMessageTime(at: index) ? 16 : 0
-  }
-
-  private func shouldDisplayTimeGap(at index: Int) -> Bool {
+  func shouldDisplayTimeGap(at index: Int) -> Bool {
     return shouldDisplayTime(between: previousMessage(of: index), and: messages[index])
-  }
-
-  func messageTimeGapDisplay(at index: Int) -> NSAttributedString? {
-    if shouldDisplayTimeGap(at: index) {
-      return NSAttributedString(string: displayFormattedTime(for: messages[index].sentDate, on: .header),
-                                attributes: messageStringAttributes(with: UIColor.gray))
-    }
-
-    return nil
-  }
-
-  func messageTimeGapHeight(at index: Int) -> CGFloat {
-    return shouldDisplayTimeGap(at: index) ? 18 : 0
   }
 
   private func shouldDisplayTime(between previous: Message?, and next: Message?) -> Bool {
     // If the last message sent is older than an hour display the time text
-    if let previous = previous,
-      let next = next, next.sentDate.timeIntervalSince(previous.sentDate) > maxTimeBetweenMesssages {
+    if let previous = previous, let next = next,
+      (next.sentAt - previous.sentAt) > maxTimeBetweenMesssages {
       return true
     }
-
     return false
   }
 
@@ -299,48 +222,5 @@ struct ChatViewModel {
   private func isNextMessageSameSender(at index: Int) -> Bool {
     guard let message = nextMessage(of: index) else { return false }
     return messages[index].senderId == message.senderId
-  }
-
-  private func messageStringAttributes(with color: UIColor) -> [NSAttributedString.Key: Any] {
-    return [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 10),
-            NSAttributedString.Key.foregroundColor: color]
-  }
-
-  private func titleStringAttributes(with size: CGFloat) -> [NSAttributedString.Key: Any] {
-    return [NSAttributedString.Key.font: UIFont.systemFont(ofSize: size),
-            NSAttributedString.Key.foregroundColor: UIColor.black]
-  }
-
-  private func displayFormattedTime(for date: Date, on area: DateDisplayArea) -> String {
-    switch area {
-    case .header:
-      return formattedHeaderTime(for: date)
-    case .message:
-      return formattedMessageTime(for: date)
-    }
-  }
-
-  private func formattedMessageTime(for date: Date) -> String {
-    chatDateFormatter.doesRelativeDateFormatting = false
-    chatDateFormatter.dateFormat = "h:mm a"
-
-    return chatDateFormatter.string(from: date)
-  }
-
-  private func formattedHeaderTime(for date: Date) -> String {
-    switch true {
-    case Calendar.current.isDateInToday(date) || Calendar.current.isDateInYesterday(date):
-      chatDateFormatter.doesRelativeDateFormatting = true
-      chatDateFormatter.dateStyle = .short
-      chatDateFormatter.timeStyle = .short
-    case Calendar.current.isDate(date, equalTo: Date(), toGranularity: .weekOfYear):
-      chatDateFormatter.dateFormat = "EEEE h:mm a"
-    case Calendar.current.isDate(date, equalTo: Date(), toGranularity: .year):
-      chatDateFormatter.dateFormat = "E, d MMM, h:mm a"
-    default:
-      chatDateFormatter.dateFormat = "MMM d, yyyy, h:mm a"
-    }
-
-    return chatDateFormatter.string(from: date)
   }
 }

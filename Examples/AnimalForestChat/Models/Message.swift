@@ -12,8 +12,8 @@ struct Message: Codable, Hashable {
   var uuid: String
   /// The text content for the message
   var text: String
-  /// The date at which the message was created
-  var sentDate: Date
+  /// 17-digit precision unix time (UTC) when message was sent
+  var sentAt: Int64
   /// Identifier of the user who sent the message
   var senderId: String
   /// Identifier of the room to which the message belongs
@@ -28,6 +28,9 @@ extension Message {
   /// The room to which the message belongs
   var room: ChatRoom? {
     return ChatRoom.firstStored(with: { $0.uuid == roomId })
+  }
+  var sentDate: Date {
+    return Date(timeIntervalSince1970: TimeInterval(floatLiteral: Double(sentAt)/10000000))
   }
 }
 

@@ -26,11 +26,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
        let chatVC = navController.viewControllers.first as? ChatViewController {
 
       // Typically there would be user authentication flows prior to displaying
-      // the default chat room view, but this app currently uses default values for
+      // the default chat room view, but this app currently uses local values for
       // all users and rooms.
-      let service = ChatRoomService()
-
-      chatVC.viewModel = ChatViewModel(with: service)
+      chatVC.viewModel = ChatViewModel(with: ChatRoomService())
     }
 
     return true

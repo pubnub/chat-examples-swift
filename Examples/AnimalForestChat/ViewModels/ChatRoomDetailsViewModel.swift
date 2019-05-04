@@ -21,12 +21,12 @@ struct ChatRoomDetailsViewModel {
     self.chatService = chatService
   }
 
-  func start(listener: Listener?) {
+  func bind(listener: Listener?) {
     chatService.listener = { (event) in
       switch event {
       case .messages:
         break
-      case .users:
+      case .presence:
         listener?(.occupancy)
       case .status(let event):
         switch event {
@@ -72,18 +72,6 @@ struct ChatRoomDetailsViewModel {
     }
 
     return activeMembers[indexPath.row]
-  }
-
-  func customDisplayName(for user: User?) -> String? {
-    guard let user = user else {
-      return nil
-    }
-
-    if user == chatService.sender {
-      return "\(user.displayName) (You)"
-    } else {
-      return user.displayName
-    }
   }
 
   var chatRoom: ChatRoom {

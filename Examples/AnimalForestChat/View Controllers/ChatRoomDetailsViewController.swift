@@ -36,7 +36,8 @@ class ChatRoomDetailsViewController: UIViewController, UITableViewDelegate, UITa
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    self.viewModel?.start { (changeEvent) in
+    // Bind to the View Model
+    self.viewModel?.bind { (changeEvent) in
       switch changeEvent {
       case .occupancy:
         DispatchQueue.main.async { [weak self] in
@@ -68,13 +69,13 @@ class ChatRoomDetailsViewController: UIViewController, UITableViewDelegate, UITa
     let cell = activeMemberTableView.dequeueReusableCell(withIdentifier: "UserDetailTableViewCell", for: indexPath)
 
     if let userDetailCell = cell as? UserDetailTableViewCell, let user = viewModel.activeMember(at: indexPath) {
-      userDetailCell.displayNameLabel.text = viewModel.customDisplayName(for: user)
-      userDetailCell.designationLabel.text = user.designation
+      userDetailCell.displayNameLabel.text = user.body
+      userDetailCell.designationLabel.text = user.bodyFooter
       userDetailCell.avatarImageView.image = user.avatar
 
       return userDetailCell
     } else {
-      cell.textLabel?.text = viewModel.activeMember(at: indexPath)?.displayName
+      cell.textLabel?.text = viewModel.activeMember(at: indexPath)?.body
 
       return cell
     }

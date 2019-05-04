@@ -17,12 +17,12 @@ class ReachabilityService {
   /// - notReachable: The network is not reachable.
   /// - reachable:    The network is reachable.
   enum NetworkReachabilityStatus {
-    /// It is unknown whether the network is reachable.
-    case unknown
-    /// The network is not reachable.
-    case notReachable
     /// The network is reachable.
     case reachable(ConnectionType)
+    /// The network is not reachable.
+    case notReachable
+    /// It is unknown whether the network is reachable.
+    case unknown
   }
 
   /// Defines the various connection types detected by reachability flags.

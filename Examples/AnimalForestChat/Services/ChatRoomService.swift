@@ -30,13 +30,13 @@ class ChatRoomService: NSObject {
   /// Defines an event received for a chat room
   ///
   /// - message:  A message sent or received on the chat room
-  /// - users:    User(s) joined or left the chat room
+  /// - presence:    User(s) joined or left the chat room
   /// - status:   Status event of chat room
   enum ChatRoomEvent {
     /// A message sent or received on the chat room
     case messages(Result<[Message], NSError>)
     /// User(s) presence on the chat room changed
-    case users(Result<PresenceChange, NSError>)
+    case presence(Result<PresenceChange, NSError>)
     /// Status event of chat room
     case status(Result<ConnectionState, NSError>)
   }
@@ -50,10 +50,10 @@ class ChatRoomService: NSObject {
   private(set) var room: ChatRoom
 
   // MARK: Private Properties
+  private var chatProvider: ChatProvider
+
   private var _occupantUUIDs = Set<String>()
   private var _messages = [Message]()
-  private var latestSentDate: Date?
-  private var chatProvider: ChatProvider
 
   // MARK: Private Queues
   private let presenceQueue = DispatchQueue(label: "ChatRoomService Presence Queue",
@@ -63,6 +63,8 @@ class ChatRoomService: NSObject {
   private let providerQueue = DispatchQueue(label: "ChatRoomService Provider Queue")
   private let eventQueue = DispatchQueue(label: "ChatRoomService Event Queue")
 
+  private let historyRequestQueue = DispatchQueue(label: "ChatRoomService History Request Queue")
+  private let historyRequestGroup = DispatchGroup()
   // end::ignore[]
   init(for chatRoom: ChatRoom = ChatRoom.defaultValue,
        with provider: ChatProvider = PubNub.configure()) {
@@ -70,6 +72,14 @@ class ChatRoomService: NSObject {
     self.chatProvider = provider
 
     super.init()
+
+    // Add ourselves as a listner
+    chatProvider.add(self)
+  }
+
+  deinit {
+    chatProvider.unsubscribe(from: room.uuid)
+    chatProvider.remove(self)
   }
 // end::INIT-0[]
   // MARK: - Thread Safe Collections
@@ -100,6 +110,10 @@ class ChatRoomService: NSObject {
     return occupantUUIDs.count
   }
 
+  var latestSentAt: Int64? {
+    return messages.last?.sentAt
+  }
+
   /// Connection state of the chat room
   var state: ConnectionState {
     return chatProvider.isSubscribed(on: room.uuid) ? .connected : .notConnected
@@ -115,10 +129,9 @@ class ChatRoomService: NSObject {
   /// Connects to, and starts listening for changes on, the chat room.
   func start() {
     if !chatProvider.isSubscribed(on: room.uuid) {
-      chatProvider.add(self)
       chatProvider.subscribe(to: room.uuid)
     } else {
-      // Already connected, so return connected
+      // Already connected
       emit(.status(.success(.connected)))
     }
   }
@@ -126,27 +139,27 @@ class ChatRoomService: NSObject {
   /// Disconnects from, and stops listening for changes on, the chat room.
   func stop() {
     chatProvider.unsubscribe(from: room.uuid)
-    chatProvider.remove(self)
+    emit(.status(.success(.notConnected)))
   }
 // end::SUB-1[]
 
   // MARK: - Public Methods
 // tag::PUB-1[]
-  /// Publish a message to the service's chat room
+  /// Send a message to the service's chat room
   /// - parameter text: The text to be published
-  func publish(_ text: String, completion: @escaping (Result<Message, NSError>) -> Void) -> Message {
-    let sendDate = Date()
+  func send(_ text: String, completion: @escaping (Result<Message, NSError>) -> Void) {
+    let sentAtValue = Date().timeIntervalAsImpreciseToken
 
     let message = Message(uuid: UUID().uuidString,
                           text: text,
-                          sentDate: sendDate,
+                          sentAt: sentAtValue,
                           senderId: chatProvider.senderID,
                           roomId: room.uuid)
 
-    let request = ChatPublishRequest(roomId: room.uuid, message: message)
+    let request = ChatMessageRequest(roomId: room.uuid, message: message)
 
     providerQueue.async { [weak self] in
-      self?.chatProvider.publish(request) { (result) in
+      self?.chatProvider.send(request) { (result) in
         switch result {
         case .success:
           completion(.success(message))
@@ -155,30 +168,27 @@ class ChatRoomService: NSObject {
         }
       }
     }
-
-    messageQueue.async(flags: .barrier) { [weak self] in
-      self?._messages.append(message)
-      self?.emit(.messages(.success([message])))
-    }
-
-    return message
   }
 // end::PUB-1[]
 
 // tag::HIST-1[]
   /// Fetch the message history of the service's chat room
   func fetchMessageHistory() {
-    var params = ChatHistoryParameters()
+    let roomID = room.uuid
+    historyRequestQueue.async { [weak self] in
+      // Start of our request operation
+      self?.historyRequestGroup.enter()
 
-    // Search for any messages that we might have missed from our last token
-    if let date = self.latestSentDate {
-      params.start = date
-      params.reverse = true
-    }
+      var params = ChatHistoryParameters()
+      // Search for any messages that we might have missed from our last token
+      if let sentAtValue = self?.latestSentAt {
+        // Search starting after our last message
+        params.start = sentAtValue
+        params.reverse = true
+      }
 
-    let historyRequest = ChatHistoryRequest(roomId: room.uuid, parameters: params)
+      let historyRequest = ChatHistoryRequest(roomId: roomID, parameters: params)
 
-    providerQueue.async { [weak self] in
       self?.chatProvider.history(historyRequest) { [weak self] (result) in
         switch result {
         case .success(let response):
@@ -187,18 +197,17 @@ class ChatRoomService: NSObject {
             return
           }
 
-          self?.messageQueue.async(flags: .barrier) {
-            self?.latestSentDate = response.end
-
-            self?._messages.append(contentsOf: response.messages)
-
-            self?.emit(.messages(.success(response.messages)))
-          }
+          NSLog("Fetching Message History found \(response.messages.count) messages.")
+          self?.add(response.messages)
         case .failure(let error):
           NSLog("Error getting message history: \(error.debugDescription)")
           self?.emit(.messages(.failure(error)))
         }
+        // Request has been completed
+        self?.historyRequestGroup.leave()
       }
+      // Waits synchronously for the previously request to finish.
+      self?.historyRequestGroup.wait()
     }
   }
 // end::HIST-1[]
@@ -214,7 +223,7 @@ class ChatRoomService: NSObject {
         case .success(let response):
           guard let response = response else {
             // Signal that the occupants list has changes
-            self?.emit(.users(.success(([], []))))
+            self?.emit(.presence(.success(([], []))))
             return
           }
 
@@ -230,12 +239,12 @@ class ChatRoomService: NSObject {
             }
 
             // Signal that the occupants list has changes
-            self?.emit(.users(.success((joinedList, []))))
+            self?.emit(.presence(.success((joinedList, []))))
           }
 
         case .failure(let error):
           NSLog("Error getting current chat room members: \(error.debugDescription)")
-          self?.emit(.users(.failure(error)))
+          self?.emit(.presence(.failure(error)))
         }
       }
     }
@@ -245,30 +254,12 @@ class ChatRoomService: NSObject {
   // MARK: Event Listeners
   /// Processes messages received on the chat room
   func didReceive(message response: ChatMessageEvent) {
-
     guard let message = response.message else {
       NSLog("Error: Received Message Event missing message body")
       return
     }
 
-    NSLog("Received Message \(message) from \(message.sender.displayName)")
-
-    messageQueue.async(flags: .barrier) { [weak self] in
-      // Determine if this device already added this published message
-      if let strongSelf = self,
-        message.senderId == strongSelf.chatProvider.senderID,
-        strongSelf._messages.contains(message) {
-          NSLog("Message was already notified on this device")
-
-          return
-      }
-
-      self?.latestSentDate = message.sentDate
-
-      self?._messages.append(message)
-
-      self?.emit(.messages(.success([message])))
-    }
+    self.add([message])
   }
 
   /// Processes status changes received on the chat room
@@ -280,7 +271,7 @@ class ChatRoomService: NSObject {
       switch response.status {
       case "Connected":
         emit(.status(.success(.connected)))
-      case "Expected Disconnect":
+      case "Expected Disconnect", "Unexpected Disconnect":
         emit(.status(.success(.notConnected)))
       default:
         NSLog("Category \(response.status) was not processed.")
@@ -296,21 +287,17 @@ class ChatRoomService: NSObject {
   func didReceive(presence response: ChatPresenceEvent) {
     presenceQueue.async(flags: .barrier) { [weak self] in
 
-      var count = 0
       for uuid in response.joined {
         self?._occupantUUIDs.insert(uuid)
-        count += 1
       }
       for uuid in response.timedout {
         self?._occupantUUIDs.remove(uuid)
-        count -= 1
       }
       for uuid in response.left {
         self?._occupantUUIDs.remove(uuid)
-        count -= 1
       }
 
-      self?.emit(.users(.success((response.joined, response.timedout+response.left))))
+      self?.emit(.presence(.success((response.joined, response.timedout+response.left))))
     }
   }
 
@@ -318,6 +305,27 @@ class ChatRoomService: NSObject {
   private func emit(_ event: ChatRoomEvent) {
     eventQueue.async { [weak self] in
       self?.listener?(event)
+    }
+  }
+
+  private func add(_ messages: [Message]) {
+    if messages.isEmpty {
+      return
+    }
+
+    messageQueue.async(flags: .barrier) { [weak self] in
+      // Determine if this device already added this published message
+      for message in messages {
+        if self?._messages.contains(message) ?? true {
+          NSLog("Duplicate message found: \(message.uuid) was already added on this device")
+          continue
+        }
+        self?._messages.append(message)
+      }
+
+      self?._messages.sort(by: { $0.sentAt < $1.sentAt })
+
+      self?.emit(.messages(.success(messages)))
     }
   }
 }
