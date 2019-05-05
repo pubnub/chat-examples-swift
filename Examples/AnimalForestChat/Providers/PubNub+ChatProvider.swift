@@ -71,21 +71,11 @@ extension PubNub: ChatProvider {
   }
 
   // tag::WRAP-4[]
-  func add(_ listener: AnyObject) {
-    // Verify that we're passing the correct object type
-    guard let pnObjectListener = listener as? PNObjectEventListener else {
-      return
-    }
+  var eventEmitter: ChatEventProvider {
+    let chatListener = ChatEventProvider.default
+    self.addListener(chatListener)
 
-    addListener(pnObjectListener)
-  }
-
-  func remove(_ listener: AnyObject) {
-    // Verify that we're passing the correct object type
-    guard let pnObjectListener = listener as? PNObjectEventListener else {
-      return
-    }
-    removeListener(pnObjectListener)
+    return chatListener
   }
   // end::WRAP-4[]
 
@@ -100,6 +90,27 @@ extension PubNub: ChatProvider {
 }
 // end::WRAP-5[]
 // swiftlint:enable opening_brace
+
+// MARK: Listener Extension
+// tag::EMIT-1[]
+extension ChatEventProvider: PNObjectEventListener {
+  func client(_ client: PubNub, didReceiveMessage message: PNMessageResult) {
+    listener?(.message(message))
+  }
+
+  func client(_ client: PubNub, didReceive status: PNStatus) {
+    if let error = status.error {
+      listener?(.status(.failure(error)))
+    } else {
+      listener?(.status(.success(status)))
+    }
+  }
+
+  func client(_ client: PubNub, didReceivePresenceEvent event: PNPresenceEventResult) {
+    listener?(.presence(event))
+  }
+}
+// end::EMIT-1[]
 
 // MARK: Request Responses
 extension PNPresenceChannelHereNowResult: ChatRoomPresenceResponse {

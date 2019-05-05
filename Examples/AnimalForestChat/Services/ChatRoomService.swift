@@ -10,7 +10,7 @@ import Foundation
 // tag::INIT-0[]
 import PubNub
 
-class ChatRoomService: NSObject {
+class ChatRoomService {
   // tag::ignore[]
   // MARK: Types
   /// Tuple containing UUIDs for users that have `joined` and `left` chat
@@ -71,15 +71,12 @@ class ChatRoomService: NSObject {
     self.room = chatRoom
     self.chatProvider = provider
 
-    super.init()
-
-    // Add ourselves as a listner
-    chatProvider.add(self)
+    // Enable the chat listener
+    self.chatProvider.eventEmitter.listener = chatListener
   }
 
   deinit {
     chatProvider.unsubscribe(from: room.uuid)
-    chatProvider.remove(self)
   }
 // end::INIT-0[]
   // MARK: - Thread Safe Collections
@@ -253,7 +250,7 @@ class ChatRoomService: NSObject {
 
   // MARK: Event Listeners
   /// Processes messages received on the chat room
-  func didReceive(message response: ChatMessageEvent) {
+  private func didReceive(message response: ChatMessageEvent) {
     guard let message = response.message else {
       NSLog("Error: Received Message Event missing message body")
       return
@@ -263,7 +260,7 @@ class ChatRoomService: NSObject {
   }
 
   /// Processes status changes received on the chat room
-  func didReceive(status event: Result<ChatStatusEvent, NSError>) {
+  private func didReceive(status event: Result<ChatStatusEvent, NSError>) {
     switch event {
     case .success(let response):
       NSLog("Status Change Received: \(response.status)")
@@ -284,7 +281,7 @@ class ChatRoomService: NSObject {
   }
 
   /// Processes user presence changes received on the chat room
-  func didReceive(presence response: ChatPresenceEvent) {
+  private func didReceive(presence response: ChatPresenceEvent) {
     presenceQueue.async(flags: .barrier) { [weak self] in
 
       for uuid in response.joined {
@@ -309,10 +306,6 @@ class ChatRoomService: NSObject {
   }
 
   private func add(_ messages: [Message]) {
-    if messages.isEmpty {
-      return
-    }
-
     messageQueue.async(flags: .barrier) { [weak self] in
       // Determine if this device already added this published message
       for message in messages {
@@ -328,25 +321,17 @@ class ChatRoomService: NSObject {
       self?.emit(.messages(.success(messages)))
     }
   }
-}
 
-// MARK: - PNObjectEventListener Extension
-// tag::EVENT-0[]
-extension ChatRoomService: PNObjectEventListener {
-  func client(_ client: PubNub, didReceiveMessage message: PNMessageResult) {
-    didReceive(message: message)
-  }
-
-  func client(_ client: PubNub, didReceive status: PNStatus) {
-    if let error = status.error {
-      didReceive(status: .failure(error))
-    } else {
-      didReceive(status: .success(status))
+  private var chatListener: ChatEventProvider.Listener {
+    return { [weak self] (event) in
+      switch event {
+      case .message(let message):
+        self?.didReceive(message: message)
+      case .presence(let event):
+        self?.didReceive(presence: event)
+      case .status(let result):
+        self?.didReceive(status: result)
+      }
     }
   }
-
-  func client(_ client: PubNub, didReceivePresenceEvent event: PNPresenceEventResult) {
-    didReceive(presence: event)
-  }
 }
-// end::EVENT-0[]

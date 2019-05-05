@@ -18,6 +18,8 @@ class MockChatProvider: ChatProvider {
   // end::ignore[]
   var publishError: NSError?
   var publishResponse = MockPublishResponse()
+
+  var messageEvent: ChatMessageEvent?
   // tag::ignore[]
   var roomPresenceError: NSError?
   var roomPresenceResponse: MockRoomPresenceResponse?
@@ -34,6 +36,9 @@ class MockChatProvider: ChatProvider {
     if let error = publishError {
       completion(.failure(error))
     } else {
+      if let event = messageEvent {
+        eventEmitter.listener?(.message(event))
+      }
       completion(.success(publishResponse))
     }
   }
@@ -54,12 +59,8 @@ class MockChatProvider: ChatProvider {
     }
   }
 
-  func add(_ listener: AnyObject) {
-    listenerValue += 1
-  }
-
-  func remove(_ listener: AnyObject) {
-    listenerValue -= 1
+  var eventEmitter: ChatEventProvider {
+    return ChatEventProvider.default
   }
 
   func isSubscribed(on roomId: String) -> Bool {

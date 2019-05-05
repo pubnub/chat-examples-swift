@@ -56,6 +56,11 @@
                BlueprintName = "Snippets"
                ReferencedContainer = "container:chat-examples-swift.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "ConnectToPubnub/testDisconnectFromPubNub()">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <AdditionalOptions>

@@ -7,6 +7,37 @@
 
 import Foundation
 
+// tag::EMIT-1[]
+class ChatEventProvider: NSObject {
+  /// Defines an event received for a chat room
+  ///
+  /// - message:  A message sent or received on the chat room
+  /// - presence: User(s) joined or left the chat room
+  /// - status:   Status event of chat room
+  enum ChatEvent {
+    /// A message sent or received on the chat room
+    case message(ChatMessageEvent)
+    /// User(s) presence on the chat room changed
+    case presence(ChatPresenceEvent)
+    /// Chat status event or error
+    case status(Result<ChatStatusEvent, NSError>)
+  }
+
+  /// A closure executed when a chat event has been received.
+  typealias Listener = (ChatEvent) -> Void
+
+  /// A closure executed when the chat room changes.
+  var listener: Listener?
+
+  /// Singleton Object for Chat Event Provider
+  static let `default` = ChatEventProvider()
+
+  private override init() {
+    super.init()
+  }
+}
+// end::EMIT-1[]
+
 // tag::WRAP-1[]
 protocol ChatProvider {
   /// Send a message to a chat room
@@ -27,10 +58,7 @@ protocol ChatProvider {
   var senderID: String { get }
 
   // tag::WRAP-4[]
-  /// Add listener delegate
-  func add(_ listener: AnyObject)
-  /// Remove listener delegate
-  func remove(_ listener: AnyObject)
+  var eventEmitter: ChatEventProvider { get }
   // end::WRAP-4[]
 
   // tag::WRAP-5[]

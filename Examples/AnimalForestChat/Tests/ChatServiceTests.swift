@@ -11,6 +11,9 @@ import XCTest
 
 class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
 
+  let maxWait = 10.0
+  let maxInvertedWait =  0.01
+
   let testUser = User(uuid: "TestUser", firstName: nil,
                       lastName: nil, designation: nil, avatarName: nil)
   let testRoom = ChatRoom(uuid: "TestChatRoom", name: "TestChatRoom", description: nil, avatarName: nil)
@@ -38,26 +41,13 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
     service = nil
   }
 
-  func testListening() {
-    let testMock = MockChatProvider()
-    var testService: ChatRoomService? = ChatRoomService(for: testRoom, with: testMock)
-
-    XCTAssert(testMock.listenerValue == 1)
-
-    testService = nil
-
-    XCTAssert(testMock.listenerValue == 0)
-  }
-
   func testChatRoomJoinChatRoom() {
     service.start()
     XCTAssertTrue(mock.subscribedRoomId == testRoom.uuid)
-    XCTAssert(mock.listenerValue == 1)
 
     // Ensure that we don't subscribe if we're already subscribed
     service.start()
     XCTAssertTrue(mock.subscribedRoomId == testRoom.uuid)
-    XCTAssert(mock.listenerValue == 1)
   }
 
   func testChatRoomLeaveChatRoom() {
@@ -68,16 +58,36 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
     XCTAssertNil(mock.subscribedRoomId)
   }
 
+  func testSender_Exists() {
+    mock.senderIdValue = User.defaultValue.uuid
+
+    guard let sender = service.sender else {
+      XCTFail("User was expected to exist")
+      return
+    }
+
+    XCTAssert(sender.uuid == mock.senderID,
+              "SenderID expected to be \(mock.senderIdValue), but was \(sender.uuid)")
+  }
+
   // tag::TEST-1[]
   func testPublish_Successful() {
     let publishExpectation = XCTestExpectation(description: "testPublish_Successful body")
     let listenerExpectation = XCTestExpectation(description: "testPublish_Successful listener")
+
+    let testMessage = Message(uuid: UUID().uuidString,
+                          text: testMessageText,
+                          sentAt: Date().timeIntervalAsImpreciseToken,
+                          senderId: testUser.uuid,
+                          roomId: testRoom.uuid)
+    mock.messageEvent = MockMessageEvent(roomId: testMessage.roomId, message: testMessage)
 
     service.listener = { [unowned self] (event) in
       switch event {
       case .messages(let messageEvent):
         switch messageEvent {
         case .success(let messages):
+          XCTAssertTrue(messages.first?.text == testMessage.text)
           // Test granular changes
           XCTAssertTrue(messages.count == 1)
           // Test overall changes
@@ -91,19 +101,17 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
       }
     }
 
-    service.send(testMessageText) { (result) in
+    service.send(testMessage.text) { (result) in
       switch result {
       case .success(let message):
         XCTAssertNotNil(message)
-        let messageEvent = MockMessageEvent(roomId: self.testRoom.uuid, message: message)
-        self.service.didReceive(message: messageEvent)
         publishExpectation.fulfill()
       case .failure:
         XCTFail("Publish Response Contained Error")
       }
     }
 
-    wait(for: [publishExpectation, listenerExpectation], timeout: 10.0)
+    wait(for: [publishExpectation, listenerExpectation], timeout: maxWait)
   }
   // end::TEST-1[]
 
@@ -120,14 +128,12 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
       case .success:
         XCTFail("Publish Response Did Not Contain An Error")
       case .failure(let error):
-        let messageEvent = MockMessageEvent(roomId: self.testRoom.uuid, message: nil)
-        self.service.didReceive(message: messageEvent)
         XCTAssertNotNil(error)
       }
       publishExpectation.fulfill()
     }
 
-    wait(for: [publishExpectation], timeout: 10.0)
+    wait(for: [publishExpectation], timeout: maxWait)
   }
 
   func testChatRoomHistory_Success() {
@@ -188,7 +194,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
 
     service.fetchMessageHistory()
 
-    wait(for: [listenerExpectation], timeout: 10.0)
+    wait(for: [listenerExpectation], timeout: maxWait)
   }
 
   func testChatRoomHistory_EmptyResponse() {
@@ -214,7 +220,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
 
     service.fetchMessageHistory()
 
-    wait(for: [listenerExpectation], timeout: 10.0)
+    wait(for: [listenerExpectation], timeout: maxWait)
   }
 
   func testChatRoomHistory_Failure() {
@@ -241,7 +247,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
 
     service.fetchMessageHistory()
 
-    wait(for: [listenerExpectation], timeout: 10.0)
+    wait(for: [listenerExpectation], timeout: maxWait)
   }
 
   func testChatRoomOccupancy_Success() {
@@ -274,7 +280,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
 
     service.fetchCurrentUsers()
 
-    wait(for: [listenerExpectation], timeout: 10.0)
+    wait(for: [listenerExpectation], timeout: maxWait)
   }
 
   func testChatRoomOccupancy_EmptyResponse() {
@@ -305,7 +311,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
 
     service.fetchCurrentUsers()
 
-    wait(for: [listenerExpectation], timeout: 10.0)
+    wait(for: [listenerExpectation], timeout: maxWait)
   }
 
   func testChatRoomOccupancy_Failure() {
@@ -333,7 +339,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
 
     service.fetchCurrentUsers()
 
-    wait(for: [listenerExpectation], timeout: 10.0)
+    wait(for: [listenerExpectation], timeout: maxWait)
   }
 
   func testDidReceiveMessage_Success() {
@@ -362,9 +368,9 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
 
     let messageEvent = MockMessageEvent(roomId: testRoom.uuid, message: testMessage)
 
-    service.didReceive(message: messageEvent)
+    mock.eventEmitter.listener?(.message(messageEvent))
 
-    wait(for: [listenerExpectation], timeout: 10.0)
+    wait(for: [listenerExpectation], timeout: maxWait)
   }
 
   func testDidReceiveMessage_NilBody() {
@@ -378,9 +384,9 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
 
     let messageEvent = MockMessageEvent(roomId: testRoom.uuid, message: nil)
 
-    service.didReceive(message: messageEvent)
+    mock.eventEmitter.listener?(.message(messageEvent))
 
-    wait(for: [listenerExpectation], timeout: 0.01)
+    wait(for: [listenerExpectation], timeout: maxInvertedWait)
   }
 
   func testDidReceiveMessage_RepeatMessage() {
@@ -408,10 +414,10 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
 
     let messageEvent = MockMessageEvent(roomId: testRoom.uuid, message: testMessage)
 
-    service.didReceive(message: messageEvent)
-    service.didReceive(message: messageEvent)
+    mock.eventEmitter.listener?(.message(messageEvent))
+    mock.eventEmitter.listener?(.message(messageEvent))
 
-    wait(for: [listenerExpectation], timeout: 10.0)
+    wait(for: [listenerExpectation], timeout: maxWait)
   }
 
   func testDidReceiveStatus_Connected() {
@@ -436,9 +442,9 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
     }
 
     service.start()
-    service.didReceive(status: .success(statusEvent))
+    mock.eventEmitter.listener?(.status(.success(statusEvent)))
 
-    wait(for: [listenerExpectation], timeout: 10.0)
+    wait(for: [listenerExpectation], timeout: maxWait)
   }
 
   func testDidReceiveStatus_NotConnected() {
@@ -462,9 +468,9 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
       }
     }
 
-    service.didReceive(status: .success(statusEvent))
+    mock.eventEmitter.listener?(.status(.success(statusEvent)))
 
-    wait(for: [listenerExpectation], timeout: 10.0)
+    wait(for: [listenerExpectation], timeout: maxWait)
   }
 
   func testDidReceiveStatus_Other() {
@@ -478,9 +484,9 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
       listenerExpectation.fulfill()
     }
 
-    service.didReceive(status: .success(statusEvent))
+    mock.eventEmitter.listener?(.status(.success(statusEvent)))
 
-    wait(for: [listenerExpectation], timeout: 0.01)
+    wait(for: [listenerExpectation], timeout: maxInvertedWait)
   }
 
   func testDidReceiveStatus_Error() {
@@ -503,9 +509,9 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
       }
     }
 
-    service.didReceive(status: .failure(error))
+    mock.eventEmitter.listener?(.status(.failure(error)))
 
-    wait(for: [listenerExpectation], timeout: 10.0)
+    wait(for: [listenerExpectation], timeout: maxWait)
   }
 
   func testDidReceivePresence_Success() {
@@ -551,8 +557,29 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
                                           timedout: testTimedOut,
                                           left: testLeft)
 
-    service.didReceive(presence: presenceEvent)
+    mock.eventEmitter.listener?(.presence(presenceEvent))
 
-    wait(for: [listenerExpectation], timeout: 10.0)
+    wait(for: [listenerExpectation], timeout: maxWait)
+  }
+
+  func testAddMessage_NilSelf() {
+    let listenerExpectation = XCTestExpectation(description: "testAddMessage_Failure_NilSelf listener")
+    listenerExpectation.isInverted = true
+
+    let testMessage = Message(uuid: UUID().uuidString,
+                              text: testMessageText,
+                              sentAt: Date().timeIntervalAsImpreciseToken,
+                              senderId: testUser.uuid,
+                              roomId: testRoom.uuid)
+    let messageEvent = MockMessageEvent(roomId: testMessage.roomId, message: testMessage)
+
+    service.listener = { (event) in
+      XCTFail("Received event other than message")
+    }
+
+    mock.eventEmitter.listener?(.message(messageEvent))
+    service = nil
+
+    wait(for: [listenerExpectation], timeout: maxInvertedWait)
   }
 } // swiftlint:disable:this file_length

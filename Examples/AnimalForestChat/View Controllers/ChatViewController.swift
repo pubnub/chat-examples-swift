@@ -49,7 +49,6 @@ class ChatViewController: MessagesViewController {
     layout?.textMessageSizeCalculator.incomingAvatarPosition = AvatarPosition(vertical: .messageBottom)
     layout?.textMessageSizeCalculator.outgoingAvatarPosition = AvatarPosition(vertical: .messageBottom)
 
-
     self.viewModel.listener = { [weak self] (changeType) in
       DispatchQueue.main.async {
         switch changeType {
