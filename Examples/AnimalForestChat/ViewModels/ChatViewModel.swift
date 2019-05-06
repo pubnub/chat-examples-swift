@@ -154,7 +154,7 @@ struct ChatViewModel {
 
   // MARK: Routing
   /// View model that can be used to provide data about chat room details
-  var chatRoomDetailVieModel: ChatRoomDetailsViewModel {
+  var chatRoomDetailViewModel: ChatRoomDetailsViewModel {
     return ChatRoomDetailsViewModel(with: chatService)
   }
 
@@ -198,7 +198,7 @@ struct ChatViewModel {
   private func shouldDisplayTime(between previous: Message?, and next: Message?) -> Bool {
     // If the last message sent is older than an hour display the time text
     if let previous = previous, let next = next,
-      (next.sentAt - previous.sentAt) > maxTimeBetweenMesssages {
+      (next.sentAtInSeconds - previous.sentAtInSeconds) > maxTimeBetweenMesssages {
       return true
     }
     return false

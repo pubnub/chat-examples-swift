@@ -30,7 +30,10 @@ extension Message {
     return ChatRoom.firstStored(with: { $0.uuid == roomId })
   }
   var sentDate: Date {
-    return Date(timeIntervalSince1970: TimeInterval(floatLiteral: Double(sentAt)/10000000))
+    return Date(timeIntervalSince1970: TimeInterval(integerLiteral: sentAtInSeconds))
+  }
+  var sentAtInSeconds: Int64 {
+    return sentAt/10000000
   }
 }
 

@@ -60,13 +60,13 @@ class ChatViewController: MessagesViewController {
         }
       }
     }
+
+    // Bind to the View Model
+    self.viewModel.bind()
   }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-
-    // Bind to the View Model
-    self.viewModel.bind()
 
     // Reload our dynamic values and scroll to bottom
     self.setTitleView()
@@ -106,7 +106,7 @@ class ChatViewController: MessagesViewController {
       switch identifier {
       case chatRoomDetailSegue:
         let destination = segue.destination as? ChatRoomDetailsViewController
-        destination?.viewModel = self.viewModel.chatRoomDetailVieModel
+        destination?.viewModel = self.viewModel.chatRoomDetailViewModel
       default:
         break
       }
