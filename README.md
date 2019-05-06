@@ -6,38 +6,52 @@ Source files for Swift based chat example apps and document code samples live he
 
 ## Requirements
 
-* iOS 9.0+
-* Xcode 10.2+
-* Swift 5.0+
+* [Xcode version 10.2 and above](https://developer.apple.com/xcode/)
+* Swift version 5.0 and above
+* iOS version 9.0 and above
 
 ## Prerequisites
 
-**Cocoapods** is required to install the PubNub SDK, and other dependencies
+[**Cocoapods**](https://guides.cocoapods.org/using/getting-started.html) manages library dependencies for your Xcode projects. You can install it by running:
 
-* Follow this [guide](https://guides.cocoapods.org/using/getting-started.html) if you have any questions getting started.
-* After installing, inside the root project folder run: `$ pod install`
+```
+$ sudo gem install cocoapods
+```
 
-[**Xcode 10.2**](https://developer.apple.com/xcode/) or higher is required
+Add PubNub to your project
 
-**Sign Up for a PubNub Account** to use PubNub's Data Stream Network. If you don't already have an account, you can create one for free [here](https://dashboard.pubnub.com/).
+```
+platform :ios, '9.0'
+target 'AnimalForestChat' do
+  use_frameworks!
+  pod 'PubNub'
+end
+```
 
-1. Login to your PubNub Account
-2. Select Your Project > Your Key. Click on Key Info and copy your `Publish Key` and `Subscribe Key`. You'll need these keys later to include in your project.
-3. Enable the following add-on features on your key from the Key Info page: Presence, Storage & Playback, Stream Controller.
+After installing, run the following command inside the root project folder:
+```
+$ pod install
+```
 
-![PubNub Admin Dashboard](https://i.ibb.co/YBJdHNp/2.png "PubNub Admin Dashboard")
+**Sign Up for a PubNub Account**
+If you don't already have an account, you can create one for free [here](https://dashboard.pubnub.com/).
+
+* Login to your PubNub Account
+* Select Your Project > Your Key. Click on Key Info and copy your `Publish Key` and `Subscribe Key`
+* Enable the following add-on features on your key: Presence, Storage & Playback, Stream Controller
 
 ## Building the project
 
 1. Clone the repo.
   * You can use GitHub's [Clone in Xcode](https://github.blog/2017-06-05-clone-in-xcode/) feature.
-1. Set the follow ENV variables inside your terminal config (i.e. .bash_profile) file
+2. Set the follow ENV variables inside your terminal config (i.e. .bash_profile) file
 ```bash
 export ANIMALFORESTCHAT_PUB_KEY="<Enter Your PubNub Publish Key Here>"
 export ANIMALFORESTCHAT_SUB_KEY="<Enter Your PubNub Subscribe Key Here>"
 ```
-1. Open the workspace by running: `$ open chat-examples-swift.xcworkspace`
-1. Inside Xcode `Run` the `AnimalForestChat` scheme
+
+3. Open the workspace by running: `$ open chat-examples-swift.xcworkspace`
+4. Inside Xcode `Run` the `AnimalForestChat` scheme
 
 ## Further Information
 
