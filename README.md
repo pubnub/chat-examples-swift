@@ -20,16 +20,6 @@ Source files for Swift based chat example apps and document code samples live he
 $ sudo gem install cocoapods
 ```
 
-Add PubNub to your project by specifying it in your `Podfile`:
-
-```
-platform :ios, '9.0'
-target 'AnimalForestChat' do
-  use_frameworks!
-  pod 'PubNub'
-end
-```
-
 After installing, run the following command inside the root project folder:
 ```
 $ pod install
