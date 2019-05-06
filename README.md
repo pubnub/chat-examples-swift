@@ -12,6 +12,8 @@ Source files for Swift based chat example apps and document code samples live he
 
 ## Prerequisites
 
+### CocoaPods
+
 [**Cocoapods**](https://guides.cocoapods.org/using/getting-started.html) manages library dependencies for your Xcode projects. You can install it by running:
 
 ```
@@ -33,7 +35,8 @@ After installing, run the following command inside the root project folder:
 $ pod install
 ```
 
-**Sign Up for a PubNub Account**
+### Sign Up for a PubNub Account
+
 If you don't already have an account, you can create one for free [here](https://dashboard.pubnub.com/).
 
 * Login to your PubNub Account
