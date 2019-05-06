@@ -18,7 +18,7 @@ Source files for Swift based chat example apps and document code samples live he
 $ sudo gem install cocoapods
 ```
 
-Add PubNub to your project
+Add PubNub to your project by specifying it in your `Podfile`:
 
 ```
 platform :ios, '9.0'
@@ -42,9 +42,9 @@ If you don't already have an account, you can create one for free [here](https:/
 
 ## Building the project
 
-1. Clone the repo.
-  * You can use GitHub's [Clone in Xcode](https://github.blog/2017-06-05-clone-in-xcode/) feature.
+1. Clone the repo. You can use GitHub's [Clone in Xcode](https://github.blog/2017-06-05-clone-in-xcode/) feature.
 2. Set the follow ENV variables inside your terminal config (i.e. .bash_profile) file
+
 ```bash
 export ANIMALFORESTCHAT_PUB_KEY="<Enter Your PubNub Publish Key Here>"
 export ANIMALFORESTCHAT_SUB_KEY="<Enter Your PubNub Subscribe Key Here>"
