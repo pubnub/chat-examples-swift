@@ -19,35 +19,23 @@ Source files for Swift based chat example apps and document code samples live he
 
   ```$ pod install```
 
-[**Xcode 10.2**](https://developer.apple.com/xcode/) or higher is required to build Examples and Samples.
+[**Xcode 10.2**](https://developer.apple.com/xcode/) or higher is required
+
+**Sign Up for a PubNub Account** to use PubNub's Data Stream Network. If you don't already have an account, you can create one for free [here](https://dashboard.pubnub.com/).
+
+1. Login to your PubNub Account
+2. Select Your Project > Your Key. Click on Key Info and copy your `Publish Key` and `Subscribe Key`. You'll need these keys later to include in your project.
+3. Enable the following add-on features on your key from the Key Info page: Presence, Storage & Playback, Stream Controller.
+
+![PubNub Admin Dashboard](https://i.ibb.co/YBJdHNp/2.png "PubNub Admin Dashboard")
 
 ## Building the project
 
-1. Open the workspace by running:
+1. Set the follow ENV variables inside your terminal config (i.e. .bash_profile) file
+```bash
+export ANIMALFORESTCHAT_PUB_KEY="<Enter Your PubNub Publish Key Here>"
+export ANIMALFORESTCHAT_SUB_KEY="<Enter Your PubNub Subscribe Key Here>"
+```
 
-    ```$ open chat-examples-swift.xcworkspace```
-
-1. Use Xcode's Scheme Selector to select and run the following:
-
-| Name | App Name | Source Code Group | Description |
-| -- | -- |-- | -- |
-| AnimalForestChat | Animal Forest | Examples -> AnimalForestChat | Example describing best practices for creating a chat app using the PubNub SDK. |
-| Snippets | N/A | Snippets -> ChatResourceCenter | Code samples that are found inside the [Chat Resource Center](https://pubnub.github.io/chat-resource-center/). <br><br>**NOTE: You must execute this Scheme as a Test (CMD+U)** |
-
-## Contributing
-
-### Making a Pull Request
-
-#### Before you Start
-
-Before you work on a big new feature, get in touch to make sure that your work is inline with the direction of the project and get input on your architecture.
-
-Please ensure that any work is initially branched off `master`, and rebased often.
-
-#### Coding Standards
-
-These projects follows [Google's Swift Style Guide](https://google.github.io/swift/). Please review your own code for adherence to the standard.
-
-#### Pull Request Reviews
-
-All pull requests, even by members who have repository write access need to be reviewed and marked as "LGTM" before they will be merged.
+1. Open the workspace by running: `$ open chat-examples-swift.xcworkspace`
+1. Inside Xcode `Run` the `AnimalForestChat` scheme

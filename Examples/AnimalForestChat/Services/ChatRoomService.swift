@@ -322,6 +322,7 @@ class ChatRoomService {
     }
   }
 
+// tag::EMIT-1[]
   private var chatListener: ChatEventProvider.Listener {
     return { [weak self] (event) in
       switch event {
@@ -334,4 +335,5 @@ class ChatRoomService {
       }
     }
   }
+// end::EMIT-1[]
 }
