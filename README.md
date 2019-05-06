@@ -15,9 +15,7 @@ Source files for Swift based chat example apps and document code samples live he
 **Cocoapods** is required to install the PubNub SDK, and other dependencies
 
 * Follow this [guide](https://guides.cocoapods.org/using/getting-started.html) if you have any questions getting started.
-* After installing, inside the root project folder run:
-
-  ```$ pod install```
+* After installing, inside the root project folder run: `$ pod install`
 
 [**Xcode 10.2**](https://developer.apple.com/xcode/) or higher is required
 
@@ -31,11 +29,16 @@ Source files for Swift based chat example apps and document code samples live he
 
 ## Building the project
 
+1. Clone the repo.
+  * You can use GitHub's [Clone in Xcode](https://github.blog/2017-06-05-clone-in-xcode/) feature.
 1. Set the follow ENV variables inside your terminal config (i.e. .bash_profile) file
 ```bash
 export ANIMALFORESTCHAT_PUB_KEY="<Enter Your PubNub Publish Key Here>"
 export ANIMALFORESTCHAT_SUB_KEY="<Enter Your PubNub Subscribe Key Here>"
 ```
-
 1. Open the workspace by running: `$ open chat-examples-swift.xcworkspace`
 1. Inside Xcode `Run` the `AnimalForestChat` scheme
+
+## Further Information
+
+For more information about this project, or how to create your own chat app using PubNub, please check out our [tutorial](https://www.pubnub.com/chat-resource-center/docs/tutorials/tutorial-swift/).

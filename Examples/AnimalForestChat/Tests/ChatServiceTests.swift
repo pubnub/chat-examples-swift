@@ -17,6 +17,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
   let testUser = User(uuid: "TestUser", firstName: nil,
                       lastName: nil, designation: nil, avatarName: nil)
   let testRoom = ChatRoom(uuid: "TestChatRoom", name: "TestChatRoom", description: nil, avatarName: nil)
+  var testMessage: Message!
 
   let testMessageId = "MessageID"
   let testMessageText = "TestText"
@@ -31,6 +32,10 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
     // Put setup code here. This method is called before the invocation of each test method in the class.
     mock = MockChatProvider()
     mock.senderIdValue = testUser.uuid
+
+    testMessage = Message(uuid: testMessageId, text: testMessageText,
+                          sentAt: endDate, senderId: testUser.uuid,
+                          roomId: testRoom.uuid)
 
     service = ChatRoomService(for: testRoom, with: mock)
   }
@@ -97,7 +102,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
           XCTFail("Received error instead of message event")
         }
       default:
-        XCTFail("Received event other than message")
+        break
       }
     }
 
@@ -129,8 +134,8 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
         XCTFail("Publish Response Did Not Contain An Error")
       case .failure(let error):
         XCTAssertNotNil(error)
+        publishExpectation.fulfill()
       }
-      publishExpectation.fulfill()
     }
 
     wait(for: [publishExpectation], timeout: maxWait)
@@ -140,13 +145,9 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
     let listenerExpectation = XCTestExpectation(description: "testChatRoomHistory_Success listener")
     listenerExpectation.expectedFulfillmentCount = 2
 
-    let testMessage = Message(uuid: testMessageId, text: testMessageText,
-                              sentAt: endDate, senderId: testUser.uuid,
-                              roomId: testRoom.uuid)
-
     mock.roomHistoryResponse = MockRoomHistoryResponse(start: startDate,
-                                                             end: endDate,
-                                                             messages: [testMessage])
+                                                       end: endDate,
+                                                       messages: [testMessage])
 
     service.listener = { [unowned self] (event) in
       switch event {
@@ -155,10 +156,10 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
         case .success(let messages):
           // Test granular changes
           if messages.count == 1 {
-            XCTAssertTrue(messages.contains(testMessage))
+            XCTAssertTrue(messages.contains(self.testMessage))
             // Test overall changes
             XCTAssertTrue(self.service.messages.count == 1)
-            XCTAssertTrue(self.service.messages.contains(testMessage))
+            XCTAssertTrue(self.service.messages.contains(self.testMessage))
 
             let messageOne = Message(uuid: "messageOne", text: "messageOne",
                                      sentAt: Date().timeIntervalAsImpreciseToken,
@@ -172,6 +173,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
                                                                     messages: [messageOne, messageTwo])
 
             self.service.fetchMessageHistory()
+            listenerExpectation.fulfill()
           } else {
             // Test pulling additional messages
             XCTAssertTrue(messages.count == 2)
@@ -181,15 +183,14 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
             for message in messages {
               XCTAssertTrue(self.service.messages.contains(message))
             }
+            listenerExpectation.fulfill()
           }
         case .failure:
           XCTFail("Messages Event Failed")
         }
       default:
-        XCTFail("Received event other than messages")
+        break
       }
-
-      listenerExpectation.fulfill()
     }
 
     service.fetchMessageHistory()
@@ -209,13 +210,13 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
           XCTAssertTrue(messages.count == 0)
           // Test overall changes
           XCTAssertTrue(self.service.messages.count == 0)
+          listenerExpectation.fulfill()
         case .failure:
           XCTFail("Messages Event Failed")
         }
       default:
-        XCTFail("Received event other than messages")
+        break
       }
-      listenerExpectation.fulfill()
     }
 
     service.fetchMessageHistory()
@@ -238,11 +239,11 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
           XCTAssertNotNil(error)
           // Test overall changes
           XCTAssert(self.service.messages.count == 0)
+          listenerExpectation.fulfill()
         }
       default:
-        XCTFail("Received event other than messages")
+        break
       }
-      listenerExpectation.fulfill()
     }
 
     service.fetchMessageHistory()
@@ -269,13 +270,13 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
           // Test overall changes
           XCTAssert(self.service.occupancy == occupancy)
           XCTAssertTrue(self.service.occupantUUIDs.contains(self.testUser.uuid))
+          listenerExpectation.fulfill()
         case .failure:
           XCTFail("Users Event Failed")
         }
       default:
-        XCTFail("Received event other than users")
+        break
       }
-      listenerExpectation.fulfill()
     }
 
     service.fetchCurrentUsers()
@@ -284,7 +285,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
   }
 
   func testChatRoomOccupancy_EmptyResponse() {
-    let listenerExpectation = XCTestExpectation(description: "testChatRoomOccupancy_Failure listener")
+    let listenerExpectation = XCTestExpectation(description: "testChatRoomOccupancy_EmptyResponse listener")
 
     service.listener = { [unowned self] (event) in
       switch event {
@@ -299,14 +300,14 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
             // Test overall changes
             XCTAssert(self.service.occupancy == 0)
             XCTAssertTrue(self.service.occupantUUIDs.isEmpty)
+            listenerExpectation.fulfill()
           }
         case .failure:
           XCTFail("Users Event Failed")
         }
       default:
-        XCTFail("Received event other than users")
+        break
       }
-      listenerExpectation.fulfill()
     }
 
     service.fetchCurrentUsers()
@@ -330,11 +331,11 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
           // Test overall changes
           XCTAssert(self.service.occupancy == 0)
           XCTAssertTrue(self.service.occupantUUIDs.isEmpty)
+          listenerExpectation.fulfill()
         }
       default:
-        XCTFail("Received event other than users")
+        break
       }
-      listenerExpectation.fulfill()
     }
 
     service.fetchCurrentUsers()
@@ -343,7 +344,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
   }
 
   func testDidReceiveMessage_Success() {
-    let listenerExpectation = XCTestExpectation(description: "testDidReceiveMessage")
+    let listenerExpectation = XCTestExpectation(description: "testDidReceiveMessage_Success listener")
 
     service.listener = { [unowned self] (event) in
       switch event {
@@ -354,17 +355,14 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
           XCTAssertTrue(messages.count == 1)
           // Test overall changes
           XCTAssertTrue(self.service.messages.count == 1)
+          listenerExpectation.fulfill()
         case .failure:
           XCTFail("Messages Event Failed")
         }
       default:
-        XCTFail("Received event other than messages")
+        break
       }
-      listenerExpectation.fulfill()
     }
-
-    let testMessage = Message(uuid: testMessageId, text: testMessageText,
-                              sentAt: endDate, senderId: testUser.uuid, roomId: testRoom.uuid)
 
     let messageEvent = MockMessageEvent(roomId: testRoom.uuid, message: testMessage)
 
@@ -374,12 +372,17 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
   }
 
   func testDidReceiveMessage_NilBody() {
-    let listenerExpectation = XCTestExpectation(description: "testDidReceiveMessage")
+    let listenerExpectation = XCTestExpectation(description: "testDidReceiveMessage_NilBody listener")
     listenerExpectation.isInverted = true
 
-    service.listener = { (_) in
-      XCTFail("No Event Should Be Received")
-      listenerExpectation.fulfill()
+    service.listener = { (event) in
+      switch event {
+      case .messages:
+        XCTFail("No Event Should Be Received")
+        listenerExpectation.fulfill()
+      default:
+        break
+      }
     }
 
     let messageEvent = MockMessageEvent(roomId: testRoom.uuid, message: nil)
@@ -390,10 +393,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
   }
 
   func testDidReceiveMessage_RepeatMessage() {
-    let listenerExpectation = XCTestExpectation(description: "testDidReceiveMessage")
-
-    let testMessage = Message(uuid: testMessageId, text: testMessageText,
-                              sentAt: endDate, senderId: testUser.uuid, roomId: testRoom.uuid)
+    let listenerExpectation = XCTestExpectation(description: "testDidReceiveMessage_RepeatMessage listener")
 
     service.listener = { (event) in
       switch event {
@@ -402,13 +402,13 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
         case .success(let messages):
           XCTAssert(self.service.messages.count == 1,
                     "Expected count of 1 got \(self.service.messages.count)")
-          XCTAssert(messages[0] == testMessage)
+          XCTAssert(messages[0] == self.testMessage)
           listenerExpectation.fulfill()
         case .failure:
           XCTFail("Messages Event Failed")
         }
       default:
-        XCTFail("Received event other than messages")
+        break
       }
     }
 
@@ -421,7 +421,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
   }
 
   func testDidReceiveStatus_Connected() {
-    let listenerExpectation = XCTestExpectation(description: "testDidReceiveMessage")
+    let listenerExpectation = XCTestExpectation(description: "testDidReceiveStatus_Connected listener")
 
     let statusEvent = MockStatusEvent(status: "Connected", request: "Subscription")
 
@@ -437,7 +437,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
           XCTFail("Status Event Failed")
         }
       default:
-        XCTFail("Received event other than status")
+        break
       }
     }
 
@@ -448,7 +448,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
   }
 
   func testDidReceiveStatus_NotConnected() {
-    let listenerExpectation = XCTestExpectation(description: "testDidReceiveMessage")
+    let listenerExpectation = XCTestExpectation(description: "testDidReceiveStatus_NotConnected listener")
 
     let statusEvent = MockStatusEvent(status: "Expected Disconnect", request: "Subscription")
 
@@ -464,7 +464,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
           XCTFail("Status Event Failed")
         }
       default:
-        XCTFail("Received event other than status")
+        break
       }
     }
 
@@ -474,7 +474,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
   }
 
   func testDidReceiveStatus_Other() {
-    let listenerExpectation = XCTestExpectation(description: "testDidReceiveMessage")
+    let listenerExpectation = XCTestExpectation(description: "testDidReceiveStatus_Other listener")
     listenerExpectation.isInverted = true
 
     let statusEvent = MockStatusEvent(status: "Something", request: "Subscription")
@@ -490,7 +490,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
   }
 
   func testDidReceiveStatus_Error() {
-    let listenerExpectation = XCTestExpectation(description: "testDidReceiveMessage")
+    let listenerExpectation = XCTestExpectation(description: "testDidReceiveStatus_Error listener")
 
     let error = NSError(domain: "", code: 0, userInfo: nil)
 
@@ -505,7 +505,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
           listenerExpectation.fulfill()
         }
       default:
-        XCTFail("Received event other than status")
+        break
       }
     }
 
@@ -515,7 +515,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
   }
 
   func testDidReceivePresence_Success() {
-    let listenerExpectation = XCTestExpectation(description: "testDidReceiveMessage")
+    let listenerExpectation = XCTestExpectation(description: "testDidReceivePresence_Success listener")
 
     let leftUserID = "leftUser"
     let timedOutUserID = "timedOut"
@@ -527,8 +527,6 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
 
     service.listener = { (event) in
       switch event {
-      case .messages:
-        XCTFail("Publish Response Contained Error")
       case .presence(let result):
         switch result {
         case .success(let event):
@@ -547,8 +545,8 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
         case .failure:
           XCTFail("Publish Response Did Not Contain An Error")
         }
-      case .status:
-        XCTFail("Publish Response Contained Error")
+      default:
+        break
       }
     }
 
@@ -560,26 +558,5 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
     mock.eventEmitter.listener?(.presence(presenceEvent))
 
     wait(for: [listenerExpectation], timeout: maxWait)
-  }
-
-  func testAddMessage_NilSelf() {
-    let listenerExpectation = XCTestExpectation(description: "testAddMessage_Failure_NilSelf listener")
-    listenerExpectation.isInverted = true
-
-    let testMessage = Message(uuid: UUID().uuidString,
-                              text: testMessageText,
-                              sentAt: Date().timeIntervalAsImpreciseToken,
-                              senderId: testUser.uuid,
-                              roomId: testRoom.uuid)
-    let messageEvent = MockMessageEvent(roomId: testMessage.roomId, message: testMessage)
-
-    service.listener = { (event) in
-      XCTFail("Received event other than message")
-    }
-
-    mock.eventEmitter.listener?(.message(messageEvent))
-    service = nil
-
-    wait(for: [listenerExpectation], timeout: maxInvertedWait)
   }
 } // swiftlint:disable:this file_length
