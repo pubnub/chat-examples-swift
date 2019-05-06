@@ -14,33 +14,55 @@ class ConnectToPubnub: PNTestCase {
    */
   func testSetup() {
     /**
-    // tag::CON-1[]
     /**
-     * Create Podfile in project root directory with following
-     * content:
+     * First, run the following command from a Terminal window in your
+     * project's root directory:
      */
+    pod init
+
+
+    /**
+     * Next, edit the generated Podfile in your project root directory to be 
+     * similar to the following:
+     */
+    //tag::CON-1[]
+    # Uncomment the next line to define a global platform for your project
     platform :ios, '9.0'
-    use_frameworks!
-    
-    pod 'PubNub', '~> 4.0'
-    
-    target 'TargetName' do
+
+    target 'AnimalForestChat' do
+      # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+      use_frameworks!
+
+      # Pods for AnimalForestChat
+      pod 'PubNub'
+
+      target 'AnimalForestChatTests' do
+        inherit! :search_paths
+        # Pods for testing
+      end
+
+      target 'AnimalForestChatUITests' do
+        inherit! :search_paths
+        # Pods for testing
+      end
+
     end
+    // end::CON-1[]
      
      
     /**
-     * Make sure to replace 'TargetName' with your project target name
-     * before running following command with Terminal from project
-     * root directory:
+     * Make sure to replace 'AnimalForestChat' with your project target name
+     * before running the following command from a Terminal window in your
+     * project's root directory:
      */
     pod install
     
      
     /**
      * CocoaPods will create .xcworkspace file in project root
-     * directory which you should use from now on.
+     * directory, which you should use from now on (instead of the
+     * .xcodeproj created by Xcode).
      */
-    // end::CON-1[]
     */
   }
 
