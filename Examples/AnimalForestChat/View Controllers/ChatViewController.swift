@@ -48,7 +48,12 @@ class ChatViewController: MessagesViewController {
 
     layout?.textMessageSizeCalculator.incomingAvatarPosition = AvatarPosition(vertical: .messageBottom)
     layout?.textMessageSizeCalculator.outgoingAvatarPosition = AvatarPosition(vertical: .messageBottom)
+  }
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    // Bind to the View Model
     self.viewModel.listener = { [weak self] (changeType) in
       DispatchQueue.main.async {
         switch changeType {
@@ -67,13 +72,7 @@ class ChatViewController: MessagesViewController {
         }
       }
     }
-
-    // Bind to the View Model
     self.viewModel.bind()
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
 
     // Reload our dynamic values and scroll to bottom
     self.setTitleView()

@@ -117,7 +117,7 @@ extension User: Defaultable {
       User(uuid: "user-19", firstName: "Wild", lastName: "Eagle",
            designation: "Support Rep", avatarName: "avatar_Wild-Eagle"),
       User(uuid: "user-20", firstName: "Safari", lastName: "Camel",
-           designation: "Solution Architect", avatarName: "vSafari-Camel"),
+           designation: "Solution Architect", avatarName: "avatar_Safari-Camel"),
       User(uuid: "user-21", firstName: "Honey", lastName: "Bee",
            designation: "Co-Founder", avatarName: "avatar_Honey-Bee"),
       User(uuid: "user-22", firstName: "Angry", lastName: "Crocodile",
