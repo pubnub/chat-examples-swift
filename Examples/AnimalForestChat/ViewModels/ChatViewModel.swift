@@ -92,7 +92,6 @@ struct ChatViewModel {
           self.chatService.fetchMessageHistory()
           self.chatService.fetchCurrentUsers()
         }
-
         self.listener?(.connected(true))
       case .notReachable:
         NSLog("External network is no longer reachable")

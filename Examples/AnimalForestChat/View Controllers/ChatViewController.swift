@@ -69,6 +69,7 @@ class ChatViewController: MessagesViewController {
             self?.messageInputBar.shouldManageSendButtonEnabledState = false
             self?.messageInputBar.sendButton.isEnabled = false
           }
+          self?.setTitleView()
         }
       }
     }
