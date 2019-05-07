@@ -8,6 +8,7 @@
 import Foundation
 
 // tag::KEYS-1[]
+// Bundle+Ext.swift
 extension Bundle {
   func pubSubKeys(for key: String) -> (pubKey: String, subKey: String) {
     // Ensure that the keys exist

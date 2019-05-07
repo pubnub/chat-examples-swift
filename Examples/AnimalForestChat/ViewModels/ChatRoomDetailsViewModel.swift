@@ -36,7 +36,7 @@ struct ChatRoomDetailsViewModel {
             // Get chat room Info
             self.chatService.fetchCurrentUsers()
           case .notConnected:
-            break
+            listener?(.occupancy)
           }
         case .failure:
           break

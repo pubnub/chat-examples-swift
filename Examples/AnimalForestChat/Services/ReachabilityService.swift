@@ -75,7 +75,6 @@ class ReachabilityService {
   var previousFlags: SCNetworkReachabilityFlags
 
   // MARK: - Initialization
-
   required init?(host: String = defaultURLString) {
     guard let scnReachability = SCNetworkReachabilityCreateWithName(nil, host) else { return nil }
     self.reachability = scnReachability

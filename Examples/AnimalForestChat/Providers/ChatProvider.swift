@@ -8,6 +8,7 @@
 import Foundation
 
 // tag::EMIT-1[]
+// ChatProvider.swift
 class ChatEventProvider: NSObject {
   /// Defines an event received for a chat room
   ///
@@ -39,29 +40,34 @@ class ChatEventProvider: NSObject {
 // end::EMIT-1[]
 
 // tag::WRAP-1[]
+// ChatProvider.swift
 protocol ChatProvider {
   /// Send a message to a chat room
   func send(_ request: ChatMessageRequest, completion: @escaping  (Result<ChatMessageResponse, NSError>) -> Void)
-  // end::WRAP-1[]
+// end::WRAP-1[]
 
-  // tag::WRAP-2[]
+// tag::WRAP-2[]
+// ChatProvider.swift
   /// Get the message history of a chat room
   func history(_ request: ChatHistoryRequest, completion: @escaping  (Result<ChatHistoryResponse?, NSError>) -> Void)
-  // end::WRAP-2[]
+// end::WRAP-2[]
 
-  // tag::WRAP-3[]
+// tag::WRAP-3[]
+// ChatProvider.swift
   /// Get the current users online in a chat room
   func presence(for roomId: String, completion: @escaping  (Result<ChatRoomPresenceResponse?, NSError>) -> Void)
-  // end::WRAP-3[]
+// end::WRAP-3[]
 
   /// The user sending messages
   var senderID: String { get }
 
-  // tag::WRAP-4[]
+// tag::WRAP-4[]
+// ChatProvider.swift
   var eventEmitter: ChatEventProvider { get }
-  // end::WRAP-4[]
+// end::WRAP-4[]
 
-  // tag::WRAP-5[]
+// tag::WRAP-5[]
+// ChatProvider.swift
   /// Start receiving changes on a chat room
   /// - parameter roomId: Identifier for the room
   /// - returns: Whether the room is currently being observed
@@ -69,14 +75,11 @@ protocol ChatProvider {
   /// Stop receiving changes on a chat room
   /// - parameter roomId: Identifier for the room
   func unsubscribe(from roomId: String)
-  // end::WRAP-5[]
-
-  // tag::WRAP-6[]
   /// Are changes to a room currently being observed
   /// - parameter roomId: Identifier for the room
   func isSubscribed(on roomId: String) -> Bool
+// end::WRAP-5[]
 }
-// end::WRAP-6[]
 
 // MARK: Publish Request/Response
 struct ChatMessageRequest {
@@ -164,16 +167,13 @@ protocol ChatRoomPresenceResponse {
 }
 
 // MARK: Listeners
-// tag::EVENT-1[]
 protocol ChatMessageEvent {
   /// Identifier of the `ChatRoom` associated with the message
   var roomId: String { get }
   /// The message that was received
   var message: Message? { get }
 }
-// end::EVENT-1[]
 
-// tag::EVENT-2[]
 protocol ChatPresenceEvent {
   /// Identifier of the `ChatRoom` message was recieved on
   var roomId: String { get }
@@ -186,13 +186,10 @@ protocol ChatPresenceEvent {
   /// List of `User` identifiers that have left the chat room
   var left: [String] { get }
 }
-// end::EVENT-2[]
 
-// tag::EVENT-3[]
 protocol ChatStatusEvent {
   /// The status event that occurred
   var status: String { get }
   /// The associated request for the status event
   var request: String { get }
 }
-// end::EVENT-3[]

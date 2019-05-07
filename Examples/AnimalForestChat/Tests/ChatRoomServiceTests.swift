@@ -1,5 +1,5 @@
 //
-//  ChatServiceTests.swift
+//  ChatRoomServiceTests.swift
 //  AnimalForestChatTests
 //
 //  Created by Craig Lane on 4/25/19.
@@ -28,8 +28,10 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
   var mock: MockChatProvider!
   var service: ChatRoomService!
 
+// tag::TEST-1[]
+// ChatRoomServiceTests.swift
   override func setUp() {
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+
     mock = MockChatProvider()
     mock.senderIdValue = testUser.uuid
 
@@ -41,11 +43,11 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
   }
 
   override func tearDown() {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
+    mock.eventEmitter.listener = nil
     mock = nil
     service = nil
   }
-
+// end::TEST-1[]
   func testChatRoomJoinChatRoom() {
     service.start()
     XCTAssertTrue(mock.subscribedRoomId == testRoom.uuid)
@@ -75,24 +77,21 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
               "SenderID expected to be \(mock.senderIdValue), but was \(sender.uuid)")
   }
 
-  // tag::TEST-1[]
+// tag::TEST-2[]
+// ChatRoomServiceTests.swift
   func testPublish_Successful() {
     let publishExpectation = XCTestExpectation(description: "testPublish_Successful body")
     let listenerExpectation = XCTestExpectation(description: "testPublish_Successful listener")
 
-    let testMessage = Message(uuid: UUID().uuidString,
-                          text: testMessageText,
-                          sentAt: Date().timeIntervalAsImpreciseToken,
-                          senderId: testUser.uuid,
-                          roomId: testRoom.uuid)
-    mock.messageEvent = MockMessageEvent(roomId: testMessage.roomId, message: testMessage)
+    mock.messageEvent = MockMessageEvent(roomId: self.testMessage.roomId, message: testMessage)
 
-    service.listener = { [unowned self] (event) in
+    self.service.listener = { [unowned self] (event) in
       switch event {
       case .messages(let messageEvent):
         switch messageEvent {
         case .success(let messages):
-          XCTAssertTrue(messages.first?.text == testMessage.text)
+          // Ensure that the message sent is being received
+          XCTAssertTrue(messages.first == self.testMessage)
           // Test granular changes
           XCTAssertTrue(messages.count == 1)
           // Test overall changes
@@ -106,7 +105,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
       }
     }
 
-    service.send(testMessage.text) { (result) in
+    self.service.send(self.testMessage.text) { (result) in
       switch result {
       case .success(let message):
         XCTAssertNotNil(message)
@@ -116,9 +115,9 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
       }
     }
 
-    wait(for: [publishExpectation, listenerExpectation], timeout: maxWait)
+    wait(for: [publishExpectation, listenerExpectation], timeout: self.maxWait)
   }
-  // end::TEST-1[]
+// end::TEST-2[]
 
   func testPublish_Failure() {
     let publishExpectation = XCTestExpectation(description: "testPublish_Failure body")
@@ -432,6 +431,8 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
         case .success(let status):
           XCTAssert(status == .connected)
           XCTAssert(self.service.state == .connected)
+
+          XCTAssertTrue(self.service.occupantUUIDs.contains(self.testUser.uuid))
           listenerExpectation.fulfill()
         case .failure:
           XCTFail("Status Event Failed")
@@ -459,6 +460,8 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
         case .success(let status):
           XCTAssert(status == .notConnected)
           XCTAssert(self.service.state == .notConnected)
+
+          XCTAssertTrue(self.service.occupantUUIDs.isEmpty)
           listenerExpectation.fulfill()
         case .failure:
           XCTFail("Status Event Failed")

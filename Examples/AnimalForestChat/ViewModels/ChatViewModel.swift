@@ -9,18 +9,6 @@ import Foundation
 
 struct ChatViewModel {
   // MARK: Types
-
-  /// Defines the different areas a `Date` can be displayed
-  ///
-  /// - header:  The area between two messages
-  /// - message: The area directly above a message
-  enum DateDisplayArea {
-    /// The area between two messages
-    case header
-    /// The area directly above a message
-    case message
-  }
-
   /// Defines the type of change event emitted
   ///
   /// - messages:   A new message has been recieved
@@ -30,6 +18,8 @@ struct ChatViewModel {
     case messages
     /// The occupancy of the chat room has increased or decreased
     case occupancy
+    /// Whether the chat room is connected
+    case connected(Bool)
   }
 
   typealias Listener = (ChangeType) -> Void
@@ -49,6 +39,7 @@ struct ChatViewModel {
   private var chatService: ChatRoomService
 
 // tag::CVM-1[]
+// ChatViewModel.swift
   init(with chatService: ChatRoomService,
        reachabilityService: ReachabilityService? = ReachabilityService(),
        appStateService: AppStateService = AppStateService()) {
@@ -61,6 +52,7 @@ struct ChatViewModel {
 
   // MARK: Listeners
 // tag::SUB-2[]
+// ChatViewModel.swift
   private var chatListener: ChatRoomService.Listener {
     return { (chatEvent) in
       switch chatEvent {
@@ -76,9 +68,10 @@ struct ChatViewModel {
             // Get chat room Info
             self.chatService.fetchMessageHistory()
             self.chatService.fetchCurrentUsers()
+            self.listener?(.connected(true))
           case .notConnected:
             // Update UI
-            self.listener?(.occupancy)
+            self.listener?(.connected(false))
           }
         case .failure:
           break
@@ -92,11 +85,21 @@ struct ChatViewModel {
     return { (status) in
       switch status {
       case .reachable:
-        self.chatService.start()
+        NSLog("External network is reachable again")
+        if self.chatService.state == .notConnected {
+          self.chatService.start()
+        } else {
+          self.chatService.fetchMessageHistory()
+          self.chatService.fetchCurrentUsers()
+        }
+
+        self.listener?(.connected(true))
       case .notReachable:
+        NSLog("External network is no longer reachable")
         self.chatService.stop()
+        self.listener?(.connected(false))
       case .unknown:
-        break
+        NSLog("External network is unknown")
       }
     }
   }
@@ -106,7 +109,12 @@ struct ChatViewModel {
       switch appState {
       case .didBecomeActive:
         // Start Subscribing
-        self.chatService.start()
+        if self.chatService.state == .notConnected {
+          self.chatService.start()
+        } else {
+          self.chatService.fetchMessageHistory()
+          self.chatService.fetchCurrentUsers()
+        }
       case .willResignActive:
         // Stop Subscribing
         self.chatService.stop()
@@ -117,6 +125,7 @@ struct ChatViewModel {
     }
   }
 
+// tag::BIND-1[]
   /// Starts listening for changes managed by this view model.
   func bind() {
     reachabilityService?.listener = reachabilityListener
@@ -128,6 +137,7 @@ struct ChatViewModel {
     chatService.listener = chatListener
     chatService.start()
   }
+// end::BIND-1[]
 
   // MARK: Chat Data Source
   /// The user sending messages
@@ -162,18 +172,17 @@ struct ChatViewModel {
   /// The attributed string representing the chat room's name
   var chatRoomAttributedTitle: NSAttributedString? {
     // Format the displayname
-    switch chatService.state {
-    case .connected:
+    if reachabilityService?.isReachable ?? false {
       // Empty Room
       if chatService.occupancy <= 0 {
-        return chatRoom.attributedTitle
+        return chatRoom.attributedTitle(with: "Not Connected", using: .systemFont(ofSize: 12))
       // Single users in room
       } else if chatService.occupancy == 1 {
         return chatRoom.attributedTitle(with: "1 Member Online", using: .systemFont(ofSize: 12))
       }
       // Multiple users in room
       return chatRoom.attributedTitle(with: "\(chatService.occupancy) Members Online", using: .systemFont(ofSize: 12))
-    case .notConnected:
+    } else {
       return chatRoom.attributedTitle(with: "Not Connected", using: .systemFont(ofSize: 12))
     }
   }

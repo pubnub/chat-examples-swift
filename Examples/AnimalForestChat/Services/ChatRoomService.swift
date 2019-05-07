@@ -8,10 +8,11 @@
 import Foundation
 
 // tag::INIT-0[]
+// ChatService.swift
 import PubNub
 
 class ChatRoomService {
-  // tag::ignore[]
+// tag::ignore[]
   // MARK: Types
   /// Tuple containing UUIDs for users that have `joined` and `left` chat
   typealias PresenceChange = (joined: [String], left: [String])
@@ -60,25 +61,39 @@ class ChatRoomService {
                                             qos: .userInitiated, attributes: .concurrent)
   private let messageQueue = DispatchQueue(label: "ChatRoomService Message Queue",
                                            qos: .userInitiated, attributes: .concurrent)
-  private let providerQueue = DispatchQueue(label: "ChatRoomService Provider Queue")
   private let eventQueue = DispatchQueue(label: "ChatRoomService Event Queue")
 
   private let historyRequestQueue = DispatchQueue(label: "ChatRoomService History Request Queue")
   private let historyRequestGroup = DispatchGroup()
-  // end::ignore[]
+// end::ignore[]
   init(for chatRoom: ChatRoom = ChatRoom.defaultValue,
        with provider: ChatProvider = PubNub.configure()) {
     self.room = chatRoom
     self.chatProvider = provider
 
+// tag::ignore[]
+// tag::EMIT-1[]
+// ChatService.swift
     // Enable the chat listener
-    self.chatProvider.eventEmitter.listener = chatListener
+    self.chatProvider.eventEmitter.listener = { [weak self] (event) in
+      switch event {
+      case .message(let message):
+        self?.didReceive(message: message)
+      case .presence(let event):
+        self?.didReceive(presence: event)
+      case .status(let result):
+        self?.didReceive(status: result)
+      }
+    }
+// end::EMIT-1[]
+// end::ignore[]
   }
+// end::INIT-0[]
 
   deinit {
     chatProvider.unsubscribe(from: room.uuid)
   }
-// end::INIT-0[]
+
   // MARK: - Thread Safe Collections
   /// List of `User` identifiers that are connected to the chat room
   var occupantUUIDs: [String] {
@@ -121,27 +136,25 @@ class ChatRoomService {
     return User.firstStored(with: { $0.uuid == chatProvider.senderID })
   }
 
-// tag::SUB-1[]
   // MARK: - Service Stop/Start
+// tag::SUB-1[]
+// ChatService.swift
   /// Connects to, and starts listening for changes on, the chat room.
   func start() {
     if !chatProvider.isSubscribed(on: room.uuid) {
       chatProvider.subscribe(to: room.uuid)
-    } else {
-      // Already connected
-      emit(.status(.success(.connected)))
     }
   }
 
   /// Disconnects from, and stops listening for changes on, the chat room.
   func stop() {
     chatProvider.unsubscribe(from: room.uuid)
-    emit(.status(.success(.notConnected)))
   }
 // end::SUB-1[]
 
   // MARK: - Public Methods
 // tag::PUB-1[]
+// ChatService.swift
   /// Send a message to the service's chat room
   /// - parameter text: The text to be published
   func send(_ text: String, completion: @escaping (Result<Message, NSError>) -> Void) {
@@ -155,20 +168,19 @@ class ChatRoomService {
 
     let request = ChatMessageRequest(roomId: room.uuid, message: message)
 
-    providerQueue.async { [weak self] in
-      self?.chatProvider.send(request) { (result) in
-        switch result {
-        case .success:
-          completion(.success(message))
-        case .failure(let error):
-          completion(.failure(error))
-        }
+    self.chatProvider.send(request) { (result) in
+      switch result {
+      case .success:
+        completion(.success(message))
+      case .failure(let error):
+        completion(.failure(error))
       }
     }
   }
 // end::PUB-1[]
 
 // tag::HIST-1[]
+// ChatService.swift
   /// Fetch the message history of the service's chat room
   func fetchMessageHistory() {
     let roomID = room.uuid
@@ -210,39 +222,38 @@ class ChatRoomService {
 // end::HIST-1[]
 
 // tag::HERE-1[]
+// ChatService.swift
   /// Fetch the current connected users of the service's chat room
   func fetchCurrentUsers() {
     let roomID = room.uuid
 
-    providerQueue.async { [weak self] in
-      self?.chatProvider.presence(for: roomID) { [weak self] (result) in
-        switch result {
-        case .success(let response):
-          guard let response = response else {
-            // Signal that the occupants list has changes
-            self?.emit(.presence(.success(([], []))))
-            return
-          }
-
-          self?.presenceQueue.async(flags: .barrier) { [weak self] in
-            var joinedList = [String]()
-            // Verify our knownledge of the room
-            for uuid in response.uuids {
-              let value = self?._occupantUUIDs.insert(uuid)
-              // Ensure we only notify changes from existing list
-              if let wasAdded = value?.inserted, wasAdded {
-                joinedList.append(uuid)
-              }
-            }
-
-            // Signal that the occupants list has changes
-            self?.emit(.presence(.success((joinedList, []))))
-          }
-
-        case .failure(let error):
-          NSLog("Error getting current chat room members: \(error.debugDescription)")
-          self?.emit(.presence(.failure(error)))
+    self.chatProvider.presence(for: roomID) { [weak self] (result) in
+      switch result {
+      case .success(let response):
+        guard let response = response else {
+          // Signal that the occupants list has changes
+          self?.emit(.presence(.success(([], []))))
+          return
         }
+
+        self?.presenceQueue.async(flags: .barrier) { [weak self] in
+          var joinedList = [String]()
+          // Verify our knownledge of the room
+          for uuid in response.uuids {
+            let value = self?._occupantUUIDs.insert(uuid)
+            // Ensure we only notify changes from existing list
+            if let wasAdded = value?.inserted, wasAdded {
+              joinedList.append(uuid)
+            }
+          }
+
+          // Signal that the occupants list has changes
+          self?.emit(.presence(.success((joinedList, []))))
+        }
+
+      case .failure(let error):
+        NSLog("Error getting current chat room members: \(error.debugDescription)")
+        self?.emit(.presence(.failure(error)))
       }
     }
   }
@@ -267,9 +278,20 @@ class ChatRoomService {
 
       switch response.status {
       case "Connected":
-        emit(.status(.success(.connected)))
+        presenceQueue.async(flags: .barrier) { [weak self] in
+          if let senderID = self?.chatProvider.senderID {
+            self?._occupantUUIDs.insert(senderID)
+          }
+
+          self?.emit(.status(.success(.connected)))
+        }
       case "Expected Disconnect", "Unexpected Disconnect":
-        emit(.status(.success(.notConnected)))
+        // Clear Occupancy
+        presenceQueue.async(flags: .barrier) { [weak self] in
+          self?._occupantUUIDs.removeAll()
+
+          self?.emit(.status(.success(.notConnected)))
+        }
       default:
         NSLog("Category \(response.status) was not processed.")
       }
@@ -282,6 +304,7 @@ class ChatRoomService {
 
   /// Processes user presence changes received on the chat room
   private func didReceive(presence response: ChatPresenceEvent) {
+    NSLog("Presence Change Received: \(response.occupancy)")
     presenceQueue.async(flags: .barrier) { [weak self] in
 
       for uuid in response.joined {
@@ -321,19 +344,4 @@ class ChatRoomService {
       self?.emit(.messages(.success(messages)))
     }
   }
-
-// tag::EMIT-1[]
-  private var chatListener: ChatEventProvider.Listener {
-    return { [weak self] (event) in
-      switch event {
-      case .message(let message):
-        self?.didReceive(message: message)
-      case .presence(let event):
-        self?.didReceive(presence: event)
-      case .status(let result):
-        self?.didReceive(status: result)
-      }
-    }
-  }
-// end::EMIT-1[]
 }

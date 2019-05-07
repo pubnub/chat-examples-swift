@@ -41,6 +41,7 @@ extension PNStatus {
 }
 
 // tag::INIT-1[]
+// PubNub+Ext.swift
 extension PubNub {
   static func configure(with userId: String? = User.defaultValue.uuid, using bundle: Bundle = Bundle.main) -> PubNub {
     // Read Pub/Sub Keys from Info.plist

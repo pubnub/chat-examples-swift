@@ -57,6 +57,13 @@ class ChatViewController: MessagesViewController {
           self?.messagesCollectionView.scrollToBottom(animated: true)
         case .occupancy:
           self?.setTitleView()
+        case .connected(let isConnected):
+          if isConnected {
+            self?.messageInputBar.shouldManageSendButtonEnabledState = true
+          } else {
+            self?.messageInputBar.shouldManageSendButtonEnabledState = false
+            self?.messageInputBar.sendButton.isEnabled = false
+          }
         }
       }
     }

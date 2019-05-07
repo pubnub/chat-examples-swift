@@ -8,6 +8,7 @@
 import Foundation
 
 // tag::WRAP-1[]
+// PubNub+ChatProvider.swift
 import PubNub
 
 // tag::ignore[]
@@ -31,7 +32,8 @@ extension PubNub: ChatProvider {
   }
 // end::WRAP-1[]
 
-  // tag::WRAP-2[]
+// tag::WRAP-2[]
+// PubNub+ChatProvider.swift
   func history(_ request: ChatHistoryRequest, completion: @escaping  (Result<ChatHistoryResponse?, NSError>) -> Void) {
     var startToken: NSNumber?
     if let start = request.parameters.start {
@@ -52,9 +54,10 @@ extension PubNub: ChatProvider {
       }
     }
   }
-  // end::WRAP-2[]
+// end::WRAP-2[]
 
-  // tag::WRAP-3[]
+// tag::WRAP-3[]
+// PubNub+ChatProvider.swift
   func presence(for roomId: String, completion: @escaping  (Result<ChatRoomPresenceResponse?, NSError>) -> Void) {
     hereNowForChannel(roomId) { (result, status) in
       if let error = status?.error {
@@ -64,22 +67,24 @@ extension PubNub: ChatProvider {
       }
     }
   }
-  // end::WRAP-3[]
+// end::WRAP-3[]
 
   var senderID: String {
     return self.uuid()
   }
 
-  // tag::WRAP-4[]
+// tag::WRAP-4[]
+// PubNub+ChatProvider.swift
   var eventEmitter: ChatEventProvider {
     let chatListener = ChatEventProvider.default
     self.addListener(chatListener)
 
     return chatListener
   }
-  // end::WRAP-4[]
+// end::WRAP-4[]
 
-  // tag::WRAP-5[]
+// tag::WRAP-5[]
+// PubNub+ChatProvider.swift
   func subscribe(to roomId: String) {
     self.subscribeToChannels([roomId], withPresence: true)
   }
@@ -87,12 +92,13 @@ extension PubNub: ChatProvider {
   func unsubscribe(from roomId: String) {
     self.unsubscribeFromChannels([roomId], withPresence: true)
   }
+  // end::WRAP-5[]
 }
-// end::WRAP-5[]
 // swiftlint:enable opening_brace
 
 // MARK: Listener Extension
 // tag::EMIT-1[]
+// PubNub+ChatProvider.swift
 extension ChatEventProvider: PNObjectEventListener {
   func client(_ client: PubNub, didReceiveMessage message: PNMessageResult) {
     listener?(.message(message))
@@ -151,6 +157,7 @@ extension PNPublishStatus: ChatMessageResponse {
 }
 
 // tag::WRAP-1[]
+// PubNub+ChatProvider.swift
 extension PNHistoryResult: ChatHistoryResponse {
   // tag::ignore[]
   var start: Int64 {
@@ -160,7 +167,7 @@ extension PNHistoryResult: ChatHistoryResponse {
   var end: Int64 {
     return data.end.int64Value
   }
-  // end::ignore[]
+// end::ignore[]
 
   var messages: [Message] {
     guard let payload = data.messages as? [[String: Any]] else {
@@ -198,7 +205,6 @@ extension PNHistoryResult: ChatHistoryResponse {
 // end::WRAP-1[]
 
 // MARK: Listener Responses
-// tag::EVENT-1[]
 extension PNMessageResult: ChatMessageEvent {
   var roomId: String {
     return data.channel
@@ -223,9 +229,7 @@ extension PNMessageResult: ChatMessageEvent {
                    roomId: data.channel)
   }
 }
-// end::EVENT-1[]
 
-// tag::EVENT-2[]
 extension PNPresenceEventResult: ChatPresenceEvent {
   var roomId: String {
     return data.channel
@@ -278,9 +282,7 @@ extension PNPresenceEventResult: ChatPresenceEvent {
     return left
   }
 }
-// end::EVENT-2[]
 
-// tag::EVENT-3[]
 extension PNStatus: ChatStatusEvent {
   var status: String {
     return stringifiedCategory()
@@ -290,4 +292,3 @@ extension PNStatus: ChatStatusEvent {
     return stringifiedOperation()
   }
 }
-// end::EVENT-3[]

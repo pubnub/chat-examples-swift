@@ -7,20 +7,22 @@
 
 import Foundation
 // tag::TEST-1[]
+// Mock+ChatProvider.swift
 @testable import AnimalForestChat
 
 class MockChatProvider: ChatProvider {
-  // tag::ignore[]
+// tag::ignore[]
   var senderIdValue = ""
 
   var listenerValue = 0
   var subscribedRoomId: String?
-  // end::ignore[]
+// end::ignore[]
   var publishError: NSError?
   var publishResponse = MockPublishResponse()
 
   var messageEvent: ChatMessageEvent?
-  // tag::ignore[]
+
+// tag::ignore[]
   var roomPresenceError: NSError?
   var roomPresenceResponse: MockRoomPresenceResponse?
 
@@ -31,7 +33,7 @@ class MockChatProvider: ChatProvider {
     return senderIdValue
   }
 
-  // end::ignore[]
+// end::ignore[]
   func send(_ request: ChatMessageRequest, completion: @escaping (Result<ChatMessageResponse, NSError>) -> Void) {
     if let error = publishError {
       completion(.failure(error))
@@ -42,7 +44,7 @@ class MockChatProvider: ChatProvider {
       completion(.success(publishResponse))
     }
   }
-  // tag::ignore[]
+// tag::ignore[]
   func history(_ request: ChatHistoryRequest, completion: @escaping (Result<ChatHistoryResponse?, NSError>) -> Void) {
     if let error = roomHistoryError {
       completion(.failure(error))
@@ -74,7 +76,7 @@ class MockChatProvider: ChatProvider {
   func unsubscribe(from roomId: String) {
     subscribedRoomId = nil
   }
-  // end::ignore[]
+// end::ignore[]
 }
 // end::TEST-1[]
 

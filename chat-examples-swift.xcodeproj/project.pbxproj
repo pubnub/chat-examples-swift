@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		335AA59223139D3307C449D8 /* Pods_Snippets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A534F60A9351EC8DE1D1288 /* Pods_Snippets.framework */; };
 		3503C39C227A6CD7009ADD82 /* Models+Displayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3503C39B227A6CD7009ADD82 /* Models+Displayable.swift */; };
-		3530F68F227219B600D1AED3 /* ChatServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E4D342271F8BC00929A9C /* ChatServiceTests.swift */; };
+		3530F68F227219B600D1AED3 /* ChatRoomServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E4D342271F8BC00929A9C /* ChatRoomServiceTests.swift */; };
 		3530F691227219BC00D1AED3 /* Mock+ChatProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E4D322271F0CA00929A9C /* Mock+ChatProvider.swift */; };
 		3530F6932274A7A800D1AED3 /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3530F6922274A7A800D1AED3 /* ChatRoom.swift */; };
 		3552571E223852930095AAFD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552571D223852930095AAFD /* AppDelegate.swift */; };
@@ -80,7 +80,7 @@
 		3558366A225BE7F00053E1F9 /* AppStateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateService.swift; sourceTree = "<group>"; };
 		3558366C225BEFAA0053E1F9 /* ChatRoomDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomDetailsViewController.swift; sourceTree = "<group>"; };
 		356E4D322271F0CA00929A9C /* Mock+ChatProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mock+ChatProvider.swift"; sourceTree = "<group>"; };
-		356E4D342271F8BC00929A9C /* ChatServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatServiceTests.swift; sourceTree = "<group>"; };
+		356E4D342271F8BC00929A9C /* ChatRoomServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomServiceTests.swift; sourceTree = "<group>"; };
 		35765C71223AE60C000B4B8D /* PubNub+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PubNub+Ext.swift"; sourceTree = "<group>"; };
 		35765C72223AE60C000B4B8D /* ChatProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatProvider.swift; sourceTree = "<group>"; };
 		35765C7A223AE694000B4B8D /* Snippets.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Snippets.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -255,7 +255,7 @@
 		35765C85223AE768000B4B8D /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				356E4D342271F8BC00929A9C /* ChatServiceTests.swift */,
+				356E4D342271F8BC00929A9C /* ChatRoomServiceTests.swift */,
 				356E4D322271F0CA00929A9C /* Mock+ChatProvider.swift */,
 				35525734223852970095AAFD /* Info.plist */,
 			);
@@ -728,7 +728,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3530F691227219BC00D1AED3 /* Mock+ChatProvider.swift in Sources */,
-				3530F68F227219B600D1AED3 /* ChatServiceTests.swift in Sources */,
+				3530F68F227219B600D1AED3 /* ChatRoomServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -905,6 +905,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.pubnub.chat-example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -971,6 +972,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.pubnub.chat-example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
