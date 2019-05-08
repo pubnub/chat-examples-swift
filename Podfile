@@ -16,3 +16,12 @@ end
 
 target 'Snippets' do
 end
+
+pre_install do |installer|
+  puts "Creating .xcconfigs"
+  # Execute generate_xcconfigs to set PubNub pub/sub keys inside xcconfig
+  system("ruby generate_xcconfigs.rb \\
+    -n AnimalForestChat \\
+    -t Examples/AnimalForestChat/BuildConfig \\
+    -e \"Examples/AnimalForestChat/Supporting Files\"")
+end

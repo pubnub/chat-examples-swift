@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		25B05CC4374791980983BF20 /* Pods_Snippets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA926C2BEF0412333B9A6672 /* Pods_Snippets.framework */; };
+		00AB5F85B7C9C0A053F447F0 /* Pods_Snippets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D737169665141BC8A01EF944 /* Pods_Snippets.framework */; };
 		3503C39C227A6CD7009ADD82 /* Models+Displayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3503C39B227A6CD7009ADD82 /* Models+Displayable.swift */; };
 		3530F68F227219B600D1AED3 /* ChatRoomServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E4D342271F8BC00929A9C /* ChatRoomServiceTests.swift */; };
 		3530F691227219BC00D1AED3 /* Mock+ChatProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E4D322271F0CA00929A9C /* Mock+ChatProvider.swift */; };
@@ -45,8 +45,8 @@
 		35E547752252B3670086FB8F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E547742252B3670086FB8F /* User.swift */; };
 		797416C1225AAAC400D677B9 /* PNTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797416C0225AAAC400D677B9 /* PNTestCase.swift */; };
 		79BFB2E32271B36C00771EA0 /* keysset.plist in Resources */ = {isa = PBXBuildFile; fileRef = 79BFB2E22271B36C00771EA0 /* keysset.plist */; };
-		B84ED81CAF735B28A3FA95DB /* Pods_AnimalForestChatTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7538D0475BEEB8E0108265F /* Pods_AnimalForestChatTests.framework */; };
-		E3CD875895217E74D230617A /* Pods_AnimalForestChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5549049FE634EA1DA9CD1506 /* Pods_AnimalForestChat.framework */; };
+		A4EE484D05A8227588C08232 /* Pods_AnimalForestChatTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C3549B27303BBF7606A565F /* Pods_AnimalForestChatTests.framework */; };
+		EA63A70A3827B3B41FF67C14 /* Pods_AnimalForestChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD536DC65B4553C749122A97 /* Pods_AnimalForestChat.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +60,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		25181EF28B5E0BDCE9C61929 /* Pods-Snippets.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Snippets.release.xcconfig"; path = "Target Support Files/Pods-Snippets/Pods-Snippets.release.xcconfig"; sourceTree = "<group>"; };
 		3503C39B227A6CD7009ADD82 /* Models+Displayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Models+Displayable.swift"; sourceTree = "<group>"; };
 		3530F6922274A7A800D1AED3 /* ChatRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
 		35461A7A223A9A1900B59EB6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -104,17 +105,16 @@
 		35E54743224BF0DB0086FB8F /* AnimalForestChat.debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AnimalForestChat.debug.xcconfig; sourceTree = "<group>"; };
 		35E54744224BF0DB0086FB8F /* AnimalForestChat.release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AnimalForestChat.release.xcconfig; sourceTree = "<group>"; };
 		35E547742252B3670086FB8F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		5549049FE634EA1DA9CD1506 /* Pods_AnimalForestChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnimalForestChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		560C7A5A389372D841184E70 /* Pods-AnimalForestChatTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnimalForestChatTests.debug.xcconfig"; path = "Target Support Files/Pods-AnimalForestChatTests/Pods-AnimalForestChatTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5D40282FC1B476B5EA4F2BEC /* Pods-AnimalForestChatTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnimalForestChatTests.release.xcconfig"; path = "Target Support Files/Pods-AnimalForestChatTests/Pods-AnimalForestChatTests.release.xcconfig"; sourceTree = "<group>"; };
+		452F09FFF80047D14609679F /* Pods-AnimalForestChatTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnimalForestChatTests.release.xcconfig"; path = "Target Support Files/Pods-AnimalForestChatTests/Pods-AnimalForestChatTests.release.xcconfig"; sourceTree = "<group>"; };
+		63B3425A694B77E8E5334191 /* Pods-AnimalForestChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnimalForestChat.release.xcconfig"; path = "Target Support Files/Pods-AnimalForestChat/Pods-AnimalForestChat.release.xcconfig"; sourceTree = "<group>"; };
 		797416C0225AAAC400D677B9 /* PNTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PNTestCase.swift; sourceTree = "<group>"; };
 		79BFB2E22271B36C00771EA0 /* keysset.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = keysset.plist; sourceTree = "<group>"; };
-		8B350E5F66A6DFB7FCDC9FEE /* Pods-AnimalForestChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnimalForestChat.debug.xcconfig"; path = "Target Support Files/Pods-AnimalForestChat/Pods-AnimalForestChat.debug.xcconfig"; sourceTree = "<group>"; };
-		A499C0F7BD4E700CF375FF25 /* Pods-Snippets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Snippets.debug.xcconfig"; path = "Target Support Files/Pods-Snippets/Pods-Snippets.debug.xcconfig"; sourceTree = "<group>"; };
-		AA926C2BEF0412333B9A6672 /* Pods_Snippets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Snippets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D18CC5A7DBB1E220619082F0 /* Pods-AnimalForestChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnimalForestChat.release.xcconfig"; path = "Target Support Files/Pods-AnimalForestChat/Pods-AnimalForestChat.release.xcconfig"; sourceTree = "<group>"; };
-		D2F4A5E78E1D42CE76A514A7 /* Pods-Snippets.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Snippets.release.xcconfig"; path = "Target Support Files/Pods-Snippets/Pods-Snippets.release.xcconfig"; sourceTree = "<group>"; };
-		F7538D0475BEEB8E0108265F /* Pods_AnimalForestChatTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnimalForestChatTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7C3549B27303BBF7606A565F /* Pods_AnimalForestChatTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnimalForestChatTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		86CFA574AEF9338AF57FCD1B /* Pods-AnimalForestChatTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnimalForestChatTests.debug.xcconfig"; path = "Target Support Files/Pods-AnimalForestChatTests/Pods-AnimalForestChatTests.debug.xcconfig"; sourceTree = "<group>"; };
+		8EFA8767D6EE39A43C71275D /* Pods-AnimalForestChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnimalForestChat.debug.xcconfig"; path = "Target Support Files/Pods-AnimalForestChat/Pods-AnimalForestChat.debug.xcconfig"; sourceTree = "<group>"; };
+		BD536DC65B4553C749122A97 /* Pods_AnimalForestChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnimalForestChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D737169665141BC8A01EF944 /* Pods_Snippets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Snippets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD0CB74CFBF3790EB4421DBB /* Pods-Snippets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Snippets.debug.xcconfig"; path = "Target Support Files/Pods-Snippets/Pods-Snippets.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,7 +122,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E3CD875895217E74D230617A /* Pods_AnimalForestChat.framework in Frameworks */,
+				EA63A70A3827B3B41FF67C14 /* Pods_AnimalForestChat.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,7 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B84ED81CAF735B28A3FA95DB /* Pods_AnimalForestChatTests.framework in Frameworks */,
+				A4EE484D05A8227588C08232 /* Pods_AnimalForestChatTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,7 +138,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				25B05CC4374791980983BF20 /* Pods_Snippets.framework in Frameworks */,
+				00AB5F85B7C9C0A053F447F0 /* Pods_Snippets.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -162,7 +162,7 @@
 				3552571C223852930095AAFD /* Animal Forest Chat */,
 				355257042237FF420095AAFD /* Products */,
 				C696971A976BA20BB837FD14 /* Pods */,
-				FF8478EA557741DB9BD16DAD /* Frameworks */,
+				E3D736371EEBA975A96B630A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -340,22 +340,22 @@
 		C696971A976BA20BB837FD14 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				8B350E5F66A6DFB7FCDC9FEE /* Pods-AnimalForestChat.debug.xcconfig */,
-				D18CC5A7DBB1E220619082F0 /* Pods-AnimalForestChat.release.xcconfig */,
-				560C7A5A389372D841184E70 /* Pods-AnimalForestChatTests.debug.xcconfig */,
-				5D40282FC1B476B5EA4F2BEC /* Pods-AnimalForestChatTests.release.xcconfig */,
-				A499C0F7BD4E700CF375FF25 /* Pods-Snippets.debug.xcconfig */,
-				D2F4A5E78E1D42CE76A514A7 /* Pods-Snippets.release.xcconfig */,
+				8EFA8767D6EE39A43C71275D /* Pods-AnimalForestChat.debug.xcconfig */,
+				63B3425A694B77E8E5334191 /* Pods-AnimalForestChat.release.xcconfig */,
+				86CFA574AEF9338AF57FCD1B /* Pods-AnimalForestChatTests.debug.xcconfig */,
+				452F09FFF80047D14609679F /* Pods-AnimalForestChatTests.release.xcconfig */,
+				DD0CB74CFBF3790EB4421DBB /* Pods-Snippets.debug.xcconfig */,
+				25181EF28B5E0BDCE9C61929 /* Pods-Snippets.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		FF8478EA557741DB9BD16DAD /* Frameworks */ = {
+		E3D736371EEBA975A96B630A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5549049FE634EA1DA9CD1506 /* Pods_AnimalForestChat.framework */,
-				F7538D0475BEEB8E0108265F /* Pods_AnimalForestChatTests.framework */,
-				AA926C2BEF0412333B9A6672 /* Pods_Snippets.framework */,
+				BD536DC65B4553C749122A97 /* Pods_AnimalForestChat.framework */,
+				7C3549B27303BBF7606A565F /* Pods_AnimalForestChatTests.framework */,
+				D737169665141BC8A01EF944 /* Pods_Snippets.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -367,12 +367,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 35525735223852970095AAFD /* Build configuration list for PBXNativeTarget "AnimalForestChat" */;
 			buildPhases = (
-				056643A8775B484852090544 /* [CP] Check Pods Manifest.lock */,
+				BAEBB6FA58543EA74735ED91 /* [CP] Check Pods Manifest.lock */,
 				35525717223852930095AAFD /* Sources */,
 				35525718223852930095AAFD /* Frameworks */,
 				35525719223852930095AAFD /* Resources */,
 				35E54749224C04930086FB8F /* SwiftLint */,
-				E0E9D3CA157864A99174AD7A /* [CP] Embed Pods Frameworks */,
+				B1EF58C5D606318352054DB1 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -387,11 +387,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 35525738223852970095AAFD /* Build configuration list for PBXNativeTarget "AnimalForestChatTests" */;
 			buildPhases = (
-				67044615689C830B55345C03 /* [CP] Check Pods Manifest.lock */,
+				B63677F0E5D6A8FCA5D80405 /* [CP] Check Pods Manifest.lock */,
 				3552572A223852970095AAFD /* Sources */,
 				3552572B223852970095AAFD /* Frameworks */,
 				3552572C223852970095AAFD /* Resources */,
-				3AB0C4B59821CF9C5EA2CBA8 /* [CP] Embed Pods Frameworks */,
+				580F951D23231EB878BDF58E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -407,13 +407,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 35765C7F223AE694000B4B8D /* Build configuration list for PBXNativeTarget "Snippets" */;
 			buildPhases = (
-				2FA5837D7095B8C3EBBE759F /* [CP] Check Pods Manifest.lock */,
+				189917A5639702369BFC573E /* [CP] Check Pods Manifest.lock */,
 				79BFB2E42271BCA200771EA0 /* Create keys set */,
 				35765C76223AE694000B4B8D /* Sources */,
 				35765C77223AE694000B4B8D /* Frameworks */,
 				35765C78223AE694000B4B8D /* Resources */,
 				35765C88223AFEB9000B4B8D /* SwiftLint */,
-				57B276F36414A82B59FC21B6 /* [CP] Embed Pods Frameworks */,
+				8BD9B018E54E45286625F807 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -494,29 +494,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		056643A8775B484852090544 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-AnimalForestChat-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		2FA5837D7095B8C3EBBE759F /* [CP] Check Pods Manifest.lock */ = {
+		189917A5639702369BFC573E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -574,7 +552,7 @@
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which \"${PODS_ROOT}/SwiftLint/swiftlint\" >/dev/null; then\n    \"${PODS_ROOT}/SwiftLint/swiftlint\"\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
-		3AB0C4B59821CF9C5EA2CBA8 /* [CP] Embed Pods Frameworks */ = {
+		580F951D23231EB878BDF58E /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -600,7 +578,25 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AnimalForestChatTests/Pods-AnimalForestChatTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		57B276F36414A82B59FC21B6 /* [CP] Embed Pods Frameworks */ = {
+		79BFB2E42271BCA200771EA0 /* Create keys set */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Create keys set";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho $CI\n";
+		};
+		8BD9B018E54E45286625F807 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -622,47 +618,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Snippets/Pods-Snippets-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		67044615689C830B55345C03 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-AnimalForestChatTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		79BFB2E42271BCA200771EA0 /* Create keys set */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Create keys set";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho $CI\n";
-		};
-		E0E9D3CA157864A99174AD7A /* [CP] Embed Pods Frameworks */ = {
+		B1EF58C5D606318352054DB1 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -686,6 +642,50 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AnimalForestChat/Pods-AnimalForestChat-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B63677F0E5D6A8FCA5D80405 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AnimalForestChatTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BAEBB6FA58543EA74735ED91 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AnimalForestChat-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -979,7 +979,7 @@
 		};
 		35525739223852970095AAFD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 560C7A5A389372D841184E70 /* Pods-AnimalForestChatTests.debug.xcconfig */;
+			baseConfigurationReference = 86CFA574AEF9338AF57FCD1B /* Pods-AnimalForestChatTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1052,7 +1052,7 @@
 		};
 		3552573A223852970095AAFD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5D40282FC1B476B5EA4F2BEC /* Pods-AnimalForestChatTests.release.xcconfig */;
+			baseConfigurationReference = 452F09FFF80047D14609679F /* Pods-AnimalForestChatTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1119,7 +1119,7 @@
 		};
 		35765C80223AE694000B4B8D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A499C0F7BD4E700CF375FF25 /* Pods-Snippets.debug.xcconfig */;
+			baseConfigurationReference = DD0CB74CFBF3790EB4421DBB /* Pods-Snippets.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1164,7 +1164,7 @@
 		};
 		35765C81223AE694000B4B8D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D2F4A5E78E1D42CE76A514A7 /* Pods-Snippets.release.xcconfig */;
+			baseConfigurationReference = 25181EF28B5E0BDCE9C61929 /* Pods-Snippets.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
