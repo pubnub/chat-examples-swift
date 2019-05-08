@@ -34,18 +34,15 @@ struct ChatViewModel {
   private let maxTimeBetweenMesssages: Int64 = 60 * 60 // 1 Hour in seconds
 
   // MARK: Services
-  private var reachabilityService: ReachabilityService?
   private var appStateService: AppStateService
   private var chatService: ChatRoomService
 
 // tag::CVM-1[]
 // ChatViewModel.swift
   init(with chatService: ChatRoomService,
-       reachabilityService: ReachabilityService? = ReachabilityService(),
        appStateService: AppStateService = AppStateService()) {
 
     self.chatService = chatService
-    self.reachabilityService = reachabilityService
     self.appStateService = appStateService
   }
 // end::CVM-1[]
@@ -81,28 +78,6 @@ struct ChatViewModel {
   }
 // end::SUB-2[]
 
-  private var reachabilityListener: ReachabilityService.Listener {
-    return { (status) in
-      switch status {
-      case .reachable:
-        NSLog("External network is reachable again")
-        if self.chatService.state == .notConnected {
-          self.chatService.start()
-        } else {
-          self.chatService.fetchMessageHistory()
-          self.chatService.fetchCurrentUsers()
-        }
-        self.listener?(.connected(true))
-      case .notReachable:
-        NSLog("External network is no longer reachable")
-        self.chatService.stop()
-        self.listener?(.connected(false))
-      case .unknown:
-        NSLog("External network is unknown")
-      }
-    }
-  }
-
   private var appStateListener: AppStateService.Listener {
     return { (appState) in
       switch appState {
@@ -127,9 +102,6 @@ struct ChatViewModel {
 // tag::BIND-1[]
   /// Starts listening for changes managed by this view model.
   func bind() {
-    reachabilityService?.listener = reachabilityListener
-    reachabilityService?.start()
-
     appStateService.listener = appStateListener
     appStateService.start()
 
@@ -171,7 +143,7 @@ struct ChatViewModel {
   /// The attributed string representing the chat room's name
   var chatRoomAttributedTitle: NSAttributedString? {
     // Format the displayname
-    if reachabilityService?.isReachable ?? false {
+    if chatService.state == .connected {
       // Empty Room
       if chatService.occupancy <= 0 {
         return chatRoom.attributedTitle(with: "Not Connected", using: .systemFont(ofSize: 12))

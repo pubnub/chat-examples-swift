@@ -8,8 +8,16 @@ def generate_xcconfigs(target_name)
   curr_dir = File.expand_path File.dirname(__FILE__)
 
   # Path to the stored examples and the git ignored supporting files
-  examples_dir = "#{curr_dir}/Examples/AnimalForestChat/BuildConfig"
-  supporting_files_dir = "#{curr_dir}/Examples/AnimalForestChat/Supporting Files"
+  example_config = "target.example.xcconfig"
+
+  examples_dir = "#{curr_dir}/Examples/#{target_name}/BuildConfig"
+  supporting_files_dir = "#{curr_dir}/Examples/#{target_name}/Supporting Files"
+
+  target_replace = "<TARGET>"
+  target_env_replace = "<TARGET_ENV>"
+  config_replace = "<Config>"
+  pub_key_replace = "<PUB_KEY>"
+  sub_key_replace = "<SUB_KEY>"
 
   # Lowercase name of the xcode configurations
   configurations = ["debug", "release"]
@@ -17,28 +25,37 @@ def generate_xcconfigs(target_name)
   return_bool = true
 
   for config in configurations
-    if !File.file?("#{supporting_files_dir}/#{target_name}.#{config}.xcconfig")
+    config_file = "#{supporting_files_dir}/#{target_name}.#{config}.xcconfig"
+    if !File.file?(config_file)
       # Copy over file
-      FileUtils.cp("#{examples_dir}/#{target_name}.#{config}.example.xcconfig",
-        "#{supporting_files_dir}/#{target_name}.#{config}.xcconfig")
+      FileUtils.cp("#{examples_dir}/#{example_config}", config_file)
 
-      # Attempt to replace empty string with stored ENV vars
-      # ex. RCDEMO_DEBUG_PUB_KEY or RCDEMO_PUB_KEY
+      # Read keys from ENV Variables
+      # ex. <TARGET>_<CONFIG>_PUB_KEY or <TARGET>_SUB_KEY
       pub_key = ENV["#{target_name.upcase}_#{config.upcase}_PUB_KEY"] ||= ENV["#{target_name.upcase}_PUB_KEY"]
       sub_key = ENV["#{target_name.upcase}_#{config.upcase}_SUB_KEY"] ||= ENV["#{target_name.upcase}_SUB_KEY"]
 
       # Read example config file
       text = File.read("#{supporting_files_dir}/#{target_name}.#{config}.xcconfig")
 
-      # Attempt to replace the PubNub keys inside the file
-      new_contents = text.gsub(/^(#{target_name.upcase}_PUBLISH_KEY=)(.*)$/, "#{target_name.upcase}_PUBLISH_KEY=#{pub_key}")
-      new_contents = new_contents.gsub(/^(#{target_name.upcase}_SUBSCRIBE_KEY=)(.*)$/, "#{target_name.upcase}_SUBSCRIBE_KEY=#{sub_key}")
+      # Insert Target Name
+      text = text.gsub(target_replace, target_name)
+      text = text.gsub(target_env_replace, target_name.upcase)
+
+      # Insert Config Name
+      text = text.gsub(config_replace, config)
+
+      # Insert Keys
+      text = text.gsub(pub_key_replace, pub_key)
+      text = text.gsub(sub_key_replace, sub_key)
 
       # Write changes to new file in the supporting files dir
-      File.open("#{supporting_files_dir}/#{target_name}.#{config}.xcconfig", "w") {|file| file.puts new_contents }
+      File.open(config_file, "w") {|file| file.puts text }
+    else
+      puts "Config for #{config} already exists"
     end
 
-    return_bool = return_bool && File.file?("#{supporting_files_dir}/#{target_name}.#{config}.xcconfig")
+    return_bool = return_bool && File.file?(config_file)
   end
 
   return return_bool

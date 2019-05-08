@@ -65,6 +65,10 @@ class ChatViewController: MessagesViewController {
         case .connected(let isConnected):
           if isConnected {
             self?.messageInputBar.shouldManageSendButtonEnabledState = true
+            // Enable the send button only if there is text entered
+            if !(self?.messageInputBar.inputTextView.text.isEmpty ?? true) {
+              self?.messageInputBar.sendButton.isEnabled = true
+            }
           } else {
             self?.messageInputBar.shouldManageSendButtonEnabledState = false
             self?.messageInputBar.sendButton.isEnabled = false

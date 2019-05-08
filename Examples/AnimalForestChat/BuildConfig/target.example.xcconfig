@@ -1,15 +1,16 @@
 //
-//  AnimalForestChat.release.xcconfig
+//  <TARGET>.<Config>.xcconfig
 //  chat-examples-swift
 //
 //  Created by Craig Lane on 3/27/19.
 //
 
 // Include the Cocoapods xcconfig file for this target
-#include "Pods/Target Support Files/Pods-AnimalForestChat/Pods-AnimalForestChat.release.xcconfig"
+// @COCOAPODS_SILENCE_WARNINGS@ //
+#include "Pods/Target Support Files/Pods-<TARGET>/Pods-<TARGET>.<Config>.xcconfig"
 
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-ANIMALFORESTCHAT_PUBLISH_KEY=
-ANIMALFORESTCHAT_SUBSCRIBE_KEY=
+<TARGET_ENV>_PUBLISH_KEY=<PUB_KEY>
+<TARGET_ENV>_SUBSCRIBE_KEY=<SUB_KEY>
