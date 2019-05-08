@@ -48,4 +48,4 @@ export ANIMALFORESTCHAT_SUB_KEY="<Enter Your PubNub Subscribe Key Here>"
 
 ## Further Information
 
-For more information about this project, or how to create your own chat app using PubNub, please check out our [tutorial](https://www.pubnub.com/chat-resource-center/docs/tutorials/tutorial-swift/).
+For more information about this project, or how to create your own chat app using PubNub, please check out our [tutorial](https://www.pubnub.com/developers/chat-resource-center/docs/getting-started/swift/).
