@@ -1,8 +1,18 @@
-# chat-examples-swift
+# PubNub Swift Chat
 
 [![Build Status](https://travis-ci.com/pubnub/chat-examples-swift.svg?token=ey6rVJnpqsBKpxXy2fYF&branch=master)](https://travis-ci.com/pubnub/chat-examples-swift)
 
+## Repository structure
+
+| Directory  | Description |
+|:----------:| ----------- |
+| `Examples`                    | Location where reference applications that explain how to build a _chat_ app using PubNub SDK. |
+| `Examples > AnimalForestChat` | Location where the animal chat application is stored. The complete tutorial can be found [here](https://www.pubnub.com/developers/chat-resource-center/docs/getting-started/swift/)|
+| `Snippets`                    | Location where verified and tested code snippets are stored.<br>Snippets from `chat-resource-center` can be found inside of [Chat Resource Center](https://dev-www.pubnub.com/developers/chat-resource-center/). |
+
 Source files for Swift based chat example apps and document code samples live here.
+
+## Animal Forest Chat Application
 
 ## Requirements
 
@@ -19,6 +29,8 @@ If you don't already have an account, you can create one for free [here](https:/
 * Login to your PubNub Account
 * Select Your Project > Your Key. Click on Key Info and copy your `Publish Key` and `Subscribe Key`
 * Enable the following add-on features on your key: Presence, Storage & Playback, Stream Controller
+
+### Using your PubNub keys
 
 Set the follow ENV variables inside your terminal config (i.e. .bash_profile) file
 
