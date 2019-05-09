@@ -38,12 +38,12 @@ $ sudo gem install cocoapods
 ## Building the project
 
 1. Clone the repo. You can use GitHub's [Clone in Xcode](https://github.blog/2017-06-05-clone-in-xcode/) feature.
-1. Run the following command inside the root project folder:
+2. Run the following command inside the root project folder:
 ```bash
 $ pod install
 ```
-1. Open the workspace by running: `$ open chat-examples-swift.xcworkspace`
-1. Inside Xcode `Run` the `AnimalForestChat` scheme
+3. Open the workspace by running: `$ open chat-examples-swift.xcworkspace`
+4. Inside Xcode `Run` the `AnimalForestChat` scheme
 
 ## Further Information
 
