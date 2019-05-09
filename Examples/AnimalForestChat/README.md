@@ -1,1 +1,1 @@
-../../README.md
+For more information about this project, or how to create your own chat app using PubNub, please check out our [tutorial](https://www.pubnub.com/developers/chat-resource-center/docs/getting-started/swift/).
