@@ -48,7 +48,7 @@ struct ChatRoomDetailsViewModel {
 
   var activeMembers: [User] {
     var members = chatService.occupantUUIDs.compactMap { (uuid) in
-      User.firstStored(with: { $0.uuid == uuid })
+      User.firstStored(with: { $0.uuid == uuid || $0.altId == uuid  })
     }
 
     members.sort { (first, second) -> Bool in

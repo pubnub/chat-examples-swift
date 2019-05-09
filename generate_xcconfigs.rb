@@ -8,7 +8,7 @@ def generate_xcconfigs(options)
   curr_dir = File.expand_path File.dirname(__FILE__)
 
   # Path to the stored examples and the git ignored supporting files
-  template_filename = "target.template.xcconfig"
+  template_filename = "template.xcconfig"
 
   target_name = options[:target_name]
   template_file = "#{curr_dir}/#{options[:template_path]}/#{template_filename}"

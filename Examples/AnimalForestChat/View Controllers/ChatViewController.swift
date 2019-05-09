@@ -129,7 +129,7 @@ class ChatViewController: MessagesViewController {
 extension ChatViewController: MessagesDataSource, MessagesDisplayDelegate, MessagesLayoutDelegate {
   func currentSender() -> SenderType {
     // MessageKit requires a non-optional sender, so we just create an anonymous User
-    return viewModel.sender ?? User(uuid: "Anonymous",
+    return viewModel.sender ?? User(uuid: "Anonymous", altId: "Anonymous",
                                     firstName: "Not-A", lastName: "Moose",
                                     designation: nil, avatarName: nil)
   }

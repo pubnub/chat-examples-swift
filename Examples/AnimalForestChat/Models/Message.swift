@@ -23,7 +23,7 @@ struct Message: Codable, Hashable {
 extension Message {
   /// The user who sent the message
   var user: User? {
-    return  User.firstStored(with: { $0.uuid == senderId })
+    return  User.firstStored(with: { $0.uuid == senderId || $0.altId == senderId })
   }
   /// The room to which the message belongs
   var room: ChatRoom? {

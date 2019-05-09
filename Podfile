@@ -19,7 +19,7 @@ end
 
 pre_install do |installer|
   puts "Creating .xcconfigs"
-  # Execute generate_xcconfigs to set PubNub pub/sub keys inside xcconfig
+  # Execute script to export PubNub pub/sub keys inside .xcconfig(s)
   system("ruby generate_xcconfigs.rb \\
     -n AnimalForestChat \\
     -t Examples/AnimalForestChat/BuildConfig \\
