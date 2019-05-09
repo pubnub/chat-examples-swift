@@ -133,10 +133,7 @@ class ChatRoomService {
 
   /// The user sending messages
   var sender: User? {
-    return User.firstStored(with: {
-      $0.uuid == chatProvider.senderID ||
-      $0.altId == chatProvider.senderID
-    })
+    return User.firstStored(with: { $0.uuid == chatProvider.senderID })
   }
 
   // MARK: - Service Stop/Start

@@ -14,7 +14,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
   let maxWait = 10.0
   let maxInvertedWait =  0.01
 
-  let testUser = User(uuid: "TestUser", altId: "", firstName: nil,
+  let testUser = User(uuid: "TestUser", firstName: nil,
                       lastName: nil, designation: nil, avatarName: nil)
   let testRoom = ChatRoom(uuid: "TestChatRoom", name: "TestChatRoom", description: nil, avatarName: nil)
   var testMessage: Message!
@@ -73,7 +73,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
       return
     }
 
-    XCTAssert(sender.uuid == mock.senderID || sender.altId == mock.senderID,
+    XCTAssert(sender.uuid == mock.senderID,
               "SenderID expected to be \(mock.senderIdValue), but was \(sender.uuid)")
   }
 
