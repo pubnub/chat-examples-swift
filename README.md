@@ -8,7 +8,7 @@
 |:----------:| ----------- |
 | `Examples`                    | Location where reference applications that explain how to build a _chat_ app using PubNub SDK. |
 | `Examples > AnimalForestChat` | Location where the animal chat application is stored. The complete tutorial can be found [here](https://www.pubnub.com/developers/chat-resource-center/docs/getting-started/swift/)|
-| `Snippets`                    | Location where verified and tested code snippets are stored.<br>Snippets from `chat-resource-center` can be found inside of [Chat Resource Center](https://dev-www.pubnub.com/developers/chat-resource-center/). |
+| `Snippets`                    | Location where verified and tested code snippets are stored.<br>Snippets from `chat-resource-center` can be found inside of [Chat Resource Center](https://www.pubnub.com/developers/chat-resource-center/). |
 
 Source files for Swift based chat example apps and document code samples live here.
 
