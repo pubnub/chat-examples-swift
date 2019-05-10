@@ -14,14 +14,14 @@ let allKeysSet = true;
 
 Object.keys(keys).forEach(function (env) {
   if (allKeysSet && !process.env[env]) {
-	console.error(`Environment variable for ${keys[env]} key is missing!`);
-  	allKeysSet = false;
+    console.error(`Environment variable for ${keys[env]} key is missing!`);
+    allKeysSet = false;
   }
 });
 
 if (!allKeysSet) {
-	console.error('Abort! Environment variables not set.');
-	process.exit(1);
+  console.error('Abort! Environment variables not set.');
+  process.exit(1);
 }
 
 
