@@ -12,10 +12,10 @@ class PNTestCase: XCTestCase, PNObjectEventListener {
   fileprivate var messageHandlers: [String: (_ status: PNMessageResult) -> Void] = [:]
   fileprivate var statusHandlers: [String: (_ status: PNStatus) -> Void] = [:]
   var observerPubNubClient: PubNub!
-  var pamSubscribeKey = "***REMOVED***"
-  var pamPublishKey = "***REMOVED***"
-  var subscribeKey = "***REMOVED***"
-  var publishKey = "***REMOVED***"
+  var pamSubscribeKey = "demo"
+  var pamPublishKey = "demo"
+  var subscribeKey = "demo"
+  var publishKey = "demo"
   var pubNubClient: PubNub!
 
   public func accessManagerEnabled () -> Bool {
@@ -131,9 +131,9 @@ class PNTestCase: XCTestCase, PNObjectEventListener {
     let keysPath = bundle.path(forResource: "keysset", ofType: "plist")!
     let keysSet = NSDictionary.init(contentsOfFile: keysPath)
 
-    pamSubscribeKey = keysSet!.value(forKeyPath: "pam.subscribe") as? String ?? "***REMOVED***"
-    pamPublishKey = keysSet!.value(forKeyPath: "pam.publish") as? String ?? "***REMOVED***"
-    subscribeKey = keysSet!.value(forKeyPath: "regular.subscribe") as? String ?? "***REMOVED***"
-    publishKey = keysSet!.value(forKeyPath: "regular.publish") as? String ?? "***REMOVED***"
+    pamSubscribeKey = keysSet!.value(forKeyPath: "pam.subscribe") as? String ?? "demo"
+    pamPublishKey = keysSet!.value(forKeyPath: "pam.publish") as? String ?? "demo"
+    subscribeKey = keysSet!.value(forKeyPath: "regular.subscribe") as? String ?? "demo"
+    publishKey = keysSet!.value(forKeyPath: "regular.publish") as? String ?? "demo"
   }
 }
