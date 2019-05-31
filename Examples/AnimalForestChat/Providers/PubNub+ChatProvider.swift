@@ -284,11 +284,39 @@ extension PNPresenceEventResult: ChatPresenceEvent {
 }
 
 extension PNStatus: ChatStatusEvent {
-  var status: String {
-    return stringifiedCategory()
+  var response: StatusResponse {
+    switch category {
+    case .PNAcknowledgmentCategory:
+      return .acknowledgment
+    case .PNConnectedCategory:
+      return .connected
+    case .PNReconnectedCategory:
+      return .reconnected
+    case .PNDisconnectedCategory:
+      return .disconnected
+    case .PNUnexpectedDisconnectCategory:
+      return .disconnected
+    case .PNCancelledCategory:
+      return .cancelled
+    default:
+      return .error
+    }
   }
 
-  var request: String {
-    return stringifiedOperation()
+  var request: RequestType {
+    switch operation {
+    case .subscribeOperation:
+      return RequestType.subscribe
+    case .unsubscribeOperation:
+      return RequestType.unsubscribe
+    case .publishOperation:
+      return RequestType.send
+    case .historyOperation:
+      return RequestType.history
+    case .whereNowOperation:
+      return RequestType.presence
+    default:
+      return RequestType.other
+    }
   }
 }

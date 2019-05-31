@@ -187,9 +187,30 @@ protocol ChatPresenceEvent {
   var left: [String] { get }
 }
 
+enum StatusResponse: String {
+  case acknowledgment
+  case connected
+  case reconnected
+  case disconnected
+  case cancelled
+
+  case error
+}
+
+enum RequestType: String {
+  case subscribe
+  case unsubscribe
+
+  case send
+  case history
+  case presence
+
+  case other
+}
+
 protocol ChatStatusEvent {
   /// The status event that occurred
-  var status: String { get }
+  var response: StatusResponse { get }
   /// The associated request for the status event
-  var request: String { get }
+  var request: RequestType { get }
 }
