@@ -60,6 +60,9 @@
                <Test
                   Identifier = "ConnectToPubnub/testDisconnectFromPubNub()">
                </Test>
+               <Test
+                  Identifier = "ManageChannels/testSubscribingToMultipleChannels()">
+               </Test>
             </SkippedTests>
          </TestableReference>
       </Testables>
