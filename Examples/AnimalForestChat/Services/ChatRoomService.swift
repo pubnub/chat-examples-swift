@@ -273,11 +273,11 @@ class ChatRoomService {
   /// Processes status changes received on the chat room
   private func didReceive(status event: Result<ChatStatusEvent, NSError>) {
     switch event {
-    case .success(let response):
-      NSLog("Status Change Received: \(response.status)")
+    case .success(let status):
+      NSLog("Status Change Received: \(status.response)")
 
-      switch response.status {
-      case "Connected":
+      switch status.response {
+      case .connected, .reconnected:
         presenceQueue.async(flags: .barrier) { [weak self] in
           if let senderID = self?.chatProvider.senderID {
             self?._occupantUUIDs.insert(senderID)
@@ -285,7 +285,7 @@ class ChatRoomService {
 
           self?.emit(.status(.success(.connected)))
         }
-      case "Expected Disconnect", "Unexpected Disconnect":
+      case .disconnected:
         // Clear Occupancy
         presenceQueue.async(flags: .barrier) { [weak self] in
           self?._occupantUUIDs.removeAll()
@@ -293,7 +293,7 @@ class ChatRoomService {
           self?.emit(.status(.success(.notConnected)))
         }
       default:
-        NSLog("Category \(response.status) was not processed.")
+        NSLog("Category \(status.response) was not processed.")
       }
 
     case .failure(let error):

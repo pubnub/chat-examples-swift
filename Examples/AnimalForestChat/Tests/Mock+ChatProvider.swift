@@ -102,8 +102,8 @@ struct MockMessageEvent: ChatMessageEvent {
 }
 
 struct MockStatusEvent: ChatStatusEvent {
-  var status: String
-  var request: String
+  var response: StatusResponse
+  var request: RequestType
 }
 
 struct MockPresenceEvent: ChatPresenceEvent {

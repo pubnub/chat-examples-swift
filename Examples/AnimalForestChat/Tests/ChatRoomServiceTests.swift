@@ -422,7 +422,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
   func testDidReceiveStatus_Connected() {
     let listenerExpectation = XCTestExpectation(description: "testDidReceiveStatus_Connected listener")
 
-    let statusEvent = MockStatusEvent(status: "Connected", request: "Subscription")
+    let statusEvent = MockStatusEvent(response: .connected, request: .subscribe)
 
     service.listener = { (event) in
       switch event {
@@ -451,7 +451,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
   func testDidReceiveStatus_NotConnected() {
     let listenerExpectation = XCTestExpectation(description: "testDidReceiveStatus_NotConnected listener")
 
-    let statusEvent = MockStatusEvent(status: "Expected Disconnect", request: "Subscription")
+    let statusEvent = MockStatusEvent(response: .disconnected, request: .subscribe)
 
     service.listener = { (event) in
       switch event {
@@ -480,7 +480,7 @@ class ChatServiceTests: XCTestCase { // swiftlint:disable:this type_body_length
     let listenerExpectation = XCTestExpectation(description: "testDidReceiveStatus_Other listener")
     listenerExpectation.isInverted = true
 
-    let statusEvent = MockStatusEvent(status: "Something", request: "Subscription")
+    let statusEvent = MockStatusEvent(response: .acknowledgment, request: .subscribe)
 
     service.listener = { (_) in
       XCTFail("No Event Should Be Received")
