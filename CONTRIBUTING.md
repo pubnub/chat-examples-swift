@@ -136,3 +136,4 @@ bundle exec fastlane lint_and_test_snippets source_dir:Snippets
 
 When testing locally, tests for push notifications _will_ be skipped so that you do not have to provide push certificates. These tests will run normally on Travis when you make your pull request.
 
+> **Note** There is a known issue where some tests unexpectedly fail after a timeout. When this occurs, re-running the tests should resolve the issue.
