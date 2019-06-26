@@ -14,6 +14,9 @@ class PushNotifications: PNTestCase {
    */
   func testAddingDeviceTokenToChannels() {
     let addExpectation = expectation(description: "Waiting for push notification enable.")
+    if (ProcessInfo.processInfo.environment["CI"] == nil) {
+        addExpectation.fulfill();
+    }
     let expectedDeviceToken = UUID().uuidString.replacingOccurrences(of: "-", with: "")
     let expectedChannels = [UUID().uuidString, UUID().uuidString]
     let expectedDevice = expectedDeviceToken.data(using: .utf8)!
@@ -64,6 +67,9 @@ class PushNotifications: PNTestCase {
    */
   func testRemovingDeviceTokenFromChannels() {
     let removeExpectation = expectation(description: "Waiting for push notification disable.")
+    if (ProcessInfo.processInfo.environment["CI"] == nil) {
+        removeExpectation.fulfill();
+    }
     let expectedDeviceToken = UUID().uuidString.replacingOccurrences(of: "-", with: "")
     let expectedChannels = [UUID().uuidString, UUID().uuidString]
     let expectedDevice = expectedDeviceToken.data(using: .utf8)!
@@ -120,6 +126,9 @@ class PushNotifications: PNTestCase {
    */
   func testFormattingMessagePayloadForAPNSandGCM() {
     let publishExpectation = expectation(description: "Waiting for published message.")
+    if (ProcessInfo.processInfo.environment["CI"] == nil) {
+        publishExpectation.fulfill();
+    }
     let expectedChannel = UUID().uuidString
     let pubnub: PubNub! = pubNubClient
     // tag::PUSH-3.1[]

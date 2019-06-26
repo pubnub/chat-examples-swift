@@ -1,6 +1,10 @@
 const path = require('path');
 const fs = require('fs');
 
+if (!process.env.CI) {
+	console.log("Skipping create-keyset in favor of user defined keys.");
+	return;
+}
 
 const keys = {
   TESTS_PAM_SUBSCRIBE_KEY: 'subscribe (PAM)',
