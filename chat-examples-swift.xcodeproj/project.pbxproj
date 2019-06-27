@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		00AB5F85B7C9C0A053F447F0 /* Pods_Snippets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D737169665141BC8A01EF944 /* Pods_Snippets.framework */; };
-		14B3227522C3F0F400D4D4EB /* keysset.plist in Resources */ = {isa = PBXBuildFile; fileRef = 14B3227422C3F0F400D4D4EB /* keysset.plist */; };
 		14B3227722C40ECA00D4D4EB /* keysset.plist in Resources */ = {isa = PBXBuildFile; fileRef = 14B3227422C3F0F400D4D4EB /* keysset.plist */; };
 		3503C39C227A6CD7009ADD82 /* Models+Displayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3503C39B227A6CD7009ADD82 /* Models+Displayable.swift */; };
 		3530F68F227219B600D1AED3 /* ChatRoomServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E4D342271F8BC00929A9C /* ChatRoomServiceTests.swift */; };
@@ -474,7 +473,6 @@
 				35525725223852970095AAFD /* Assets.xcassets in Resources */,
 				3595647F2268E1F4008442A0 /* UserDetailTableViewCell.xib in Resources */,
 				35525723223852930095AAFD /* Main.storyboard in Resources */,
-				14B3227522C3F0F400D4D4EB /* keysset.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
