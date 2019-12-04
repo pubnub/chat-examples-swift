@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/pubnub/chat-examples-swift.svg?token=ey6rVJnpqsBKpxXy2fYF&branch=master)](https://travis-ci.com/pubnub/chat-examples-swift)
 
-This repository contains sample code for the a chat application build using the Swift SDK.
+This repository contains sample code for a chat application built using the Swift SDK.
 
 ## Repository structure
 
